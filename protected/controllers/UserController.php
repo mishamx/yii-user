@@ -1,13 +1,9 @@
 <?php
 
-class UserController extends CController
+class UserController extends Controller
 {
 	const PAGE_SIZE=10;
 
-	/**
-	 * @var string specifies the default action to be 'profile'.
-	 */
-	public $defaultAction='profile';
 	/**
 	 * @var CActiveRecord the currently loaded data model instance.
 	 */
@@ -22,7 +18,6 @@ class UserController extends CController
 			'accessControl', // perform access control for CRUD operations
 		);
 	}
-
 	/**
 	 * Specifies the access control rules.
 	 * This method is used by the 'accessControl' filter.
@@ -31,24 +26,24 @@ class UserController extends CController
 	public function accessRules()
 	{
 		return array(
-			array('allow',  // allow all users to perform 'list' and 'show' actions
-				'actions'=>array('list','show','registration','captcha','login', 'recovery', 'activation'),
+			array('allow',  // allow all users to perform 'index' and 'view' actions
+				'actions'=>array('index','view','registration','captcha','login', 'recovery', 'activation'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('profile', 'logout', 'changepassword'),
+				'actions'=>array('profile', 'edit', 'logout', 'changepassword'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array('admin','delete','create','update'),
-				'users'=>array('admin'),
+				'users'=>User::getAdmins(),
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),
 			),
 		);
 	}
-	
+
 
 	/**
 	 * Declares class-based actions.
@@ -58,10 +53,97 @@ class UserController extends CController
 		return array(
 			'captcha'=>array(
 				'class'=>'CCaptchaAction',
-				'backColor'=>0xEBF4FB,
+				'backColor'=>0xFFFFFF,
 			),
 		);
 	}
+	
+
+	
+	
+	/**
+	 * Registration user
+	 */
+	public function actionRegistration() {
+            $model = new RegistrationForm;
+            $profile=new Profile;
+		    if ($uid = Yii::app()->user->id) {
+		    	$this->redirect(Yii::app()->homeUrl);
+		    } else {
+		    	if(isset($_POST['RegistrationForm'])) {
+					$model->attributes=$_POST['RegistrationForm'];
+					$profile->attributes=$_POST['Profile'];
+					if($model->validate()&&$profile->validate())
+					{
+						$soucePassword = $model->password;
+						$model->password=Yii::app()->User->encrypting($model->password);
+						$model->verifyPassword=Yii::app()->User->encrypting($model->verifyPassword);
+						$model->activkey=Yii::app()->User->encrypting(microtime().$model->password);
+						$model->createtime=time();
+						$model->lastvisit=((Yii::app()->User->autoLogin&&Yii::app()->User->loginNotActiv)?time():0);
+						$model->superuser=0;
+						$model->status=0;
+						
+						if ($model->save()) {
+							//$model->save();
+							$profile->user_id=$model->id;
+							$profile->save();
+							$headers="From: ".Yii::app()->params['adminEmail']."\r\nReply-To: ".Yii::app()->params['adminEmail'];
+							$activation_url = 'http://' . $_SERVER['HTTP_HOST'].$this->createUrl('user/activation',array("activkey" => $model->activkey, "email" => $model->email));
+							mail($model->email,"You registered from ".Yii::app()->name,"Please activate you account go to $activation_url.",$headers);
+							if (Yii::app()->User->loginNotActiv) {
+								if (Yii::app()->User->autoLogin) {
+									$identity=new UserIdentity($model->username,$soucePassword);
+									$identity->authenticate();
+									Yii::app()->user->login($identity,0);
+									$this->redirect(Yii::app()->User->returnUrl);
+								} else {
+									Yii::app()->user->setFlash('registration',Yii::t("user", "Thank you for your registration. Please check your email or login."));
+									$this->refresh();
+								}
+							} else {
+								Yii::app()->user->setFlash('registration',Yii::t("user", "Thank you for your registration. Please check your email."));
+								$this->refresh();
+							}
+						}
+					}
+				}
+			    $this->render('registration',array('form'=>$model,'profile'=>$profile));
+		    }
+	}
+	
+
+	/**
+	 * Displays the login page
+	 */
+	public function actionLogin()
+	{
+		$form=new UserLogin;
+		// collect user input data
+		if(isset($_POST['UserLogin']))
+		{
+			$form->attributes=$_POST['UserLogin'];
+			// validate user input and redirect to previous page if valid
+			if($form->validate()) {
+				$lastVisit = User::model()->findByPk(Yii::app()->user->id);
+				$lastVisit->lastvisit = time();
+				$lastVisit->save();
+				$this->redirect(Yii::app()->User->returnUrl);
+			}
+		}
+		// display the login form
+		$this->render('login',array('form'=>$form));
+	}
+
+	/**
+	 * Logout the current user and redirect to returnLogoutUrl.
+	 */
+	public function actionLogout()
+	{
+		Yii::app()->user->logout();
+		$this->redirect(Yii::app()->User->returnLogoutUrl);
+	}
+	
 	/**
 	 * Activation user account
 	 */
@@ -151,152 +233,140 @@ class UserController extends CController
 		    	}
 		    }
 	}
-	
-	
-	/**
-	 * Registration user
-	 */
-	public function actionRegistration() {
-            $model = new RegistrationForm;
-		    if ($uid = Yii::app()->user->id) {
-		    	$this->redirect(Yii::app()->homeUrl);
-		    } else {
-		    	if(isset($_POST['RegistrationForm'])) {
-					$model->attributes=$_POST['RegistrationForm'];
-					if($model->validate())
-					{
-						$soucePassword = $model->password;
-						$model->password=Yii::app()->User->encrypting($model->password);
-						$model->verifyPassword=Yii::app()->User->encrypting($model->verifyPassword);
-						$model->activkey=Yii::app()->User->encrypting(microtime().$model->password);
-						$model->createtime=time();
-						$model->lastvisit=0;
-						$model->superuser=0;
-						$model->status=0;
-						
-						if ($model->save()) {
-							$headers="From: ".Yii::app()->params['adminEmail']."\r\nReply-To: ".Yii::app()->params['adminEmail'];
-							$activation_url = 'http://' . $_SERVER['HTTP_HOST'].$this->createUrl('user/activation',array("activkey" => $model->activkey, "email" => $model->email));
-							mail($model->email,"You registered from ".Yii::app()->name,"Please activate you account go to $activation_url.",$headers);
-							if (Yii::app()->User->loginNotActiv) {
-								if (Yii::app()->User->autoLogin) {
-									$identity=new UserIdentity($model->username,$soucePassword);
-									$identity->authenticate();
-									Yii::app()->user->login($identity,0);
-									$this->redirect(Yii::app()->User->returnUrl);
-								} else {
-									Yii::app()->user->setFlash('registration',Yii::t("user", "Thank you for your registration. Please check your email or login."));
-									$this->refresh();
-								}
-							} else {
-								Yii::app()->user->setFlash('registration',Yii::t("user", "Thank you for your registration. Please check your email."));
-								$this->refresh();
-							}
-						}
-					}
-				}
-			    $this->render('registration',array('form'=>$model));
-		    }
-	}
 
 	/**
 	 * Shows a particular model.
 	 */
 	public function actionProfile()
 	{
-		if ($uid = Yii::app()->user->id) {
-		    $this->render('profile',array('model'=>$this->loadUser($uid = Yii::app()->user->id)));
+		if (Yii::app()->user->id) {
+			$model = $this->loadUser($uid = Yii::app()->user->id);
+		    $this->render('profile',array(
+		    	'model'=>$model,
+				'profile'=>$model->profile,
+		    ));
 		}
 		
 	}
 
-
 	/**
-	 * Displays the login page
+	 * Updates a particular model.
+	 * If update is successful, the browser will be redirected to the 'view' page.
 	 */
-	public function actionLogin()
+	public function actionEdit()
 	{
-		$form=new LoginForm;
-		// collect user input data
-		if(isset($_POST['LoginForm']))
+		$model=User::model()->findByPk(Yii::app()->user->id);
+		$profile=$model->profile;
+		if(isset($_POST['User']))
 		{
-			$form->attributes=$_POST['LoginForm'];
-			// validate user input and redirect to previous page if valid
-			if($form->validate()) {
-				#echo "<pre>"; print_r(Yii::app()->user->id); die();
-				$lastVisit = User::model()->findByPk(Yii::app()->user->id);
-				$lastVisit->lastvisit = time();
-				$lastVisit->save();
-				$this->redirect(Yii::app()->User->returnUrl);
+			$model->attributes=$_POST['User'];
+			$profile->attributes=$_POST['Profile'];
+			
+			if($model->validate()&&$profile->validate()) {
+				$model->save();
+				$profile->save();
+				Yii::app()->user->setFlash('profileMessage',Yii::t("user", "Changes is saved."));
+				$this->redirect(array('profile','id'=>$model->id));
 			}
 		}
-		// display the login form
-		$this->render('login',array('form'=>$form));
-	}
 
-	/**
-	 * Logout the current user and redirect to returnLogoutUrl.
-	 */
-	public function actionLogout()
-	{
-		Yii::app()->user->logout();
-		$this->redirect(Yii::app()->User->returnLogoutUrl);
+		$this->render('profile-edit',array(
+			'model'=>$model,
+			'profile'=>$profile,
+		));
 	}
 	
-
 	/**
-	 * Shows a particular model.
+	 * Displays a particular model.
 	 */
-	public function actionShow()
+	public function actionView()
 	{
-		$this->render('show',array('model'=>$this->loadUser()));
+		$model = $this->loadModel();
+		$this->render('view',array(
+			'model'=>$model,
+		));
 	}
-	
-	
 
 	/**
 	 * Creates a new model.
-	 * If creation is successful, the browser will be redirected to the 'show' page.
+	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
 	public function actionCreate()
 	{
 		$model=new User;
+		$profile=new Profile;
 		if(isset($_POST['User']))
 		{
 			$model->attributes=$_POST['User'];
-			if($model->save())
-				$this->redirect(array('show','id'=>$model->id));
+			$model->activkey=Yii::app()->User->encrypting(microtime().$model->password);
+			$model->createtime=time();
+			$model->lastvisit=time();
+			$profile->attributes=$_POST['Profile'];
+			$profile->user_id=0;
+			if($model->validate()&&$profile->validate()) {
+				$model->password=Yii::app()->User->encrypting($model->password);
+				if($model->save()) {
+					$profile->user_id=$model->id;
+					$profile->save();
+				}
+				$this->redirect(array('view','id'=>$model->id));
+			}
 		}
-		$this->render('create',array('model'=>$model));
+
+		$this->render('create',array(
+			'model'=>$model,
+			'profile'=>$profile,
+		));
 	}
 
 	/**
 	 * Updates a particular model.
-	 * If update is successful, the browser will be redirected to the 'show' page.
+	 * If update is successful, the browser will be redirected to the 'view' page.
 	 */
 	public function actionUpdate()
 	{
-		$model=$this->loadUser();
+		$model=$this->loadModel();
+		$profile=$model->profile;
 		if(isset($_POST['User']))
 		{
+			$old_password = User::model()->findByPk($model->id);
 			$model->attributes=$_POST['User'];
-			if($model->save())
-				$this->redirect(array('show','id'=>$model->id));
+			
+			if ($old_password->password!=$model->password)
+				$model->password=Yii::app()->User->encrypting($model->password);
+			
+			$profile->attributes=$_POST['Profile'];
+			
+			if($model->validate()&&$profile->validate()) {
+				$model->save();
+				$profile->save();
+				$this->redirect(array('view','id'=>$model->id));
+			}
 		}
-		$this->render('update',array('model'=>$model));
+
+		$this->render('update',array(
+			'model'=>$model,
+			'profile'=>$profile,
+		));
 	}
+
 
 	/**
 	 * Deletes a particular model.
-	 * If deletion is successful, the browser will be redirected to the 'list' page.
+	 * If deletion is successful, the browser will be redirected to the 'index' page.
 	 */
 	public function actionDelete()
 	{
 		if(Yii::app()->request->isPostRequest)
 		{
 			// we only allow deletion via POST request
-			$this->loadUser()->delete();
-			$this->redirect(array('list'));
+			$model = $this->loadModel();
+			$profile = Profile::model()->findByPk($model->id);
+			$profile->delete();
+			$model->delete();
+			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+			if(!isset($_POST['ajax']))
+				$this->redirect(array('index'));
 		}
 		else
 			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
@@ -305,19 +375,16 @@ class UserController extends CController
 	/**
 	 * Lists all models.
 	 */
-	public function actionList()
+	public function actionIndex()
 	{
-		$criteria=new CDbCriteria;
+		$dataProvider=new CActiveDataProvider('User', array(
+			'pagination'=>array(
+				'pageSize'=>self::PAGE_SIZE,
+			),
+		));
 
-		$pages=new CPagination(User::model()->count($criteria));
-		$pages->pageSize=self::PAGE_SIZE;
-		$pages->applyLimit($criteria);
-
-		$models=User::model()->findAll($criteria);
-
-		$this->render('list',array(
-			'models'=>$models,
-			'pages'=>$pages,
+		$this->render('index',array(
+			'dataProvider'=>$dataProvider,
 		));
 	}
 
@@ -326,25 +393,33 @@ class UserController extends CController
 	 */
 	public function actionAdmin()
 	{
-		$this->processAdminCommand();
-
-		$criteria=new CDbCriteria;
-
-		$pages=new CPagination(User::model()->count($criteria));
-		$pages->pageSize=self::PAGE_SIZE;
-		$pages->applyLimit($criteria);
-
-		$sort=new CSort('User');
-		$sort->applyOrder($criteria);
-
-		$models=User::model()->findAll($criteria);
+		$dataProvider=new CActiveDataProvider('User', array(
+			'pagination'=>array(
+				'pageSize'=>self::PAGE_SIZE,
+			),
+		));
 
 		$this->render('admin',array(
-			'models'=>$models,
-			'pages'=>$pages,
-			'sort'=>$sort,
+			'dataProvider'=>$dataProvider,
 		));
 	}
+
+	/**
+	 * Returns the data model based on the primary key given in the GET variable.
+	 * If the data model is not found, an HTTP exception will be raised.
+	 */
+	public function loadModel()
+	{
+		if($this->_model===null)
+		{
+			if(isset($_GET['id']))
+				$this->_model=User::model()->findbyPk($_GET['id']);
+			if($this->_model===null)
+				throw new CHttpException(404,'The requested page does not exist.');
+		}
+		return $this->_model;
+	}
+
 
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
@@ -361,18 +436,5 @@ class UserController extends CController
 				throw new CHttpException(404,'The requested page does not exist.');
 		}
 		return $this->_model;
-	}
-
-	/**
-	 * Executes any command triggered on the admin page.
-	 */
-	protected function processAdminCommand()
-	{
-		if(isset($_POST['command'], $_POST['id']) && $_POST['command']==='delete')
-		{
-			$this->loadUser($_POST['id'])->delete();
-			// reload the current page to avoid duplicated delete actions
-			$this->refresh();
-		}
 	}
 }

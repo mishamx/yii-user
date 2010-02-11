@@ -1,12 +1,19 @@
-<h2>Update User <?php echo $model->id; ?></h2>
+<?php
+$this->breadcrumbs=array(
+	(Yii::t("user", 'Users'))=>array('index'),
+	$model->username=>array('view','id'=>$model->id),
+	(Yii::t("user", 'Update')),
+);
+?>
 
-<div class="actionBar">
-[<?php echo CHtml::link('User List',array('list')); ?>]
-[<?php echo CHtml::link('New User',array('create')); ?>]
-[<?php echo CHtml::link('Manage User',array('admin')); ?>]
-</div>
+<h1><?php echo  Yii::t("user", 'Update User')." ".$model->id; ?></h1>
 
-<?php echo $this->renderPartial('_form', array(
-	'model'=>$model,
-	'update'=>true,
-)); ?>
+<ul class="actions">
+	<li><?php echo CHtml::link(Yii::t("user", 'List User'),array('index')); ?></li>
+	<li><?php echo CHtml::link(Yii::t("user", 'Create User'),array('create')); ?></li>
+	<li><?php echo CHtml::link(Yii::t("user", 'View User'),array('view','id'=>$model->id)); ?></li>
+	<li><?php echo CHtml::link(Yii::t("user", 'Manage User'),array('admin')); ?></li>
+	<li><?php echo CHtml::link(Yii::t("user", 'Manage Profile Field'),array('profileField/admin')); ?></li>
+</ul><!-- actions -->
+
+<?php echo $this->renderPartial('_form', array('model'=>$model,'profile'=>$profile)); ?>

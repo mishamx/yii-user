@@ -1,11 +1,15 @@
-<h2>New User</h2>
+<?php
+$this->breadcrumbs=array(
+	Yii::t("user", 'Users')=>array('index'),
+	Yii::t("user", 'Create'),
+);
+?>
+<h1><?php echo Yii::t("user", "Create User"); ?></h1>
 
-<div class="actionBar">
-[<?php echo CHtml::link('User List',array('list')); ?>]
-[<?php echo CHtml::link('Manage User',array('admin')); ?>]
-</div>
+<ul class="actions">
+	<li><?php echo CHtml::link(Yii::t("user", 'List User'),array('index')); ?></li>
+	<li><?php echo CHtml::link(Yii::t("user", 'Manage User'),array('admin')); ?></li>
+	<li><?php echo CHtml::link(Yii::t("user", 'Manage Profile Field'),array('profileField/admin')); ?></li>
+</ul><!-- actions -->
 
-<?php echo $this->renderPartial('_form', array(
-	'model'=>$model,
-	'update'=>false,
-)); ?>
+<?php echo $this->renderPartial('_form', array('model'=>$model,'profile'=>$profile)); ?>

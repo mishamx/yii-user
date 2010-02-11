@@ -1,47 +1,53 @@
-<h2>Managing User</h2>
+<?php
+$this->breadcrumbs=array(
+	Yii::t("user", 'Users')=>array('index'),
+	Yii::t("user", 'Manage'),
+);
+?>
+<h1>Manage Users</h1>
 
-<div class="actionBar">
-[<?php echo CHtml::link('User List',array('list')); ?>]
-[<?php echo CHtml::link('New User',array('create')); ?>]
-</div>
+<ul class="actions">
+	<li><?php echo CHtml::link(Yii::t("user", 'List User'),array('index')); ?></li>
+	<li><?php echo CHtml::link(Yii::t("user", 'Create User'),array('create')); ?></li>
+	<li><?php echo CHtml::link(Yii::t("user", 'Manage Profile Field'),array('profileField/admin')); ?></li>
+</ul><!-- actions -->
 
-<table class="dataGrid">
-  <thead>
-  <tr>
-    <th><?php echo $sort->link('id'); ?></th>
-    <th><?php echo $sort->link('username'); ?></th>
-    <th><?php echo $sort->link('password'); ?></th>
-    <th><?php echo $sort->link('email'); ?></th>
-    <th><?php echo $sort->link('activkey'); ?></th>
-    <th><?php echo $sort->link('createtime'); ?></th>
-    <th><?php echo $sort->link('lastvisit'); ?></th>
-    <th><?php echo $sort->link('superuser'); ?></th>
-    <th><?php echo $sort->link('status'); ?></th>
-	<th>Actions</th>
-  </tr>
-  </thead>
-  <tbody>
-<?php foreach($models as $n=>$model): ?>
-  <tr class="<?php echo $n%2?'even':'odd';?>">
-    <td><?php echo CHtml::link($model->id,array('show','id'=>$model->id)); ?></td>
-    <td><?php echo CHtml::encode($model->username); ?></td>
-    <td><?php echo CHtml::encode($model->password); ?></td>
-    <td><?php echo CHtml::encode($model->email); ?></td>
-    <td><?php echo CHtml::encode($model->activkey); ?></td>
-    <td><?php echo CHtml::encode($model->createtime); ?></td>
-    <td><?php echo CHtml::encode($model->lastvisit); ?></td>
-    <td><?php echo CHtml::encode($model->superuser); ?></td>
-    <td><?php echo CHtml::encode($model->status); ?></td>
-    <td>
-      <?php echo CHtml::link('Update',array('update','id'=>$model->id)); ?>
-      <?php echo CHtml::linkButton('Delete',array(
-      	  'submit'=>'',
-      	  'params'=>array('command'=>'delete','id'=>$model->id),
-      	  'confirm'=>"Are you sure to delete #{$model->id}?")); ?>
-	</td>
-  </tr>
-<?php endforeach; ?>
-  </tbody>
-</table>
-<br/>
-<?php $this->widget('CLinkPager',array('pages'=>$pages)); ?>
+<?php $this->widget('zii.widgets.grid.CGridView', array(
+	'dataProvider'=>$dataProvider,
+	'columns'=>array(
+		array(
+			'name' => 'id',
+			'type'=>'raw',
+			'value' => 'CHtml::link(CHtml::encode($data->id),array("user/update","id"=>$data->id))',
+		),
+		array(
+			'name' => 'username',
+			'type'=>'raw',
+			'value' => 'CHtml::link(CHtml::encode($data->username),array("user/view","id"=>$data->id))',
+		),
+		array(
+			'name'=>'email',
+			'type'=>'raw',
+			'value'=>'CHtml::link(CHtml::encode($data->email), "mailto:".$data->email)',
+		),
+		array(
+			'name' => 'createtime',
+			'value' => 'date("d.m.Y H:i:s",$data->createtime)',
+		),
+		array(
+			'name' => 'lastvisit',
+			'value' => 'date("d.m.Y H:i:s",$data->lastvisit)',
+		),
+		array(
+			'name'=>'status',
+			'value'=>'User::itemAlias("UserStatus",$data->status)',
+		),
+		array(
+			'name'=>'superuser',
+			'value'=>'User::itemAlias("AdminStatus",$data->superuser)',
+		),
+		array(
+			'class'=>'CButtonColumn',
+		),
+	),
+)); ?>
