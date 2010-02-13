@@ -118,13 +118,13 @@ class UserController extends Controller
 	 */
 	public function actionLogin()
 	{
-		$form=new UserLogin;
+		$model=new UserLogin;
 		// collect user input data
 		if(isset($_POST['UserLogin']))
 		{
-			$form->attributes=$_POST['UserLogin'];
+			$model->attributes=$_POST['UserLogin'];
 			// validate user input and redirect to previous page if valid
-			if($form->validate()) {
+			if($model->validate()) {
 				$lastVisit = User::model()->findByPk(Yii::app()->user->id);
 				$lastVisit->lastvisit = time();
 				$lastVisit->save();
@@ -132,7 +132,7 @@ class UserController extends Controller
 			}
 		}
 		// display the login form
-		$this->render('login',array('form'=>$form));
+		$this->render('login',array('model'=>$model,));
 	}
 
 	/**
@@ -178,6 +178,7 @@ class UserController extends Controller
 					if($form->validate()) {
 						$new_password = User::model()->findByPk(Yii::app()->user->id);
 						$new_password->password = Yii::app()->User->encrypting($form->password);
+						$new_password->activkey=Yii::app()->User->encrypting(microtime().$form->password);
 						$new_password->save();
 						Yii::app()->user->setFlash('profileMessage',Yii::t("user", "New password is saved."));
 						$this->redirect(array("user/profile"));
@@ -329,15 +330,15 @@ class UserController extends Controller
 		$profile=$model->profile;
 		if(isset($_POST['User']))
 		{
-			$old_password = User::model()->findByPk($model->id);
 			$model->attributes=$_POST['User'];
-			
-			if ($old_password->password!=$model->password)
-				$model->password=Yii::app()->User->encrypting($model->password);
-			
 			$profile->attributes=$_POST['Profile'];
 			
 			if($model->validate()&&$profile->validate()) {
+				$old_password = User::model()->findByPk($model->id);
+				if ($old_password->password!=$model->password) {
+					$model->password=Yii::app()->User->encrypting($model->password);
+					$model->activkey=Yii::app()->User->encrypting(microtime().$model->password);
+				}
 				$model->save();
 				$profile->save();
 				$this->redirect(array('view','id'=>$model->id));

@@ -22,16 +22,16 @@ $this->breadcrumbs=array(
 
 	<p class="note"><?php echo Yii::t("user", 'Fields with <span class="required">*</span> are required.'); ?></p>
 	
-	<?php echo CHtml::errorSummary($form); ?>
+	<?php echo CHtml::errorSummary($model); ?>
 	
 	<div class="row">
-		<?php echo CHtml::activeLabelEx($form,'username'); ?>
-		<?php echo CHtml::activeTextField($form,'username') ?>
+		<?php echo CHtml::activeLabelEx($model,'username'); ?>
+		<?php echo CHtml::activeTextField($model,'username') ?>
 	</div>
 	
 	<div class="row">
-		<?php echo CHtml::activeLabelEx($form,'password'); ?>
-		<?php echo CHtml::activePasswordField($form,'password') ?>
+		<?php echo CHtml::activeLabelEx($model,'password'); ?>
+		<?php echo CHtml::activePasswordField($model,'password') ?>
 	</div>
 	
 	<div class="row">
@@ -41,8 +41,8 @@ $this->breadcrumbs=array(
 	</div>
 	
 	<div class="row rememberMe">
-		<?php echo CHtml::activeCheckBox($form,'rememberMe'); ?>
-		<?php echo CHtml::activeLabelEx($form,'rememberMe'); ?>
+		<?php echo CHtml::activeCheckBox($model,'rememberMe'); ?>
+		<?php echo CHtml::activeLabelEx($model,'rememberMe'); ?>
 	</div>
 
 	<div class="row submit">

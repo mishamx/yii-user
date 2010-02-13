@@ -63,10 +63,10 @@ class User extends CActiveRecord
 			array('email', 'email'),
 			array('username', 'unique', 'message' => Yii::t("user", "This user's name already exists.")),
 			array('email', 'unique', 'message' => Yii::t("user", "This user's email adress already exists.")),
-			#array('username', 'match', 'pattern' => '/^[A-Za-z0-9\s,]+$/u','message' => Yii::t("user", "Incorrect symbol's. (A-z0-9)")),
+			array('username', 'match', 'pattern' => '/^[A-Za-z0-9_]+$/u','message' => Yii::t("user", "Incorrect symbol's. (A-z0-9)")),
 			array('status', 'in', 'range'=>array(0,1,-1)),
 			array('superuser', 'in', 'range'=>array(0,1)),
-			array('username, password, email, activkey, createtime, lastvisit, superuser, status', 'required'),
+			array('username, password, email, createtime, lastvisit, superuser, status', 'required'),
 			array('createtime, lastvisit, superuser, status', 'numerical', 'integerOnly'=>true),
 		);
 	}

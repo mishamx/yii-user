@@ -50,12 +50,11 @@ class ProfileField extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('varname, title, field_type', 'required'),
-			array('field_size, field_size_min, required, match, position, visible', 'numerical', 'integerOnly'=>true),
 			array('varname', 'match', 'pattern' => '/^[a-z_0-9]+$/u','message' => Yii::t("user", "Incorrect symbol's. (a-z)")),
 			array('varname', 'unique', 'message' => Yii::t("user", "This field already exists.")),
 			array('varname, field_type', 'length', 'max'=>50),
 			array('field_size, field_size_min, required, position, visible', 'numerical', 'integerOnly'=>true),
-			array('title, range, error_message, other_validator, default', 'length', 'max'=>255),
+			array('title, match, range, error_message, other_validator, default', 'length', 'max'=>255),
 		);
 	}
 
