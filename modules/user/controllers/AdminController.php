@@ -25,7 +25,7 @@ class AdminController extends Controller
 		return array(
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array('admin','delete','create','update','view'),
-				'users'=>User::getAdmins(),
+				'users'=>UserModule::getAdmins(),
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),

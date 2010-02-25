@@ -132,16 +132,4 @@ class User extends CActiveRecord
 		else
 			return isset($_items[$type]) ? $_items[$type] : false;
 	}
-
-	/**
-	 * Return admins.
-	 * @return array syperusers names
-	 */	
-	public function getAdmins() {
-		$admins = User::model()->active()->superuser()->findAll();
-		$return_name = array();
-		foreach ($admins as $admin)
-			array_push($return_name,$admin->username);
-		return $return_name;
-	}
 }
