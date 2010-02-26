@@ -15,7 +15,6 @@ $this->breadcrumbs=array(
 	)); 
 
 
-if(Yii::app()->User->isAdmin()) {
 	$attributes = array(
 		'id',
 		'username',
@@ -59,36 +58,5 @@ if(Yii::app()->User->isAdmin()) {
 		'attributes'=>$attributes,
 	));
 	
-} else {
-// For all users
-	$attributes = array(
-			'username',
-	);
-	
-	$profileFields=ProfileField::model()->forAll()->sort()->findAll();
-	if ($profileFields) {
-		foreach($profileFields as $field) {
-			array_push($attributes,array(
-					'label' => UserModule::t($field->title),
-					'name' => $field->varname,
-					'value' => $model->profile->getAttribute($field->varname),
-				));
-		}
-	}
-	array_push($attributes,
-		array(
-			'name' => 'createtime',
-			'value' => date("d.m.Y H:i:s",$model->createtime),
-		),
-		array(
-			'name' => 'lastvisit',
-			'value' => date("d.m.Y H:i:s",$model->lastvisit),
-		)
-	);
-			
-	$this->widget('zii.widgets.CDetailView', array(
-		'data'=>$model,
-		'attributes'=>$attributes,
-	));
-}
+
 ?>
