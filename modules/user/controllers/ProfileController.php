@@ -79,7 +79,7 @@ class ProfileController extends Controller
 		if($this->_model===null)
 		{
 			if(Yii::app()->user->id)
-				$this->_model=User::model()->findbyPk(Yii::app()->user->id);
+				$this->_model=User::model()->notsafe()->findbyPk(Yii::app()->user->id);
 			if($this->_model===null)
 				$this->redirect(Yii::app()->controller->module->loginUrl);
 		}

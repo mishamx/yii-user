@@ -106,7 +106,7 @@ class AdminController extends Controller
 			$profile->attributes=$_POST['Profile'];
 			
 			if($model->validate()&&$profile->validate()) {
-				$old_password = User::model()->findByPk($model->id);
+				$old_password = User::model()->notsafe()->findByPk($model->id);
 				if ($old_password->password!=$model->password) {
 					$model->password=Yii::app()->controller->module->encrypting($model->password);
 					$model->activkey=Yii::app()->controller->module->encrypting(microtime().$model->password);
@@ -155,7 +155,7 @@ class AdminController extends Controller
 		if($this->_model===null)
 		{
 			if(isset($_GET['id']))
-				$this->_model=User::model()->findbyPk($_GET['id']);
+				$this->_model=User::model()->notsafe()->findbyPk($_GET['id']);
 			if($this->_model===null)
 				throw new CHttpException(404,'The requested page does not exist.');
 		}

@@ -44,7 +44,9 @@
 	<div class="row">
 		<?php echo CHtml::activeLabelEx($profile,$field->varname); ?>
 		<?php 
-		if ($field->field_type=="TEXT") {
+		if ($field->range) {
+			echo CHtml::activeDropDownList($profile,$field->varname,Profile::range($field->range));
+		} elseif ($field->field_type=="TEXT") {
 			echo CHtml::activeTextArea($profile,$field->varname,array('rows'=>6, 'cols'=>50));
 		} else {
 			echo CHtml::activeTextField($profile,$field->varname,array('size'=>60,'maxlength'=>(($field->field_size)?$field->field_size:255)));

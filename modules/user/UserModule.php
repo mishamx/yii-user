@@ -16,6 +16,7 @@ class UserModule extends CWebModule
 	public $profileUrl = array("/user/profile");
 	public $returnUrl = array("/user/profile");
 	public $returnLogoutUrl = array("/user/login");
+	public $relations = array();
 	
 	private $_user;
 	
@@ -44,7 +45,7 @@ class UserModule extends CWebModule
 	}
 	
 	public function t($str='',$params=array()) {
-		return ((count($params))?Yii::t("user", $str, $params):Yii::t("user", $str));
+		return Yii::t("user", $str, $params);
 	}
 	
 	/**
@@ -102,12 +103,21 @@ class UserModule extends CWebModule
 	 */
 	public function user($id=0) {
 		if ($id) 
-			return User::model()->active()->safe()->findbyPk($id);
+			return User::model()->active()->findbyPk($id);
 		else {
 			if(Yii::app()->user->isGuest)
 				return false;
 			else 
-				return User::model()->active()->safe()->findbyPk(Yii::app()->user->id);
+				return User::model()->active()->findbyPk(Yii::app()->user->id);
 		}
+	}
+	
+	/**
+	 * Return safe user data.
+	 * @param user id not required
+	 * @return user object or false
+	 */
+	public function users() {
+		return User;
 	}
 }

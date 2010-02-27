@@ -26,7 +26,7 @@ $this->breadcrumbs=array(
 			array_push($attributes,array(
 					'label' => UserModule::t($field->title),
 					'name' => $field->varname,
-					'value' => $model->profile->getAttribute($field->varname),
+					'value' => (($field->range)?Profile::range($field->range,$model->profile->getAttribute($field->varname)):$model->profile->getAttribute($field->varname)),
 				));
 		}
 	}

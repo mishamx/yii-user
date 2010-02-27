@@ -62,7 +62,7 @@ class Profile extends CActiveRecord
 				array_push($rules,$field_rule);
 			}
 			if ($field->range) {
-				$field_rule = array($field->varname, 'in', 'range' => explode(';'.$field->range));
+				$field_rule = array($field->varname, 'in', 'range' => self::rangeRules($field->range));
 				if ($field->error_message) $field_rule['message'] = UserModule::t($field->error_message);
 				array_push($rules,$field_rule);
 			}
@@ -105,6 +105,25 @@ class Profile extends CActiveRecord
 			
 		return $labels;
 	}
-
+	
+	private function rangeRules($str) {
+		$rules = explode(';',$str);
+		for ($i=0;$i<count($rules);$i++)
+			$rules[$i] = current(explode("==",$rules[$i]));
+		return $rules;
+	}
+	
+	public function range($str,$fieldValue=NULL) {
+		$rules = explode(';',$str);
+		$array = array();
+		for ($i=0;$i<count($rules);$i++) {
+			$item = explode("==",$rules[$i]);
+			if ($item[0]) $array[$item[0]] = $item[1];
+		}
+		if ($fieldValue!=NULL) 
+			return $array[$fieldValue];
+		else
+			return $array;
+	}
 	
 }

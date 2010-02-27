@@ -26,19 +26,13 @@ $this->breadcrumbs=array(
 <tr>
 	<th class="label"><?php echo CHtml::encode(UserModule::t($field->title)); ?>
 </th>
-    <td><?php echo CHtml::encode($profile->getAttribute($field->varname)); ?>
+    <td><?php echo CHtml::encode((($field->range)?Profile::range($field->range,$profile->getAttribute($field->varname)):$profile->getAttribute($field->varname))); ?>
 </td>
 </tr>
 			<?php
-			}
+			}//$profile->getAttribute($field->varname)
 		}
 ?>
-<tr>
-	<th class="label"><?php echo CHtml::encode($model->getAttributeLabel('password')); ?>
-</th>
-    <td><?php echo CHtml::link(UserModule::t("Change password"),array("changepassword")); ?>
-</td>
-</tr>
 <tr>
 	<th class="label"><?php echo CHtml::encode($model->getAttributeLabel('email')); ?>
 </th>

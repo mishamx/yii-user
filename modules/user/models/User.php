@@ -57,7 +57,7 @@ class User extends CActiveRecord
 			array('username', 'match', 'pattern' => '/^[A-Za-z0-9_]+$/u','message' => UserModule::t("Incorrect symbol's. (A-z0-9)")),
 			array('status', 'in', 'range'=>array(0,1,-1)),
 			array('superuser', 'in', 'range'=>array(0,1)),
-			array('username, password, email, createtime, lastvisit, superuser, status', 'required'),
+			array('username, email, createtime, lastvisit, superuser, status', 'required'),
 			array('createtime, lastvisit, superuser, status', 'numerical', 'integerOnly'=>true),
 		);
 	}
@@ -69,9 +69,12 @@ class User extends CActiveRecord
 	{
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
-		return array(
+		// TODO: API to relation
+		$relations = array(
 			'profile'=>array(self::HAS_ONE, 'Profile', 'user_id'),
 		);
+		if (Yii::app()->controller->module->relations) array_merge($relations,Yii::app()->controller->module->relations);
+		return $relations; 
 	}
 
 	/**
@@ -85,7 +88,7 @@ class User extends CActiveRecord
 			'verifyPassword'=>UserModule::t("Retype Password"),
 			'email'=>UserModule::t("E-mail"),
 			'verifyCode'=>UserModule::t("Verification Code"),
-			'id' => 'Id',
+			'id' => UserModule::t("Id"),
 			'activkey' => UserModule::t("activation key"),
 			'createtime' => UserModule::t("Registration date"),
 			'lastvisit' => UserModule::t("Last visit"),
@@ -109,18 +112,25 @@ class User extends CActiveRecord
             'superuser'=>array(
                 'condition'=>'superuser=1',
             ),
-            'safe'=>array(
-            	'select' => 'id, username, email, createtime, lastvisit',
+            'notsafe'=>array(
+            	'select' => 'id, username, password, email, activkey, createtime, lastvisit, superuser, status',
             ),
+        );
+    }
+	
+	public function defaultScope()
+    {
+        return array(
+            'select' => 'id, username, email, createtime, lastvisit, superuser, status',
         );
     }
 	
 	public function itemAlias($type,$code=NULL) {
 		$_items = array(
 			'UserStatus' => array(
-				'0' => UserModule::t('Not active'),
-				'1' => UserModule::t('Active'),
-				'-1'=> UserModule::t('Banned'),
+				self::STATUS_NOACTIVE => UserModule::t('Not active'),
+				self::STATUS_ACTIVE => UserModule::t('Active'),
+				self::STATUS_BANED => UserModule::t('Banned'),
 			),
 			'AdminStatus' => array(
 				'0' => UserModule::t('No'),
