@@ -6,6 +6,8 @@ $this->breadcrumbs=array(
 ?>
 <h1><?php echo UserModule::t('Create Profile Field'); ?></h1>
 
-<?php echo $this->renderPartial('_menu'); ?>
+<?php echo $this->renderPartial('_menu',array(
+		'list'=> array(),
+	)); ?>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

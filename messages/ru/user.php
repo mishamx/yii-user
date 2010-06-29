@@ -2,6 +2,7 @@
 
 return array(
 	'Registration' => 'Регистрация',
+	'Register' => 'Зарегистрироваться',
 	'Login' => 'Вход',
 	'Logout' => 'Выйти',
 	'username' => 'Логин',

@@ -38,10 +38,12 @@ class UserRecoveryForm extends CFormModel {
 		{
 			if (strpos($this->login_or_email,"@")) {
 				$user=User::model()->findByAttributes(array('email'=>$this->login_or_email));
-				$this->user_id=$user->id;
+				if ($user)
+					$this->user_id=$user->id;
 			} else {
 				$user=User::model()->findByAttributes(array('username'=>$this->login_or_email));
-				$this->user_id=$user->id;
+				if ($user)
+					$this->user_id=$user->id;
 			}
 			
 			if($user===null)

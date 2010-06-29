@@ -115,7 +115,7 @@ class ProfileField extends CActiveRecord
     }
 
 	
-	public function itemAlias($type,$code=NULL) {
+	public static function itemAlias($type,$code=NULL) {
 		$_items = array(
 			'field_type' => array(
 				'INTEGER' => UserModule::t('INTEGER'),

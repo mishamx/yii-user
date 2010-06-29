@@ -78,7 +78,7 @@ $this->breadcrumbs=array(
 	<?php endif; ?>
 	
 	<div class="row submit">
-		<?php echo CHtml::submitButton(UserModule::t("Registration")); ?>
+		<?php echo CHtml::submitButton(UserModule::t("Register")); ?>
 	</div>
 
 <?php echo CHtml::endForm(); ?>

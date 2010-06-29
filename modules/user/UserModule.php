@@ -44,14 +44,15 @@ class UserModule extends CWebModule
 			return false;
 	}
 	
-	public function t($str='',$params=array()) {
+	public static function t($str='',$params=array()) {
+		// TODO: Replace user to user.user by support yii 
 		return Yii::t("user", $str, $params);
 	}
 	
 	/**
 	 * @return hash string.
 	 */
-	public function encrypting($string="") {
+	public static function encrypting($string="") {
 		$hash = Yii::app()->controller->module->hash;
 		if ($hash=="md5")
 			return md5($string);
@@ -65,7 +66,7 @@ class UserModule extends CWebModule
 	 * Return admin status.
 	 * @return boolean
 	 */
-	public function isAdmin() {
+	public static function isAdmin() {
 		if(Yii::app()->user->isGuest)
 			return false;
 		else {
@@ -80,7 +81,7 @@ class UserModule extends CWebModule
 	 * Return admins.
 	 * @return array syperusers names
 	 */	
-	public function getAdmins() {
+	public static function getAdmins() {
 		$admins = User::model()->active()->superuser()->findAll();
 		$return_name = array();
 		foreach ($admins as $admin)
@@ -91,7 +92,7 @@ class UserModule extends CWebModule
 	/**
 	 * Send mail method
 	 */
-	public function sendMail($email,$subject,$message) {
+	public static function sendMail($email,$subject,$message) {
     	$headers="From: ".Yii::app()->params['adminEmail']."\r\nReply-To: ".Yii::app()->params['adminEmail'];
 		return mail($email,$subject,$message,$headers);
 	}
@@ -101,7 +102,7 @@ class UserModule extends CWebModule
 	 * @param user id not required
 	 * @return user object or false
 	 */
-	public function user($id=0) {
+	public static function user($id=0) {
 		if ($id) 
 			return User::model()->active()->findbyPk($id);
 		else {

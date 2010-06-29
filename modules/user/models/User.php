@@ -125,7 +125,7 @@ class User extends CActiveRecord
         );
     }
 	
-	public function itemAlias($type,$code=NULL) {
+	public static function itemAlias($type,$code=NULL) {
 		$_items = array(
 			'UserStatus' => array(
 				self::STATUS_NOACTIVE => UserModule::t('Not active'),

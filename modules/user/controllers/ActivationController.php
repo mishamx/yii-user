@@ -12,7 +12,7 @@ class ActivationController extends Controller
 		$email = $_GET['email'];
 		$activkey = $_GET['activkey'];
 		if ($email&&$activkey) {
-			$find = User::model()->findByAttributes(array('email'=>$email));
+			$find = User::model()->notsafe()->findByAttributes(array('email'=>$email));
 			if ($find->status) {
 			    $this->render('/user/message',array('title'=>UserModule::t("User activation"),'content'=>UserModule::t("You account is active.")));
 			} elseif($find->activkey==$activkey) {
