@@ -113,15 +113,15 @@ class Profile extends CActiveRecord
 		return $rules;
 	}
 	
-	public function range($str,$fieldValue=NULL) {
+	static public function range($str,$fieldValue=NULL) {
 		$rules = explode(';',$str);
 		$array = array();
 		for ($i=0;$i<count($rules);$i++) {
 			$item = explode("==",$rules[$i]);
-			if ($item[0]) $array[$item[0]] = $item[1];
+			if (isset($item[0])) $array[$item[0]] = ((isset($item[1]))?$item[1]:$item[0]);
 		}
-		if ($fieldValue!=NULL) 
-			return $array[$fieldValue];
+		if (isset($fieldValue)) 
+			if ($array[$fieldValue]) return $array[$fieldValue]; else return '';
 		else
 			return $array;
 	}

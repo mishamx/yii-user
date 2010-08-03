@@ -73,7 +73,7 @@ class User extends CActiveRecord
 		$relations = array(
 			'profile'=>array(self::HAS_ONE, 'Profile', 'user_id'),
 		);
-		if (Yii::app()->controller->module->relations) array_merge($relations,Yii::app()->controller->module->relations);
+		if (isset(Yii::app()->controller->module->relations)) array_merge($relations,Yii::app()->controller->module->relations);
 		return $relations; 
 	}
 
