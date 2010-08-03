@@ -46,7 +46,7 @@ class RegistrationController extends Controller
 							$profile->user_id=$model->id;
 							$profile->save();
 							$activation_url = 'http://' . $_SERVER['HTTP_HOST'].$this->createUrl('/user/activation',array("activkey" => $model->activkey, "email" => $model->email));
-							UserModule::sendMail($model->email,"You registered from ".Yii::app()->name,"Please activate you account go to $activation_url.");
+							UserModule::sendMail($model->email,UserModule::t("You registered from {site_name}",array('{site_name}'=>Yii::app()->name)),UserModule::t("Please activate you account go to {activation_url}",array('{activation_url}'=>$activation_url)));
 							if (Yii::app()->controller->module->loginNotActiv) {
 								if (Yii::app()->controller->module->autoLogin) {
 									$identity=new UserIdentity($model->username,$soucePassword);

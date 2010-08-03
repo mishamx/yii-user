@@ -121,7 +121,7 @@ class Profile extends CActiveRecord
 			if (isset($item[0])) $array[$item[0]] = ((isset($item[1]))?$item[1]:$item[0]);
 		}
 		if (isset($fieldValue)) 
-			if ($array[$fieldValue]) return $array[$fieldValue]; else return '';
+			if (isset($array[$fieldValue])) return $array[$fieldValue]; else return '';
 		else
 			return $array;
 	}
