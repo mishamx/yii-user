@@ -37,7 +37,7 @@ class User extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return '{{users}}';
+		return Yii::app()->getModule('user')->tableUsers;
 	}
 
 	/**
@@ -67,14 +67,11 @@ class User extends CActiveRecord
 	 */
 	public function relations()
 	{
-		// NOTE: you may need to adjust the relation name and the related
-		// class name for the relations automatically generated below.
-		// TODO: API to relation
 		$relations = array(
 			'profile'=>array(self::HAS_ONE, 'Profile', 'user_id'),
 		);
-		if (isset(Yii::app()->controller->module->relations)) array_merge($relations,Yii::app()->controller->module->relations);
-		return $relations; 
+		if (isset(Yii::app()->getModule('user')->relations)) $relations = array_merge($relations,Yii::app()->getModule('user')->relations);
+		return $relations;
 	}
 
 	/**

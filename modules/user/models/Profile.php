@@ -1,13 +1,16 @@
 <?php
 
-class Profile extends CActiveRecord
+class Profile extends UActiveRecord
 {
 	/**
 	 * The followings are the available columns in table 'profiles':
 	 * @var integer $user_id
-	 * @var string $lastname
-	 * @var string $firstname
+	 * @var boolean $regMode
 	 */
+	public $regMode = false;
+	
+	private $_model;
+	private $_modelReg;
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -23,7 +26,7 @@ class Profile extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return '{{profiles}}';
+		return Yii::app()->getModule('user')->tableProfiles;
 	}
 
 	/**
@@ -37,22 +40,31 @@ class Profile extends CActiveRecord
 		$numerical = array();		
 		$rules = array();
 		
-		
-		$model=ProfileField::model()->forOwner()->findAll();
+		$model=$this->_getModel();
 		
 		foreach ($model as $field) {
 			$field_rule = array();
-			if ($field->required==1)
+			if ($field->required==ProfileField::REQUIRED_YES_NOT_SHOW_REG||$field->required==ProfileField::REQUIRED_YES_SHOW_REG)
 				array_push($required,$field->varname);
-			if ($field->field_type=='int'||$field->field_type=='FLOAT'||$field->field_type=='INTEGER')
+			if ($field->field_type=='FLOAT'||$field->field_type=='INTEGER')
 				array_push($numerical,$field->varname);
 			if ($field->field_type=='VARCHAR'||$field->field_type=='TEXT') {
 				$field_rule = array($field->varname, 'length', 'max'=>$field->field_size, 'min' => $field->field_size_min);
 				if ($field->error_message) $field_rule['message'] = UserModule::t($field->error_message);
 				array_push($rules,$field_rule);
 			}
-			if ($field->field_type=='DATE') {
-				$field_rule = array($field->varname, 'type', 'type' => 'date', 'dateFormat' => 'yyyy-mm-dd');
+			if ($field->other_validator) {
+				if (strpos($field->other_validator,'{')===0) {
+					$validator = (array)CJavaScript::jsonDecode($field->other_validator);
+					$field_rule = array($field->varname, key($validator));
+					$field_rule = array_merge($field_rule,(array)$validator[key($validator)]);
+				} else {
+					$field_rule = array($field->varname, $field->other_validator);
+				}
+				if ($field->error_message) $field_rule['message'] = UserModule::t($field->error_message);
+				array_push($rules,$field_rule);
+			} elseif ($field->field_type=='DATE') {
+				$field_rule = array($field->varname, 'type', 'type' => 'date', 'dateFormat' => 'yyyy-mm-dd', 'allowEmpty'=>true);
 				if ($field->error_message) $field_rule['message'] = UserModule::t($field->error_message);
 				array_push($rules,$field_rule);
 			}
@@ -66,12 +78,6 @@ class Profile extends CActiveRecord
 				if ($field->error_message) $field_rule['message'] = UserModule::t($field->error_message);
 				array_push($rules,$field_rule);
 			}
-			if ($field->other_validator) {
-				$field_rule = array($field->varname, $field->other_validator);
-				if ($field->error_message) $field_rule['message'] = UserModule::t($field->error_message);
-				array_push($rules,$field_rule);
-			}
-			
 		}
 		
 		array_push($rules,array(implode(',',$required), 'required'));
@@ -86,8 +92,11 @@ class Profile extends CActiveRecord
 	{
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
-		return array(
+		$relations = array(
+			'user'=>array(self::HAS_ONE, 'User', 'user_id'),
 		);
+		if (isset(Yii::app()->getModule('user')->profileRelations)) $relations = array_merge($relations,Yii::app()->getModule('user')->profileRelations);
+		return $relations;
 	}
 
 	/**
@@ -126,4 +135,35 @@ class Profile extends CActiveRecord
 			return $array;
 	}
 	
+	public function widgetAttributes() {
+		$data = array();
+		$model=$this->_getModel();
+		
+		foreach ($model as $field) {
+			if ($field->widget) $data[$field->varname]=$field->widget;
+		}
+		return $data;
+	}
+	
+	public function widgetParams($fieldName) {
+		$data = array();
+		$model=$this->_getModel();
+		
+		foreach ($model as $field) {
+			if ($field->widget) $data[$field->varname]=$field->widgetparams;
+		}
+		return $data[$fieldName];
+	}
+	
+	private function _getModel() {
+		if ($this->regMode) {
+			if (!$this->_modelReg)
+				$this->_modelReg=ProfileField::model()->forRegistration()->findAll();
+			return $this->_modelReg;
+		} else {
+			if (!$this->_model)
+				$this->_model=ProfileField::model()->forOwner()->findAll();
+			return $this->_model;
+		}
+	}
 }

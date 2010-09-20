@@ -17,7 +17,7 @@ class RecoveryController extends Controller
 				if ($email&&$activkey) {
 					$form2 = new UserChangePassword;
 		    		$find = User::model()->notsafe()->findByAttributes(array('email'=>$email));
-		    		if($find->activkey==$activkey) {
+		    		if(isset($find)&&$find->activkey==$activkey) {
 			    		if(isset($_POST['UserChangePassword'])) {
 							$form2->attributes=$_POST['UserChangePassword'];
 							if($form2->validate()) {

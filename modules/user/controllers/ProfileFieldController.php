@@ -2,12 +2,13 @@
 
 class ProfileFieldController extends Controller
 {
-	const PAGE_SIZE=10;
 
 	/**
 	 * @var CActiveRecord the currently loaded data model instance.
 	 */
 	private $_model;
+	private static $_widgets = array();
+	public $defaultAction = 'admin';
 
 	/**
 	 * @return array action filters
@@ -36,7 +37,7 @@ class ProfileFieldController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('index', 'create','update','view','admin','delete'),
+				'actions'=>array('create','update','view','admin','delete'),
 				'users'=>UserModule::getAdmins(),
 			),
 			array('deny',  // deny all users
@@ -54,6 +55,263 @@ class ProfileFieldController extends Controller
 			'model'=>$this->loadModel(),
 		));
 	}
+	
+	/**
+	 * Register Script
+	 */
+	public function registerScript() {
+		$basePath=Yii::getPathOfAlias('application.modules.user.views.asset');
+		$baseUrl=Yii::app()->getAssetManager()->publish($basePath);
+		$cs = Yii::app()->getClientScript();
+		$cs->registerCoreScript('jquery');
+		$cs->registerCssFile($baseUrl.'/css/redmond/jquery-ui.css');
+		$cs->registerCssFile($baseUrl.'/css/style.css');
+		$cs->registerScriptFile($baseUrl.'/js/jquery-ui.min.js');
+		$cs->registerScriptFile($baseUrl.'/js/form.js');
+		$cs->registerScriptFile($baseUrl.'/js/jquery.json.js');
+		
+		$widgets = self::getWidgets();
+		
+		$wgByTypes = ProfileField::itemAlias('field_type');
+		foreach ($wgByTypes as $k=>$v) {
+			$wgByTypes[$k] = array();
+		}
+		
+		foreach ($widgets[1] as $widget) {
+			if (isset($widget['fieldType'])&&count($widget['fieldType'])) {
+				foreach($widget['fieldType'] as $type) {
+					array_push($wgByTypes[$type],$widget['name']);
+				}
+			}
+		}
+		//echo '<pre>'; print_r($widgets[1]); die();
+		$js = "
+
+	var name = $('#name'),
+	value = $('#value'),
+	allFields = $([]).add(name).add(value),
+	tips = $('.validateTips');
+	
+	var listWidgets = jQuery.parseJSON('".CJavaScript::jsonEncode($widgets[0])."');
+	var widgets = jQuery.parseJSON('".CJavaScript::jsonEncode($widgets[1])."');
+	var wgByType = jQuery.parseJSON('".CJavaScript::jsonEncode($wgByTypes)."');
+	
+	var fieldType = {
+			'INTEGER':{
+				'hide':['match','other_validator','widgetparams'],
+				'val':{
+					field_size:10,
+					default:'0',
+					range:'',
+					widgetparams:'',
+				},
+			},
+			'VARCHAR':{
+				'hide':['widgetparams'],
+				'val':{
+					field_size:255,
+					default:'',
+					range:'',
+					widgetparams:'',
+				},
+			},
+			'TEXT':{
+				'hide':['field_size','range','widgetparams'],
+				'val':{
+					field_size:0,
+					default:'',
+					range:'',
+					widgetparams:'',
+				},
+			},
+			'DATE':{
+				'hide':['field_size','field_size_min','match','range','widgetparams'],
+				'val':{
+					field_size:0,
+					default:'0000-00-00',
+					range:'',
+					widgetparams:'',
+				},
+			},
+			'FLOAT':{
+				'hide':['match','other_validator','widgetparams'],
+				'val':{
+					field_size:'10,2',
+					default:'0.00',
+					range:'',
+					widgetparams:'',
+				},
+			},
+			'BOOL':{
+				'hide':['field_size','field_size_min','match','widgetparams'],
+				'val':{
+					field_size:0,
+					default:0,
+					range:'1==".UserModule::t('Yes').";0==".UserModule::t('No')."',
+					widgetparams:'',
+				},
+			},
+			'BLOB':{
+				'hide':['field_size','field_size_min','match','widgetparams'],
+				'val':{
+					field_size:0,
+					default:'',
+					range:'',
+					widgetparams:'',
+				},
+			},
+			'BINARY':{
+				'hide':['field_size','field_size_min','match','widgetparams'],
+				'val':{
+					field_size:0,
+					default:'',
+					range:'',
+					widgetparams:'',
+				},
+			},
+		};
+			
+	function showWidgetList(type) {
+		$('div.widget select').empty();
+		$('div.widget select').append('<option value=\"\">".UserModule::t('No')."</option>');
+		if (wgByType[type]) {
+			for (var k in wgByType[type]) {
+				$('div.widget select').append('<option value=\"'+wgByType[type][k]+'\">'+widgets[wgByType[type][k]]['label']+'</option>');
+			}
+		}
+	}
+		
+	function setFields(type) {
+		if (fieldType[type]) {
+			if (".((isset($_GET['id']))?0:1).") {
+				showWidgetList(type);
+				$('#widgetlist option:first').attr('selected', 'selected');
+			}
+			
+			$('div.row').addClass('toshow').removeClass('tohide');
+			if (fieldType[type].hide.length) $('div.'+fieldType[type].hide.join(', div.')).addClass('tohide').removeClass('toshow');
+			if ($('div.widget select').val()) {
+				$('div.widgetparams').removeClass('tohide');
+			}
+			$('div.toshow').show(500);
+			$('div.tohide').hide(500);
+			".((!isset($_GET['id']))?"
+			for (var k in fieldType[type].val) { 
+				$('div.'+k+' input').val(fieldType[type].val[k]);
+			}":'')."
+		}
+	}
+	
+	function isArray(obj) {
+		if (obj.constructor.toString().indexOf('Array') == -1)
+			return false;
+		else
+			return true;
+	}
+		
+	$('#dialog-form').dialog({
+		autoOpen: false,
+		height: 400,
+		width: 400,
+		modal: true,
+		buttons: {
+			'".UserModule::t('Save')."': function() {
+				var wparam = {};
+				var fparam = {};
+				$('#dialog-form fieldset .wparam').each(function(){
+					if ($(this).val()) wparam[$(this).attr('name')] = $(this).val();
+				});
+				
+				var tab = $('#tabs ul li.ui-tabs-selected').text();
+				fparam[tab] = {};
+				$('#dialog-form fieldset .tab-'+tab).each(function(){
+					if ($(this).val()) fparam[tab][$(this).attr('name')] = $(this).val();
+				});
+				
+				if ($.JSON.encode(wparam)!='{}') $('div.widgetparams input').val($.JSON.encode(wparam));
+				if ($.JSON.encode(fparam[tab])!='{}') $('div.other_validator input').val($.JSON.encode(fparam)); 
+				
+				$(this).dialog('close');
+			},
+			'".UserModule::t('Cancel')."': function() {
+				$(this).dialog('close');
+			}
+		},
+		close: function() {
+		}
+	});
+
+
+	$('#widgetparams').focus(function() {
+		var widget = widgets[$('#widgetlist').val()];
+		var html = '';
+		var wparam = ($('div.widgetparams input').val())?$.JSON.decode($('div.widgetparams input').val()):{};
+		var fparam = ($('div.other_validator input').val())?$.JSON.decode($('div.other_validator input').val()):{};
+		
+		// Class params
+		for (var k in widget.params) {
+			html += '<label for=\"name\">'+((widget.paramsLabels[k])?widget.paramsLabels[k]:k)+'</label>';
+			html += '<input type=\"text\" name=\"'+k+'\" id=\"widget_'+k+'\" class=\"text wparam ui-widget-content ui-corner-all\" value=\"'+((wparam[k])?wparam[k]:widget.params[k])+'\" />';
+		}
+		// Validator params		
+		if (widget.other_validator) {
+			var tabs = '';
+			var li = '';
+			for (var t in widget.other_validator) {
+				tabs += '<div id=\"tab-'+t+'\" class=\"tab\">';
+				li += '<li'+((fparam[t])?' class=\"ui-tabs-selected\"':'')+'><a href=\"#tab-'+t+'\">'+t+'</a></li>';
+				
+				for (var k in widget.other_validator[t]) {
+					tabs += '<label for=\"name\">'+((widget.paramsLabels[k])?widget.paramsLabels[k]:k)+'</label>';
+					if (isArray(widget.other_validator[t][k])) {
+						tabs += '<select type=\"text\" name=\"'+k+'\" id=\"filter_'+k+'\" class=\"text fparam ui-widget-content ui-corner-all tab-'+t+'\">';
+						for (var i in widget.other_validator[t][k]) {
+							tabs += '<option value=\"'+widget.other_validator[t][k][i]+'\"'+((fparam[t]&&fparam[t][k])?' selected=\"selected\"':'')+'>'+widget.other_validator[t][k][i]+'</option>';
+						}
+						tabs += '</select>';
+					} else {
+						tabs += '<input type=\"text\" name=\"'+k+'\" id=\"filter_'+k+'\" class=\"text fparam ui-widget-content ui-corner-all tab-'+t+'\" value=\"'+((fparam[t]&&fparam[t][k])?fparam[t][k]:widget.other_validator[t][k])+'\" />';
+					}
+				}
+				tabs += '</div>';
+			}
+			html += '<div id=\"tabs\"><ul>'+li+'</ul>'+tabs+'</div>';
+		}
+		
+		$('#dialog-form fieldset').html(html);
+		
+		$('#tabs').tabs();
+		
+		// Show form
+		$('#dialog-form').dialog('open');
+	});
+	
+	$('#field_type').change(function() {
+		setFields($(this).val());
+	});
+	
+	$('#widgetlist').change(function() {
+		if ($(this).val()) {
+			$('div.widgetparams').show(500);
+		} else {
+			$('div.widgetparams').hide(500);
+		}
+		
+	});
+	
+	// show all function 
+	$('div.form p.note').append('<br/><a href=\"#\" id=\"showAll\">".UserModule::t('Show all')."</a>');
+ 	$('#showAll').click(function(){
+		$('div.row').show(500);
+		return false;
+	});
+	
+	// init
+	setFields($('#field_type').val());
+	
+	";
+		$cs->registerScript(__CLASS__.'#dialog', $js);
+	} 
 
 	/**
 	 * Creates a new model.
@@ -67,22 +325,35 @@ class ProfileFieldController extends Controller
 			$model->attributes=$_POST['ProfileField'];
 			
 			if($model->validate()) {
-				$sql = 'ALTER TABLE '.Profile::tableName().' ADD `'.$model->varname.'` ';
-				$sql .= $model->field_type;
-				if ($model->field_type!='TEXT'&&$model->field_type!='DATE')
+				$sql = 'ALTER TABLE '.Profile::model()->tableName().' ADD `'.$model->varname.'` ';
+				$sql .= $this->fieldType($model->field_type);
+				if (
+						$model->field_type!='TEXT'
+						&& $model->field_type!='DATE'
+						&& $model->field_type!='BOOL'
+						&& $model->field_type!='BLOB'
+						&& $model->field_type!='BINARY'
+					)
 					$sql .= '('.$model->field_size.')';
 				$sql .= ' NOT NULL ';
+				
 				if ($model->default)
 					$sql .= " DEFAULT '".$model->default."'";
 				else
-					$sql .= (($model->field_type=='TEXT'||$model->field_type=='VARCHAR')?" DEFAULT ''":" DEFAULT 0");
+					$sql .= ((
+								$model->field_type=='TEXT'
+								||$model->field_type=='VARCHAR'
+								||$model->field_type=='BLOB'
+								||$model->field_type=='BINARY'
+							)?" DEFAULT ''":(($model->field_type=='DATE')?" DEFAULT '0000-00-00'":" DEFAULT 0"));
 				
 				$model->dbConnection->createCommand($sql)->execute();
 				$model->save();
 				$this->redirect(array('view','id'=>$model->id));
 			}
 		}
-
+		
+		$this->registerScript();
 		$this->render('create',array(
 			'model'=>$model,
 		));
@@ -98,12 +369,10 @@ class ProfileFieldController extends Controller
 		if(isset($_POST['ProfileField']))
 		{
 			$model->attributes=$_POST['ProfileField'];
-			
-			// ALTER TABLE `test` CHANGE `profiles` `field` INT( 10 ) NOT NULL 
-			// ALTER TABLE `test` CHANGE `profiles` `description` INT( 1 ) NOT NULL DEFAULT '0'
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
+		$this->registerScript();
 
 		$this->render('update',array(
 			'model'=>$model,
@@ -120,7 +389,7 @@ class ProfileFieldController extends Controller
 		{
 			// we only allow deletion via POST request
 			$model = $this->loadModel();
-			$sql = 'ALTER TABLE '.Profile::tableName().' DROP `'.$model->varname.'`';
+			$sql = 'ALTER TABLE '.Profile::model()->tableName().' DROP `'.$model->varname.'`';
 			if ($model->dbConnection->createCommand($sql)->execute()) {
 				$model->delete();
 			}
@@ -128,29 +397,10 @@ class ProfileFieldController extends Controller
 
 			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 			if(!isset($_POST['ajax']))
-				$this->redirect(array('index'));
+				$this->redirect(array('admin'));
 		}
 		else
 			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
-	}
-
-	/**
-	 * Lists all models.
-	 */
-	public function actionIndex()
-	{
-		$dataProvider=new CActiveDataProvider('ProfileField', array(
-			'pagination'=>array(
-				'pageSize'=>self::PAGE_SIZE,
-			),
-			'sort'=>array(
-				'defaultOrder'=>'position',
-			),
-		));
-
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
-		));
 	}
 
 	/**
@@ -160,7 +410,7 @@ class ProfileFieldController extends Controller
 	{
 		$dataProvider=new CActiveDataProvider('ProfileField', array(
 			'pagination'=>array(
-				'pageSize'=>self::PAGE_SIZE,
+				'pageSize'=>Yii::app()->controller->module->fields_page_size,
 			),
 			'sort'=>array(
 				'defaultOrder'=>'position',
@@ -186,5 +436,44 @@ class ProfileFieldController extends Controller
 				throw new CHttpException(404,'The requested page does not exist.');
 		}
 		return $this->_model;
+	}
+	
+	/**
+	 * MySQL field type
+	 * @param $type string
+	 * @return string
+	 */
+	public function fieldType($type) {
+		$type = str_replace('UNIX-DATE','INTEGER',$type);
+		return $type;
+	}
+	
+	public static function getWidgets($fieldType='') {
+		$basePath=Yii::getPathOfAlias('application.modules.user.components');
+		$widgets = array();
+		$list = array(''=>UserModule::t('No'));
+		if (self::$_widgets) {
+			$widgets = self::$_widgets;
+		} else {
+			$d = dir($basePath);
+			while (false !== ($file = $d->read())) {
+				if (strpos($file,'UW')===0) {
+					list($className) = explode('.',$file);
+					if (class_exists($className)) {
+						$widgetClass = new $className;
+						if ($widgetClass->init()) {
+							$widgets[$className] = $widgetClass->init();
+							if ($fieldType) {
+								if (in_array($fieldType,$widgets[$className]['fieldType'])) $list[$className] = $widgets[$className]['label'];
+							} else {
+								$list[$className] = $widgets[$className]['label'];
+							}
+						}
+					}
+				}
+			}
+			$d->close();
+		}
+		return array($list,$widgets);		
 	}
 }

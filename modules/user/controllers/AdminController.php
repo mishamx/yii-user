@@ -39,7 +39,7 @@ class AdminController extends Controller
 	{
 		$dataProvider=new CActiveDataProvider('User', array(
 			'pagination'=>array(
-				'pageSize'=>Yii::app()->controller->module->user_pase_size,
+				'pageSize'=>Yii::app()->controller->module->user_page_size,
 			),
 		));
 

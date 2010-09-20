@@ -13,7 +13,7 @@ $this->breadcrumbs=array(
 <?php endif; ?>
 <div class="form">
 
-<?php echo CHtml::beginForm(); ?>
+<?php echo CHtml::beginForm('','post',array('enctype'=>'multipart/form-data')); ?>
 
 	<p class="note"><?php echo UserModule::t('Fields with <span class="required">*</span> are required.'); ?></p>
 
@@ -27,7 +27,10 @@ $this->breadcrumbs=array(
 			?>
 	<div class="row">
 		<?php echo CHtml::activeLabelEx($profile,$field->varname);
-		if ($field->range) {
+		
+		if ($field->widgetEdit($profile)) {
+			echo $field->widgetEdit($profile);
+		} elseif ($field->range) {
 			echo CHtml::activeDropDownList($profile,$field->varname,Profile::range($field->range));
 		} elseif ($field->field_type=="TEXT") {
 			echo CHtml::activeTextArea($profile,$field->varname,array('rows'=>6, 'cols'=>50));

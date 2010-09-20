@@ -26,7 +26,8 @@ $this->breadcrumbs=array(
 			array_push($attributes,array(
 					'label' => UserModule::t($field->title),
 					'name' => $field->varname,
-					'value' => (($field->range)?Profile::range($field->range,$model->profile->getAttribute($field->varname)):$model->profile->getAttribute($field->varname)),
+					'type'=>'raw',
+					'value' => (($field->widgetView($model->profile))?$field->widgetView($model->profile):(($field->range)?Profile::range($field->range,$model->profile->getAttribute($field->varname)):$model->profile->getAttribute($field->varname))),
 				));
 		}
 	}
@@ -41,7 +42,7 @@ $this->breadcrumbs=array(
 		),
 		array(
 			'name' => 'lastvisit',
-			'value' => date("d.m.Y H:i:s",$model->lastvisit),
+			'value' => (($model->lastvisit)?date("d.m.Y H:i:s",$model->lastvisit):UserModule::t("Not visited")),
 		),
 		array(
 			'name' => 'superuser',

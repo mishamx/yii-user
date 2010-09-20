@@ -2,21 +2,82 @@
 
 class UserModule extends CWebModule
 {
-	public $user_pase_size = 10;
-	public $fields_pase_size = 10;
+	/**
+	 * @var int
+	 * @desc items on page
+	 */
+	public $user_page_size = 10;
 	
+	/**
+	 * @var int
+	 * @desc items on page
+	 */
+	public $fields_page_size = 10;
+	
+	/**
+	 * @var string
+	 * @desc hash method (md5,sha1 or algo hash function http://www.php.net/manual/en/function.hash.php)
+	 */
 	public $hash='md5';
+	
+	/**
+	 * @var boolean
+	 * @desc use email for activation user account
+	 */
 	public $sendActivationMail=true;
+	
+	/**
+	 * @var boolean
+	 * @desc allow auth for is not active user
+	 */
 	public $loginNotActiv=false;
+	
+	/**
+	 * @var boolean
+	 * @desc activate user on registration (only $sendActivationMail = false)
+	 */
+	public $activeAfterRegister=false;
+	
+	/**
+	 * @var boolean
+	 * @desc login after registration (need loginNotActiv or activeAfterRegister = true)
+	 */
 	public $autoLogin=true;
+	
 	public $registrationUrl = array("/user/registration");
-	public $recoveryUrl = array("/user/recovery");
+	public $recoveryUrl = array("/user/recovery/recovery");
 	public $loginUrl = array("/user/login");
 	public $logoutUrl = array("/user/logout");
 	public $profileUrl = array("/user/profile");
 	public $returnUrl = array("/user/profile");
 	public $returnLogoutUrl = array("/user/login");
+	
+	/**
+	 * @var array
+	 * @desc User model relation from other models
+	 * @see http://www.yiiframework.com/doc/guide/database.arr
+	 */
 	public $relations = array();
+	
+	/**
+	 * @var array
+	 * @desc Profile model relation from other models
+	 */
+	public $profileRelations = array();
+	
+	/**
+	 * @var boolean
+	 */
+	public $captcha = array('registration'=>true);
+	
+	/**
+	 * @var boolean
+	 */
+	//public $cacheEnable = false;
+	
+	public $tableUsers = '{{users}}';
+	public $tableProfiles = '{{profiles}}';
+	public $tableProfileFields = '{{profiles_fields}}';
 	
 	private $_user;
 	
@@ -44,9 +105,14 @@ class UserModule extends CWebModule
 			return false;
 	}
 	
-	public static function t($str='',$params=array()) {
-		// TODO: Replace user to user.user by support yii 
-		return Yii::t("user", $str, $params);
+	/**
+	 * @param $str
+	 * @param $params
+	 * @param $dic
+	 * @return string
+	 */
+	public static function t($str='',$params=array(),$dic='user') {
+		return Yii::t("UserModule.".$dic, $str, $params);
 	}
 	
 	/**
@@ -60,6 +126,18 @@ class UserModule extends CWebModule
 			return sha1($string);
 		else
 			return hash($hash,$string);
+	}
+	
+	/**
+	 * @param $place
+	 * @return boolean 
+	 */
+	public static function doCaptcha($place = '') {
+		if(!extension_loaded('gd'))
+			return false;
+		if (in_array($place, Yii::app()->controller->module->captcha))
+			return Yii::app()->controller->module->captcha[$place];
+		return false;
 	}
 	
 	/**
@@ -93,8 +171,11 @@ class UserModule extends CWebModule
 	 * Send mail method
 	 */
 	public static function sendMail($email,$subject,$message) {
-    	$headers="From: ".Yii::app()->params['adminEmail']."\r\nReply-To: ".Yii::app()->params['adminEmail'];
-		return mail($email,$subject,$message,$headers);
+    	$adminEmail = Yii::app()->params['adminEmail'];
+	    $headers = "MIME-Version: 1.0\r\nFrom: $adminEmail\r\nReply-To: $adminEmail\r\nContent-Type: text/html; charset=utf-8";
+	    $message = wordwrap($message, 70);
+	    $message = str_replace("\n.", "\n..", $message);
+	    return mail($email,'=?UTF-8?B?'.base64_encode($subject).'?=',$message,$headers);
 	}
 	
 	/**

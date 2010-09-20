@@ -34,7 +34,7 @@ $this->breadcrumbs=array(
 		),
 		array(
 			'name' => 'lastvisit',
-			'value' => date("d.m.Y H:i:s",$model->lastvisit),
+			'value' => (($model->lastvisit)?date("d.m.Y H:i:s",$model->lastvisit):UserModule::t('Not visited')),
 		)
 	);
 			

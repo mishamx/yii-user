@@ -29,6 +29,8 @@ $this->breadcrumbs=array(
 		'range',
 		'error_message',
 		'other_validator',
+		'widget',
+		'widgetparams',
 		'default',
 		'position',
 		'visible',
