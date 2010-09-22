@@ -35,33 +35,27 @@ class RegistrationController extends Controller
 					{
 						$soucePassword = $model->password;
 						$model->activkey=UserModule::encrypting(microtime().$model->password);
+						$model->password=UserModule::encrypting($model->password);
+						$model->verifyPassword=UserModule::encrypting($model->verifyPassword);
 						$model->createtime=time();
-						$model->lastvisit=0;
+						$model->lastvisit=((Yii::app()->controller->module->loginNotActiv||(Yii::app()->controller->module->activeAfterRegister&&Yii::app()->controller->module->sendActivationMail==false))&&Yii::app()->controller->module->autoLogin)?time():0;
 						$model->superuser=0;
-						$model->status=User::STATUS_NOACTIVE;
+						$model->status=((Yii::app()->controller->module->activeAfterRegister)?User::STATUS_ACTIVE:User::STATUS_NOACTIVE);
 						
 						if ($model->save()) {
-							$model->password=UserModule::encrypting($model->password);
 							$profile->user_id=$model->id;
 							$profile->save();
 							if (Yii::app()->controller->module->sendActivationMail) {
 								$activation_url = 'http://' . $_SERVER['HTTP_HOST'].$this->createUrl('/user/activation/activation',array("activkey" => $model->activkey, "email" => $model->email));
 								UserModule::sendMail($model->email,UserModule::t("You registered from {site_name}",array('{site_name}'=>Yii::app()->name)),UserModule::t("Please activate you account go to {activation_url}",array('{activation_url}'=>$activation_url)));
-							} elseif (Yii::app()->controller->module->activeAfterRegister) {
-								$model->status=User::STATUS_ACTIVE;
 							}
 							
 							if ((Yii::app()->controller->module->loginNotActiv||(Yii::app()->controller->module->activeAfterRegister&&Yii::app()->controller->module->sendActivationMail==false))&&Yii::app()->controller->module->autoLogin) {
 									$identity=new UserIdentity($model->username,$soucePassword);
 									$identity->authenticate();
 									Yii::app()->user->login($identity,0);
-									
-									$model->lastvisit=time();
-									$model->save();
-									
 									$this->redirect(Yii::app()->controller->module->returnUrl);
 							} else {
-								$model->save();
 								if (!Yii::app()->controller->module->activeAfterRegister&&!Yii::app()->controller->module->sendActivationMail) {
 									Yii::app()->user->setFlash('registration',UserModule::t("Thank you for your registration. Contact Admin to activate your account."));
 								} elseif(Yii::app()->controller->module->activeAfterRegister&&Yii::app()->controller->module->sendActivationMail==false) {
