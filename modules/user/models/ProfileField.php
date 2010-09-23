@@ -56,7 +56,7 @@ class ProfileField extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('varname, title, field_type', 'required'),
-			array('varname', 'match', 'pattern' => '/^[a-z_0-9]+$/u','message' => UserModule::t("Incorrect symbol's. (a-z)")),
+			array('varname', 'match', 'pattern' => '/^[A-Za-z_0-9]+$/u','message' => UserModule::t("Variable name may consist of A-z, 0-9, underscores, begin with a letter.")),
 			array('varname', 'unique', 'message' => UserModule::t("This field already exists.")),
 			array('varname, field_type', 'length', 'max'=>50),
 			array('field_size, field_size_min, required, position, visible', 'numerical', 'integerOnly'=>true),

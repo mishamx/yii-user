@@ -1,8 +1,8 @@
 <?php
 
 return array(
-	'Model Name'=>'Nom du modèle',
-	'Lable field name'=>'Nom du champ Lable',
-	'Empty item name'=>'Vider nom de l\'article',
-	'Profile model relation name'=>'Nom du profil modèle des relations',
+	'Model Name'=>'Имя модели',
+	'Lable field name'=>'Поле для отображения в списке',
+	'Empty item name'=>'Текст пустого поля',
+	'Profile model relation name'=>'Название связи (relation) модели профиля',
 );

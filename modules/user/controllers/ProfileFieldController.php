@@ -92,9 +92,9 @@ class ProfileFieldController extends Controller
 	allFields = $([]).add(name).add(value),
 	tips = $('.validateTips');
 	
-	var listWidgets = jQuery.parseJSON('".CJavaScript::jsonEncode($widgets[0])."');
-	var widgets = jQuery.parseJSON('".CJavaScript::jsonEncode($widgets[1])."');
-	var wgByType = jQuery.parseJSON('".CJavaScript::jsonEncode($wgByTypes)."');
+	var listWidgets = jQuery.parseJSON('".str_replace("'","\'",CJavaScript::jsonEncode($widgets[0]))."');
+	var widgets = jQuery.parseJSON('".str_replace("'","\'",CJavaScript::jsonEncode($widgets[1]))."');
+	var wgByType = jQuery.parseJSON('".str_replace("'","\'",CJavaScript::jsonEncode($wgByTypes))."');
 	
 	var fieldType = {
 			'INTEGER':{
