@@ -37,7 +37,7 @@
 		<?php echo CHtml::error($model,'status'); ?>
 	</div>
 <?php 
-		$profileFields=ProfileField::model()->forOwner()->sort()->findAll();
+		$profileFields=$profile->getFields();
 		if ($profileFields) {
 			foreach($profileFields as $field) {
 			?>
