@@ -40,7 +40,7 @@ class Profile extends UActiveRecord
 		$numerical = array();		
 		$rules = array();
 		
-		$model=$this->_getModel();
+		$model=$this->getFields();
 		
 		foreach ($model as $field) {
 			$field_rule = array();
@@ -107,7 +107,7 @@ class Profile extends UActiveRecord
 		$labels = array(
 			'user_id' => UserModule::t('User ID'),
 		);
-		$model=ProfileField::model()->forOwner()->findAll();
+		$model=$this->getFields();
 		
 		foreach ($model as $field)
 			$labels[$field->varname] = UserModule::t($field->title);
@@ -137,7 +137,7 @@ class Profile extends UActiveRecord
 	
 	public function widgetAttributes() {
 		$data = array();
-		$model=$this->_getModel();
+		$model=$this->getFields();
 		
 		foreach ($model as $field) {
 			if ($field->widget) $data[$field->varname]=$field->widget;
@@ -147,7 +147,7 @@ class Profile extends UActiveRecord
 	
 	public function widgetParams($fieldName) {
 		$data = array();
-		$model=$this->_getModel();
+		$model=$this->getFields();
 		
 		foreach ($model as $field) {
 			if ($field->widget) $data[$field->varname]=$field->widgetparams;
@@ -155,7 +155,7 @@ class Profile extends UActiveRecord
 		return $data[$fieldName];
 	}
 	
-	private function _getModel() {
+	public function getFields() {
 		if ($this->regMode) {
 			if (!$this->_modelReg)
 				$this->_modelReg=ProfileField::model()->forRegistration()->findAll();

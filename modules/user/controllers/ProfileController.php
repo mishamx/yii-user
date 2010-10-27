@@ -57,14 +57,14 @@ class ProfileController extends Controller
 			if(isset($_POST['UserChangePassword'])) {
 					$form->attributes=$_POST['UserChangePassword'];
 					if($form->validate()) {
-						$new_password = $this->loadUser();
+						$new_password = User::model()->notsafe()->findbyPk(Yii::app()->user->id);
 						$new_password->password = UserModule::encrypting($form->password);
 						$new_password->activkey=UserModule::encrypting(microtime().$form->password);
 						$new_password->save();
 						Yii::app()->user->setFlash('profileMessage',UserModule::t("New password is saved."));
 						$this->redirect(array("profile"));
 					}
-			} 
+			}
 			$this->render('changepassword',array('form'=>$form));
 	    }
 	}
@@ -79,7 +79,7 @@ class ProfileController extends Controller
 		if($this->_model===null)
 		{
 			if(Yii::app()->user->id)
-				$this->_model=User::model()->notsafe()->findbyPk(Yii::app()->user->id);
+				$this->_model=Yii::app()->controller->module->user();
 			if($this->_model===null)
 				$this->redirect(Yii::app()->controller->module->loginUrl);
 		}

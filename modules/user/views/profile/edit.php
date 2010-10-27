@@ -21,7 +21,7 @@ $this->breadcrumbs=array(
 		  echo CHtml::errorSummary($profile); ?>
 
 <?php 
-		$profileFields=ProfileField::model()->forOwner()->sort()->findAll();
+		$profileFields=$profile->getFields();
 		if ($profileFields) {
 			foreach($profileFields as $field) {
 			?>

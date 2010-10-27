@@ -106,15 +106,19 @@ class ProfileField extends CActiveRecord
         return array(
             'forAll'=>array(
                 'condition'=>'visible='.self::VISIBLE_ALL,
+                'order'=>'position',
             ),
             'forUser'=>array(
                 'condition'=>'visible>='.self::VISIBLE_REGISTER_USER,
+                'order'=>'position',
             ),
             'forOwner'=>array(
                 'condition'=>'visible>='.self::VISIBLE_ONLY_OWNER,
+                'order'=>'position',
             ),
             'forRegistration'=>array(
                 'condition'=>'required='.self::REQUIRED_NO_SHOW_REG.' OR required='.self::REQUIRED_YES_SHOW_REG,
+                'order'=>'position',
             ),
             'sort'=>array(
                 'order'=>'position',

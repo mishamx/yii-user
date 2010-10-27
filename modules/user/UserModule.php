@@ -79,7 +79,9 @@ class UserModule extends CWebModule
 	public $tableProfiles = '{{profiles}}';
 	public $tableProfileFields = '{{profiles_fields}}';
 	
-	private $_user;
+	static private $_user;
+	static private $_admin;
+	static private $_admins;
 	
 	public function init()
 	{
@@ -148,10 +150,13 @@ class UserModule extends CWebModule
 		if(Yii::app()->user->isGuest)
 			return false;
 		else {
-			if(User::model()->active()->superuser()->findbyPk(Yii::app()->user->id))
-				return true;
-			else
-				return false;
+			if (!isset(self::$_admin)) {
+				if(self::user()->superuser)
+					self::$_admin = true;
+				else
+					self::$_admin = false;	
+			}
+			return self::$_admin;
 		}
 	}
 
@@ -160,11 +165,14 @@ class UserModule extends CWebModule
 	 * @return array syperusers names
 	 */	
 	public static function getAdmins() {
-		$admins = User::model()->active()->superuser()->findAll();
-		$return_name = array();
-		foreach ($admins as $admin)
-			array_push($return_name,$admin->username);
-		return $return_name;
+		if (!self::$_admins) {
+			$admins = User::model()->active()->superuser()->findAll();
+			$return_name = array();
+			foreach ($admins as $admin)
+				array_push($return_name,$admin->username);
+			self::$_admins = $return_name;
+		}
+		return self::$_admins;
 	}
 	
 	/**
@@ -187,10 +195,13 @@ class UserModule extends CWebModule
 		if ($id) 
 			return User::model()->active()->findbyPk($id);
 		else {
-			if(Yii::app()->user->isGuest)
+			if(Yii::app()->user->isGuest) {
 				return false;
-			else 
-				return User::model()->active()->findbyPk(Yii::app()->user->id);
+			} else {
+				if (!self::$_user)
+					self::$_user = User::model()->active()->findbyPk(Yii::app()->user->id);
+				return self::$_user;
+			}
 		}
 	}
 	

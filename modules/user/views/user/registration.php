@@ -44,7 +44,7 @@ $this->breadcrumbs=array(
 	</div>
 	
 <?php 
-		$profileFields=ProfileField::model()->forRegistration()->sort()->findAll();
+		$profileFields=$profile->getFields();
 		if ($profileFields) {
 			foreach($profileFields as $field) {
 			?>

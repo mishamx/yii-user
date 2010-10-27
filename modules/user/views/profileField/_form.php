@@ -57,7 +57,7 @@
 
 	<div class="row range">
 		<?php echo CHtml::activeLabelEx($model,'range'); ?>
-		<?php echo CHtml::activeTextField($model,'range',array('size'=>60,'maxlength'=>500)); ?>
+		<?php echo CHtml::activeTextField($model,'range',array('size'=>60,'maxlength'=>5000)); ?>
 		<?php echo CHtml::error($model,'range'); ?>
 		<p class="hint"><?php echo UserModule::t('Predefined values (example: 1;2;3;4;5 or 1==One;2==Two;3==Three;4==Four;5==Five).'); ?></p>
 	</div>
