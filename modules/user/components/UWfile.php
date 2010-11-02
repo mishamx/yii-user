@@ -75,7 +75,12 @@ class UWfile {
 	 * @return string
 	 */
 	public function viewAttribute($model,$field) {
-		return CHtml::link($model->getAttribute($field->varname),'/'.$model->getAttribute($field->varname));
+		$file = $model->getAttribute($field->varname);
+		if ($file) {
+			$file = Yii::app()->baseUrl.'/'.$file;
+			return CHtml::link($file,$file);
+		} else
+			return '';
 	}
 		
 	/**
