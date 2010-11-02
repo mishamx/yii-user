@@ -6,10 +6,6 @@ class User extends CActiveRecord
 	const STATUS_ACTIVE=1;
 	const STATUS_BANED=-1;
 	
-	public $username;
-	public $password;
-	public $email;
-	
 	/**
 	 * The followings are the available columns in table 'users':
 	 * @var integer $id
