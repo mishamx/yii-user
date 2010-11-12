@@ -96,75 +96,75 @@ class ProfileFieldController extends Controller
 			'INTEGER':{
 				'hide':['match','other_validator','widgetparams'],
 				'val':{
-					field_size:10,
-					default:'0',
-					range:'',
-					widgetparams:'',
-				},
+					'field_size':10,
+					'default':'0',
+					'range':'',
+					'widgetparams':''
+				}
 			},
 			'VARCHAR':{
 				'hide':['widgetparams'],
 				'val':{
-					field_size:255,
-					default:'',
-					range:'',
-					widgetparams:'',
-				},
+					'field_size':255,
+					'default':'',
+					'range':'',
+					'widgetparams':''
+				}
 			},
 			'TEXT':{
 				'hide':['field_size','range','widgetparams'],
 				'val':{
-					field_size:0,
-					default:'',
-					range:'',
-					widgetparams:'',
-				},
+					'field_size':0,
+					'default':'',
+					'range':'',
+					'widgetparams':''
+				}
 			},
 			'DATE':{
 				'hide':['field_size','field_size_min','match','range','widgetparams'],
 				'val':{
-					field_size:0,
-					default:'0000-00-00',
-					range:'',
-					widgetparams:'',
-				},
+					'field_size':0,
+					'default':'0000-00-00',
+					'range':'',
+					'widgetparams':''
+				}
 			},
 			'FLOAT':{
 				'hide':['match','other_validator','widgetparams'],
 				'val':{
-					field_size:'10,2',
-					default:'0.00',
-					range:'',
-					widgetparams:'',
-				},
+					'field_size':'10,2',
+					'default':'0.00',
+					'range':'',
+					'widgetparams':''
+				}
 			},
 			'BOOL':{
 				'hide':['field_size','field_size_min','match','widgetparams'],
 				'val':{
-					field_size:0,
-					default:0,
-					range:'1==".UserModule::t('Yes').";0==".UserModule::t('No')."',
-					widgetparams:'',
-				},
+					'field_size':0,
+					'default':0,
+					'range':'1==".UserModule::t('Yes').";0==".UserModule::t('No')."',
+					'widgetparams':''
+				}
 			},
 			'BLOB':{
 				'hide':['field_size','field_size_min','match','widgetparams'],
 				'val':{
-					field_size:0,
-					default:'',
-					range:'',
-					widgetparams:'',
-				},
+					'field_size':0,
+					'default':'',
+					'range':'',
+					'widgetparams':''
+				}
 			},
 			'BINARY':{
 				'hide':['field_size','field_size_min','match','widgetparams'],
 				'val':{
-					field_size:0,
-					default:'',
-					range:'',
-					widgetparams:'',
-				},
-			},
+					'field_size':0,
+					'default':'',
+					'range':'',
+					'widgetparams':''
+				}
+			}
 		};
 			
 	function showWidgetList(type) {
