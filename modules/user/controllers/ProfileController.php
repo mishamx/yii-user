@@ -29,6 +29,14 @@ class ProfileController extends Controller
 	{
 		$model = $this->loadUser();
 		$profile=$model->profile;
+		
+		// ajax validator
+		if(isset($_POST['ajax']) && $_POST['ajax']==='profile-form')
+		{
+			echo UActiveForm::validate(array($model,$profile));
+			Yii::app()->end();
+		}
+		
 		if(isset($_POST['User']))
 		{
 			$model->attributes=$_POST['User'];
@@ -52,20 +60,28 @@ class ProfileController extends Controller
 	 * Change password
 	 */
 	public function actionChangepassword() {
-		$form = new UserChangePassword;
+		$model = new UserChangePassword;
 		if (Yii::app()->user->id) {
+			
+			// ajax validator
+			if(isset($_POST['ajax']) && $_POST['ajax']==='changepassword-form')
+			{
+				echo UActiveForm::validate($model);
+				Yii::app()->end();
+			}
+			
 			if(isset($_POST['UserChangePassword'])) {
-					$form->attributes=$_POST['UserChangePassword'];
-					if($form->validate()) {
+					$model->attributes=$_POST['UserChangePassword'];
+					if($model->validate()) {
 						$new_password = User::model()->notsafe()->findbyPk(Yii::app()->user->id);
-						$new_password->password = UserModule::encrypting($form->password);
-						$new_password->activkey=UserModule::encrypting(microtime().$form->password);
+						$new_password->password = UserModule::encrypting($model->password);
+						$new_password->activkey=UserModule::encrypting(microtime().$model->password);
 						$new_password->save();
 						Yii::app()->user->setFlash('profileMessage',UserModule::t("New password is saved."));
 						$this->redirect(array("profile"));
 					}
 			}
-			$this->render('changepassword',array('form'=>$form));
+			$this->render('changepassword',array('model'=>$model));
 	    }
 	}
 
@@ -85,5 +101,4 @@ class ProfileController extends Controller
 		}
 		return $this->_model;
 	}
-
 }

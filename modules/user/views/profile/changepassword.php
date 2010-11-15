@@ -9,22 +9,27 @@ $this->breadcrumbs=array(
 <?php echo $this->renderPartial('menu'); ?>
 
 <div class="form">
-<?php echo CHtml::beginForm(); ?>
+<?php $form=$this->beginWidget('UActiveForm', array(
+	'id'=>'changepassword-form',
+	'enableAjaxValidation'=>true,
+)); ?>
 
 	<p class="note"><?php echo UserModule::t('Fields with <span class="required">*</span> are required.'); ?></p>
-	<?php echo CHtml::errorSummary($form); ?>
+	<?php echo CHtml::errorSummary($model); ?>
 	
 	<div class="row">
-	<?php echo CHtml::activeLabelEx($form,'password'); ?>
-	<?php echo CHtml::activePasswordField($form,'password'); ?>
+	<?php echo $form->labelEx($model,'password'); ?>
+	<?php echo $form->passwordField($model,'password'); ?>
+	<?php echo $form->error($model,'password'); ?>
 	<p class="hint">
 	<?php echo UserModule::t("Minimal password length 4 symbols."); ?>
 	</p>
 	</div>
 	
 	<div class="row">
-	<?php echo CHtml::activeLabelEx($form,'verifyPassword'); ?>
-	<?php echo CHtml::activePasswordField($form,'verifyPassword'); ?>
+	<?php echo $form->labelEx($model,'verifyPassword'); ?>
+	<?php echo $form->passwordField($model,'verifyPassword'); ?>
+	<?php echo $form->error($model,'verifyPassword'); ?>
 	</div>
 	
 	
@@ -32,5 +37,5 @@ $this->breadcrumbs=array(
 	<?php echo CHtml::submitButton(UserModule::t("Save")); ?>
 	</div>
 
-<?php echo CHtml::endForm(); ?>
+<?php $this->endWidget(); ?>
 </div><!-- form -->

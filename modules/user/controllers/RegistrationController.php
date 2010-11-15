@@ -11,7 +11,7 @@ class RegistrationController extends Controller
 	 */
 	public function actions()
 	{
-		return array(
+		return (isset($_POST['ajax']) && $_POST['ajax']==='registration-form')?array():array(
 			'captcha'=>array(
 				'class'=>'CCaptchaAction',
 				'backColor'=>0xFFFFFF,
@@ -25,6 +25,14 @@ class RegistrationController extends Controller
             $model = new RegistrationForm;
             $profile=new Profile;
             $profile->regMode = true;
+            
+			// ajax validator
+			if(isset($_POST['ajax']) && $_POST['ajax']==='registration-form')
+			{
+				echo UActiveForm::validate(array($model,$profile));
+				Yii::app()->end();
+			}
+			
 		    if (Yii::app()->user->id) {
 		    	$this->redirect(Yii::app()->controller->module->profileUrl);
 		    } else {
@@ -70,8 +78,7 @@ class RegistrationController extends Controller
 						}
 					}
 				}
-			    $this->render('/user/registration',array('form'=>$model,'profile'=>$profile));
+			    $this->render('/user/registration',array('model'=>$model,'profile'=>$profile));
 		    }
 	}
-
 }
