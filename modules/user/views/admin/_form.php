@@ -4,8 +4,7 @@
 
 	<p class="note"><?php echo UserModule::t('Fields with <span class="required">*</span> are required.'); ?></p>
 
-	<?php echo CHtml::errorSummary($model);
-		  echo CHtml::errorSummary($profile); ?>
+	<?php echo CHtml::errorSummary(array($model,$profile)); ?>
 
 	<div class="row">
 		<?php echo CHtml::activeLabelEx($model,'username'); ?>

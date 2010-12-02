@@ -83,7 +83,7 @@ class AdminController extends Controller
 					$profile->save();
 				}
 				$this->redirect(array('view','id'=>$model->id));
-			}
+			} else $profile->validate();
 		}
 
 		$this->render('create',array(
@@ -114,7 +114,7 @@ class AdminController extends Controller
 				$model->save();
 				$profile->save();
 				$this->redirect(array('view','id'=>$model->id));
-			}
+			} else $profile->validate();
 		}
 
 		$this->render('update',array(

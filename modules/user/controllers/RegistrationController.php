@@ -76,7 +76,7 @@ class RegistrationController extends Controller
 								$this->refresh();
 							}
 						}
-					}
+					} else $profile->validate();
 				}
 			    $this->render('/user/registration',array('model'=>$model,'profile'=>$profile));
 		    }
