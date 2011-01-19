@@ -34,7 +34,7 @@ CREATE TABLE tbl_profiles_fields (
   match varchar(255) NOT NULL DEFAULT '',
   range varchar(255) NOT NULL DEFAULT '',
   error_message varchar(255) NOT NULL DEFAULT '',
-  other_validator varchar(255) NOT NULL DEFAULT '',
+  other_validator TEXT NOT NULL DEFAULT '',
   'default' varchar(255) NOT NULL DEFAULT '',
   widget varchar(255) NOT NULL DEFAULT '',
   widgetparams TEXT NOT NULL DEFAULT '',
