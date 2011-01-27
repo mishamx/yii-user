@@ -15,7 +15,7 @@ return array(
 	'Username is incorrect.' => 'Користувач з таким ім\'ям вже зареєструвався',
 	'Email is incorrect.' => 'Користувач з такою електронною адресою не зареєструвався',
 	"This user's name already exists." => 'Користувач з таким ім\'ям вже зареєструвався',
-	"This user's email adress already exists." => 'Користувач з такою електронною адресою вже зареєструвався.',
+	"This user's email address already exists." => 'Користувач з такою електронною адресою вже зареєструвався.',
 	'You registered from {site_name}' => 'Ви зареєструвалися на сайті {site_name}',
 	'Please activate you account go to {activation_url}' => 'Для активації профіля, будь ласка, перейдіть за цим посиланням {activation_url}',
 	'You account is not activated.' => 'Ваш профіль не активовано',

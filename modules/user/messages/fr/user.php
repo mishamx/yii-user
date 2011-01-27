@@ -12,7 +12,7 @@ return array(
         'Username is incorrect.' => "Nom d'utilisateur est incorrect.",
         'Email is incorrect.' => 'E-mail est incorrect.',
         'This user\'s name already exists.' => 'Le nom de cet utilisateur existe déjà.',
-        'This user\'s email adress already exists.' => 'Adresse e-mail de cet utilisateur existe déjà.',
+        'This user\'s email address already exists.' => 'Adresse e-mail de cet utilisateur existe déjà.',
         'You registered from {site_name}' => 'Vous vous êtes inscrit sur le site {site_name}',
         'Please activate you account go to {activation_url}' => "Pour activer votre compte s'il vous plaît cliquer sur le lien suivant {activation_url}",
         'You account is not activated.' => "Votre compte n'est pas activé.",
