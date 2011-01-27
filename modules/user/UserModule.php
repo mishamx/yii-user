@@ -60,6 +60,8 @@ class UserModule extends CWebModule
 	public $returnUrl = array("/user/profile");
 	public $returnLogoutUrl = array("/user/login");
 	
+	public $fieldsMessage = '';
+	
 	/**
 	 * @var array
 	 * @desc User model relation from other models
