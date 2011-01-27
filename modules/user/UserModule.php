@@ -3,9 +3,9 @@
  * Yii-User module
  * 
  * @author Mikhail Mangushev <mishamx@gmail.com> 
- * @link http://code.google.com/p/yii-user/
+ * @link http://yii-user.googlecode.com/
  * @license http://www.opensource.org/licenses/bsd-license.php
- * @version $Id: UserModule.php 338 2010-10-27 15:07:48Z misha $
+ * @version $Id$
  */
 
 class UserModule extends CWebModule
