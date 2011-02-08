@@ -316,6 +316,7 @@ class ProfileFieldController extends Controller
 	public function actionCreate()
 	{
 		$model=new ProfileField;
+		$scheme = get_class(Yii::app()->db->schema);
 		if(isset($_POST['ProfileField']))
 		{
 			$model->attributes=$_POST['ProfileField'];
@@ -333,15 +334,17 @@ class ProfileFieldController extends Controller
 					$sql .= '('.$model->field_size.')';
 				$sql .= ' NOT NULL ';
 				
-				if ($model->default)
-					$sql .= " DEFAULT '".$model->default."'";
-				else
-					$sql .= ((
-								$model->field_type=='TEXT'
-								||$model->field_type=='VARCHAR'
-								||$model->field_type=='BLOB'
-								||$model->field_type=='BINARY'
-							)?" DEFAULT ''":(($model->field_type=='DATE')?" DEFAULT '0000-00-00'":" DEFAULT 0"));
+				if ($model->field_type!='TEXT'&&$model->field_type!='BLOB'&&$scheme=='CMysqlSchema') {
+					if ($model->default)
+						$sql .= " DEFAULT '".$model->default."'";
+					else
+						$sql .= ((
+									$model->field_type=='TEXT'
+									||$model->field_type=='VARCHAR'
+									||$model->field_type=='BLOB'
+									||$model->field_type=='BINARY'
+								)?" DEFAULT ''":(($model->field_type=='DATE')?" DEFAULT '0000-00-00'":" DEFAULT 0"));
+				}
 				
 				$model->dbConnection->createCommand($sql)->execute();
 				$model->save();
