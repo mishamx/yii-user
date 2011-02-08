@@ -334,7 +334,8 @@ class ProfileFieldController extends Controller
 					$sql .= '('.$model->field_size.')';
 				$sql .= ' NOT NULL ';
 				
-				if ($model->field_type!='TEXT'&&$model->field_type!='BLOB'&&$scheme=='CMysqlSchema') {
+				
+				if (!(($model->field_type=='TEXT'||$model->field_type=='BLOB')&&$scheme=='CMysqlSchema')) {
 					if ($model->default)
 						$sql .= " DEFAULT '".$model->default."'";
 					else
