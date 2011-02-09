@@ -334,8 +334,7 @@ class ProfileFieldController extends Controller
 					$sql .= '('.$model->field_size.')';
 				$sql .= ' NOT NULL ';
 				
-				
-				if (!(($model->field_type=='TEXT'||$model->field_type=='BLOB')&&$scheme=='CMysqlSchema')) {
+				if ($model->field_type!='TEXT'&&$model->field_type!='BLOB'||$scheme!='CMysqlSchema') {
 					if ($model->default)
 						$sql .= " DEFAULT '".$model->default."'";
 					else
@@ -346,7 +345,6 @@ class ProfileFieldController extends Controller
 									||$model->field_type=='BINARY'
 								)?" DEFAULT ''":(($model->field_type=='DATE')?" DEFAULT '0000-00-00'":" DEFAULT 0"));
 				}
-				
 				$model->dbConnection->createCommand($sql)->execute();
 				$model->save();
 				$this->redirect(array('view','id'=>$model->id));
@@ -388,12 +386,59 @@ class ProfileFieldController extends Controller
 		if(Yii::app()->request->isPostRequest)
 		{
 			// we only allow deletion via POST request
+			$scheme = get_class(Yii::app()->db->schema);
 			$model = $this->loadModel();
-			$sql = 'ALTER TABLE '.Profile::model()->tableName().' DROP `'.$model->varname.'`';
-			if ($model->dbConnection->createCommand($sql)->execute()) {
-				$model->delete();
+			if ($scheme=='CSqliteSchema') {
+				$attr = Profile::model()->attributes;
+				unset($attr[$model->varname]);
+				$attr = array_keys($attr);
+				$connection=Yii::app()->db;
+				$transaction=$connection->beginTransaction();
+				$status=true;
+				try
+				{
+					$sql = '';
+				    $connection->createCommand(
+				    	"CREATE TEMPORARY TABLE ".Profile::model()->tableName()."_backup (".implode(',',$attr).")"
+				    )->execute();
+				    
+				    $connection->createCommand(
+				    	"INSERT INTO ".Profile::model()->tableName()."_backup SELECT ".implode(',',$attr)." FROM ".Profile::model()->tableName()
+				    )->execute();
+				    
+				    $connection->createCommand(
+				    	"DROP TABLE ".Profile::model()->tableName()
+				    )->execute();
+				    
+				    $connection->createCommand(
+				    	"CREATE TABLE ".Profile::model()->tableName()." (".implode(',',$attr).")"
+				    )->execute();
+				    
+				    $connection->createCommand(
+				    	"INSERT INTO ".Profile::model()->tableName()." SELECT ".implode(',',$attr)." FROM ".Profile::model()->tableName()."_backup"
+				    )->execute();
+				    
+				    $connection->createCommand(
+				    	"DROP TABLE ".Profile::model()->tableName()."_backup"
+				    )->execute();
+				    
+				    $transaction->commit();
+				}
+				catch(Exception $e) 
+				{
+				    $transaction->rollBack();
+				    $status=false;
+				}
+				if ($status) {
+					$model->delete();
+				}
+				
+			} else {
+				$sql = 'ALTER TABLE '.Profile::model()->tableName().' DROP `'.$model->varname.'`';
+				if ($model->dbConnection->createCommand($sql)->execute()) {
+					$model->delete();
+				}
 			}
-			// ALTER TABLE `profiles` DROP `field`
 
 			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 			if(!isset($_POST['ajax']))
