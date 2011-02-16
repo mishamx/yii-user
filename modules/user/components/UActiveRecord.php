@@ -28,4 +28,8 @@ class UActiveRecord extends CActiveRecord
 			}
 			parent::setAttributes($values,$safeOnly);
 		}
+		
+		public function behaviors(){
+			return Yii::app()->getModule('user')->getBehaviorsFor(get_class($this));
+		}
 }

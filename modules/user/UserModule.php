@@ -93,6 +93,12 @@ class UserModule extends CWebModule
 	static private $_admin;
 	static private $_admins;
 	
+	/**
+	 * @var array
+	 * @desc Behaviors for models
+	 */
+	public $componentBehaviors=array();
+	
 	public function init()
 	{
 		// this method is called when the module is being created
@@ -103,6 +109,14 @@ class UserModule extends CWebModule
 			'user.models.*',
 			'user.components.*',
 		));
+	}
+	
+	public function getBehaviorsFor($componentName){
+        if (isset($this->componentBehaviors[$componentName])) {
+            return $this->componentBehaviors[$componentName];
+        } else {
+            return array();
+        }
 	}
 
 	public function beforeControllerAction($controller, $action)
