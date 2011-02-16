@@ -63,6 +63,7 @@ class UWfile {
 				$old_file = $model->getAttribute($field_varname);
 				if ($old_file&&file_exists($old_file))
 					unlink($old_file);
+				$value='';
 			} else {
 				$value = $model->getAttribute($field_varname);
 			}
