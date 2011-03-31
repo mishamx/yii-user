@@ -67,7 +67,7 @@ return array(
         'Active' => 'Actif',
         'Banned' => 'Banni',
         'Please fill out the following form with your login credentials:' => "S'il vous plaît remplir le formulaire suivant avec vos identifiants de connexion:",
-        'Fields with <span class="required">*</span> are required.' => 'Les champs avec <span class="required"> * </ span> sont obligatoires.',
+        'Fields with <span class="required">*</span> are required.' => 'Les champs avec <span class="required"> * </span> sont obligatoires.',
         'List User' => 'Liste des membres',
         'Edit' => 'Éditer',
         'Edit profile' => 'Modifier le profil',
