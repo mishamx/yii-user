@@ -52,7 +52,7 @@ class UserController extends Controller
 	{
 		$dataProvider=new CActiveDataProvider('User', array(
 			'criteria'=>array(
-		        'condition'=>'status>'.User::STATUS_BANED,
+		        'condition'=>'status>'.User::STATUS_BANNED,
 		    ),
 				
 			'pagination'=>array(

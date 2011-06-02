@@ -2,15 +2,17 @@
 $this->breadcrumbs=array(
 	UserModule::t("Users"),
 );
+if(UserModule::isAdmin()) {
+	$this->layout='//layouts/column2';
+	$this->menu=array(
+	    array('label'=>UserModule::t('Manage Users'), 'url'=>array('/user/admin')),
+	    array('label'=>UserModule::t('Manage Profile Field'), 'url'=>array('profileField/admin')),
+	);
+}
 ?>
 
 <h1><?php echo UserModule::t("List User"); ?></h1>
-<?php if(UserModule::isAdmin()) {
-	?><ul class="actions">
-	<li><?php echo CHtml::link(UserModule::t('Manage User'),array('/user/admin')); ?></li>
-	<li><?php echo CHtml::link(UserModule::t('Manage Profile Field'),array('profileField/admin')); ?></li>
-</ul><!-- actions --><?php 
-} ?>
+
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'dataProvider'=>$dataProvider,
 	'columns'=>array(

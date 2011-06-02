@@ -87,7 +87,7 @@ return array(
 	'Delete file' => 'Διαγαραφή αρχείου',
 	'View User' => 'Εμφάνιση Χρήστη',
 	'Are you sure to delete this item?' => 'Σίγουρα θέλετε να διαγράψετε αυτό το αντικείμενο;',
-	'Changes is saved.' => 'Οι αλλαγές αποθηκεύτηκαν',
+	'Changes are saved.' => 'Οι αλλαγές αποθηκεύτηκαν',
 	'Manage Profile Field' => 'Διαχείρηση Πεδίων Προφίλ',
 	'Variable name' => 'Όνομα μεταβλητής',
 	'Title' => 'Τίτλος',

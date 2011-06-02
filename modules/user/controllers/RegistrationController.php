@@ -4,14 +4,12 @@ class RegistrationController extends Controller
 {
 	public $defaultAction = 'registration';
 	
-
-
 	/**
 	 * Declares class-based actions.
 	 */
 	public function actions()
 	{
-		return (isset($_POST['ajax']) && $_POST['ajax']==='registration-form')?array():array(
+		return array(
 			'captcha'=>array(
 				'class'=>'CCaptchaAction',
 				'backColor'=>0xFFFFFF,

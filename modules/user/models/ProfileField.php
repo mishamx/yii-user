@@ -62,6 +62,7 @@ class ProfileField extends CActiveRecord
 			array('field_size, field_size_min, required, position, visible', 'numerical', 'integerOnly'=>true),
 			array('title, match, error_message, other_validator, default, widget', 'length', 'max'=>255),
 			array('range, widgetparams', 'length', 'max'=>5000),
+			array('id, varname, title, field_type, field_size, field_size_min, required, match, range, error_message, other_validator, default, widget, widgetparams, position, visible', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -202,4 +203,43 @@ class ProfileField extends CActiveRecord
 		else
 			return isset($_items[$type]) ? $_items[$type] : false;
 	}
+	
+	/**
+     * Retrieves a list of models based on the current search/filter conditions.
+     * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
+     */
+    public function search()
+    {
+        // Warning: Please modify the following code to remove attributes that
+        // should not be searched.
+
+        $criteria=new CDbCriteria;
+
+        $criteria->compare('id',$this->id);
+        $criteria->compare('varname',$this->varname,true);
+        $criteria->compare('title',$this->title,true);
+        $criteria->compare('field_type',$this->field_type,true);
+        $criteria->compare('field_size',$this->field_size);
+        $criteria->compare('field_size_min',$this->field_size_min);
+        $criteria->compare('required',$this->required);
+        $criteria->compare('match',$this->match,true);
+        $criteria->compare('range',$this->range,true);
+        $criteria->compare('error_message',$this->error_message,true);
+        $criteria->compare('other_validator',$this->other_validator,true);
+        $criteria->compare('default',$this->default,true);
+        $criteria->compare('widget',$this->widget,true);
+        $criteria->compare('widgetparams',$this->widgetparams,true);
+        $criteria->compare('position',$this->position);
+        $criteria->compare('visible',$this->visible);
+
+        return new CActiveDataProvider(get_class($this), array(
+            'criteria'=>$criteria,
+			'pagination'=>array(
+				'pageSize'=>Yii::app()->controller->module->fields_page_size,
+			),
+			'sort'=>array(
+				'defaultOrder'=>'position',
+			),
+        ));
+    }
 }

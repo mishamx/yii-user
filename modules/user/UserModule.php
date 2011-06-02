@@ -3,7 +3,7 @@
  * Yii-User module
  * 
  * @author Mikhail Mangushev <mishamx@gmail.com> 
- * @link http://yii-user.googlecode.com/
+ * @link http://yii-user.2mx.org/
  * @license http://www.opensource.org/licenses/bsd-license.php
  * @version $Id$
  */
@@ -59,6 +59,13 @@ class UserModule extends CWebModule
 	public $profileUrl = array("/user/profile");
 	public $returnUrl = array("/user/profile");
 	public $returnLogoutUrl = array("/user/login");
+	
+	
+	/**
+	 * @var int
+	 * @desc Remember Me Time (seconds), defalt = 2592000 (30 days)
+	 */
+	public $rememberMeTime = 2592000; // 30 days
 	
 	public $fieldsMessage = '';
 	

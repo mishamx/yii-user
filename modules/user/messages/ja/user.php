@@ -82,7 +82,7 @@ return array(
 	'Delete file' => 'ファイルを削除',
 	'View User' => 'ユーザーを閲覧',
 	'Are you sure to delete this item?' => 'このアイテムを削除します。よろしいですか？',
-	'Changes is saved.' => '変更が保存されました。',
+	'Changes are saved.' => '変更が保存されました。',
 	'Manage Profile Field' => 'プロフィール項目の管理',
 	'Variable name' => 'フィールド名',
 	'Title' => '項目名',

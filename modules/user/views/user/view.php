@@ -3,13 +3,12 @@ $this->breadcrumbs=array(
 	UserModule::t('Users')=>array('index'),
 	$model->username,
 );
+$this->layout='//layouts/column2';
+$this->menu=array(
+    array('label'=>UserModule::t('List User'), 'url'=>array('index')),
+);
 ?>
 <h1><?php echo UserModule::t('View User').' "'.$model->username.'"'; ?></h1>
-
-<ul class="actions">
-	<li><?php echo CHtml::link(UserModule::t('List User'),array('index')); ?></li>
-</ul><!-- actions -->
-
 <?php 
 
 // For all users

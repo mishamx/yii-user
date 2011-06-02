@@ -53,7 +53,7 @@ class UserLogin extends CFormModel
 			switch($identity->errorCode)
 			{
 				case UserIdentity::ERROR_NONE:
-					$duration=$this->rememberMe ? 3600*24*30 : 0; // 30 days
+					$duration=$this->rememberMe ? Yii::app()->controller->module->rememberMeTime : 0;
 					Yii::app()->user->login($identity,$duration);
 					break;
 				case UserIdentity::ERROR_EMAIL_INVALID:

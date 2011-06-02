@@ -1,8 +1,8 @@
 <?php
 class UHtml extends CHtml
 {
-        public static function activeTimeField($model,$attribute,$htmlOptions=array())
-        {
+    public static function activeTimeField($model,$attribute,$htmlOptions=array())
+    {
                 // SET UP ARRAYS OF OPTIONS FOR DAY, MONTH, YEAR
                 $x = 0;
                 
@@ -108,10 +108,10 @@ class UHtml extends CHtml
                 $return .= parent::dropDownList($htmlOptions['name'].'[minute]', $minute,$minuteOptions);
                 $return .= parent::dropDownList($htmlOptions['name'].'[second]', $second,$secondOptions);
                 return $return;
-		}
+	}
 
-		public static function activeDateField($model,$attribute,$htmlOptions=array())
-        {
+	public static function activeDateField($model,$attribute,$htmlOptions=array())
+    {
                 // SET UP ARRAYS OF OPTIONS FOR DAY, MONTH, YEAR
                 $x = 1;
                 $dayOptions = array('00'=>' - ');
@@ -177,7 +177,14 @@ class UHtml extends CHtml
                 $return .= parent::dropDownList($htmlOptions['name'].'[month]', $month,$monthOptions);
                 $return .= parent::dropDownList($htmlOptions['name'].'[year]', $year,$yearOptions);
                 return $return;
-}
+	}
 
+	public static function markSearch($model,$field,$prefix='<strong>',$sufix='</strong>') {
+		$className = get_class($model);
+		if (isset($_GET[$className][$field])&&$_GET[$className][$field])
+			return str_replace($_GET[$className][$field],$prefix.$_GET[$className][$field].$sufix,$model->getAttribute($field));
+		else 
+			return $model->getAttribute($field);
+	}
 
 }
