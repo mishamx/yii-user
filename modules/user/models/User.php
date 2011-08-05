@@ -56,7 +56,7 @@ class User extends CActiveRecord
 			array('username', 'match', 'pattern' => '/^[A-Za-z0-9_]+$/u','message' => UserModule::t("Incorrect symbols (A-z0-9).")),
 			array('status', 'in', 'range'=>array(self::STATUS_NOACTIVE,self::STATUS_ACTIVE,self::STATUS_BANNED)),
 			array('superuser', 'in', 'range'=>array(0,1)),
-			array('username, password, email, createtime, lastvisit, superuser, status', 'required'),
+			array('username, email, createtime, lastvisit, superuser, status', 'required'),
 			array('createtime, lastvisit, superuser, status', 'numerical', 'integerOnly'=>true),
 			array('id, username, password, email, activkey, createtime, lastvisit, superuser, status', 'safe', 'on'=>'search'),
 		):((Yii::app()->user->id==$this->id)?array(
@@ -74,11 +74,10 @@ class User extends CActiveRecord
 	 */
 	public function relations()
 	{
-		$relations = array(
-			'profile'=>array(self::HAS_ONE, 'Profile', 'user_id'),
-		);
-		if (isset(Yii::app()->getModule('user')->relations)) $relations = array_merge($relations,Yii::app()->getModule('user')->relations);
-		return $relations;
+        $relations = Yii::app()->getModule('user')->relations;
+        if (!isset($relations['profile']))
+            $relations['profile'] = array(self::HAS_ONE, 'Profile', 'user_id');
+        return $relations;
 	}
 
 	/**
@@ -124,9 +123,10 @@ class User extends CActiveRecord
 	
 	public function defaultScope()
     {
-        return array(
-            'select' => 'id, username, email, createtime, lastvisit, superuser, status',
-        );
+        return CMap::mergeArray(Yii::app()->getModule('user')->defaultScope,array(
+            'alias'=>'user',
+            'select' => 'user.id, user.username, user.email, user.createtime, user.lastvisit, user.superuser, user.status',
+        ));
     }
 	
 	public static function itemAlias($type,$code=NULL) {
@@ -171,7 +171,7 @@ class User extends CActiveRecord
         return new CActiveDataProvider(get_class($this), array(
             'criteria'=>$criteria,
         	'pagination'=>array(
-				'pageSize'=>Yii::app()->controller->module->user_page_size,
+				'pageSize'=>Yii::app()->getModule('user')->user_page_size,
 			),
         ));
     }

@@ -95,8 +95,14 @@ class UserModule extends CWebModule
 	public $tableUsers = '{{users}}';
 	public $tableProfiles = '{{profiles}}';
 	public $tableProfileFields = '{{profiles_fields}}';
+
+    public $defaultScope = array(
+            'with'=>array('profile'),
+    );
 	
 	static private $_user;
+	static private $_users=array();
+	static private $_userByName=array();
 	static private $_admin;
 	static private $_admins;
 	
@@ -223,17 +229,31 @@ class UserModule extends CWebModule
 	 * @return user object or false
 	 */
 	public static function user($id=0) {
-		if ($id) 
-			return User::model()->active()->findbyPk($id);
-		else {
+		if ($id) {
+            if (!isset(self::$_users[$id]))
+                self::$_users[$id] = User::model()->findbyPk($id);
+			return self::$_users[$id];
+        } else {
 			if(Yii::app()->user->isGuest) {
 				return false;
 			} else {
 				if (!self::$_user)
-					self::$_user = User::model()->active()->findbyPk(Yii::app()->user->id);
+					self::$_user = User::model()->with(array('profile'))->findbyPk(Yii::app()->user->id);
 				return self::$_user;
 			}
 		}
+	}
+	
+	/**
+	 * Return safe user data.
+	 * @param user name
+	 * @return user object or false
+	 */
+	public static function getUserByName($username) {
+		if (!isset(self::$_userByName[$username])) {
+			$_userByName[$username] = User::model()->findByAttributes(array('username'=>$username));
+		}
+		return $_userByName[$username];
 	}
 	
 	/**
