@@ -58,7 +58,7 @@ Change your config:
 Install
 -------
 
-Run yiic migrate - m110805_153437_installYiiUser
+Run command: yiic migrate --migrationPath=application.modules.user.migrations
 
 Login
 -----
