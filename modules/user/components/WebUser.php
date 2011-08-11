@@ -13,6 +13,20 @@ class WebUser extends CWebUser
         return $this->getState('__id') ? $this->getState('__id') : 0;
     }
 
+    protected function beforeLogin($id, $states, $fromCookie)
+    {
+        parent::beforeLogin($id, $states, $fromCookie);
+
+        $model = new UserLoginStats();
+        $model->attributes = array(
+            'user_id' => $id,
+            'ip' => ip2long(Yii::app()->request->getUserHostAddress())
+        );
+        $model->save();
+
+        return true;
+    }
+
     protected function afterLogin($fromCookie)
 	{
         parent::afterLogin($fromCookie);
@@ -24,8 +38,8 @@ class WebUser extends CWebUser
         $userAttributes = CMap::mergeArray(array(
                                                 'email'=>$user->email,
                                                 'username'=>$user->username,
-                                                'createtime'=>$user->createtime,
-                                                'lastvisit'=>$user->lastvisit,
+                                                'create_at'=>$user->create_at,
+                                                'lastvisit_at'=>$user->lastvisit_at,
                                            ),$user->profile->getAttributes());
         foreach ($userAttributes as $attrName=>$attrValue) {
             $this->setState($attrName,$attrValue);

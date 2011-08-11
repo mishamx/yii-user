@@ -28,13 +28,10 @@ $this->menu=array(
 		}
 	}
 	array_push($attributes,
+		'create_at',
 		array(
-			'name' => 'createtime',
-			'value' => date("d.m.Y H:i:s",$model->createtime),
-		),
-		array(
-			'name' => 'lastvisit',
-			'value' => (($model->lastvisit)?date("d.m.Y H:i:s",$model->lastvisit):UserModule::t('Not visited')),
+			'name' => 'lastvisit_at',
+			'value' => (($model->lastvisit_at!='0000-00-00 00:00:00')?$model->lastvisit_at:UserModule::t('Not visited')),
 		)
 	);
 			

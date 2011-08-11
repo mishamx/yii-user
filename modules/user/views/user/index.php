@@ -21,13 +21,7 @@ if(UserModule::isAdmin()) {
 			'type'=>'raw',
 			'value' => 'CHtml::link(CHtml::encode($data->username),array("user/view","id"=>$data->id))',
 		),
-		array(
-			'name' => 'createtime',
-			'value' => 'date("d.m.Y H:i:s",$data->createtime)',
-		),
-		array(
-			'name' => 'lastvisit',
-			'value' => '(($data->lastvisit)?date("d.m.Y H:i:s",$data->lastvisit):UserModule::t("Not visited"))',
-		),
+		'create_at',
+		'lastvisit_at',
 	),
 )); ?>

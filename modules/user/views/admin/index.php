@@ -56,14 +56,8 @@ $('.search-form form').submit(function(){
 			'type'=>'raw',
 			'value'=>'CHtml::link(UHtml::markSearch($data,"email"), "mailto:".$data->email)',
 		),
-		array(
-			'name' => 'createtime',
-			'value' => 'date("d.m.Y H:i:s",$data->createtime)',
-		),
-		array(
-			'name' => 'lastvisit',
-			'value' => '(($data->lastvisit)?date("d.m.Y H:i:s",$data->lastvisit):UserModule::t("Not visited"))',
-		),
+		'create_at',
+		'lastvisit_at',
 		array(
 			'name'=>'superuser',
 			'value'=>'User::itemAlias("AdminStatus",$data->superuser)',

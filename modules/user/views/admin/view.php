@@ -39,14 +39,8 @@ $this->menu=array(
 		'password',
 		'email',
 		'activkey',
-		array(
-			'name' => 'createtime',
-			'value' => date("d.m.Y H:i:s",$model->createtime),
-		),
-		array(
-			'name' => 'lastvisit',
-			'value' => (($model->lastvisit)?date("d.m.Y H:i:s",$model->lastvisit):UserModule::t("Not visited")),
-		),
+		'create_at',
+		'lastvisit_at',
 		array(
 			'name' => 'superuser',
 			'value' => User::itemAlias("AdminStatus",$model->superuser),

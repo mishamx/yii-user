@@ -5,7 +5,7 @@
  * @author Mikhail Mangushev <mishamx@gmail.com> 
  * @link http://yii-user.2mx.org/
  * @license http://www.opensource.org/licenses/bsd-license.php
- * @version $Id$
+ * @version $Id: UserModule.php 123 2011-06-02 15:04:33Z mishamx $
  */
 
 class UserModule extends CWebModule
@@ -228,20 +228,14 @@ class UserModule extends CWebModule
 	 * @param user id not required
 	 * @return user object or false
 	 */
-	public static function user($id=0) {
+	public static function user($id=0,$clearCache=false) {
+        if (!$id&&!Yii::app()->user->isGuest)
+            $id = Yii::app()->user->id;
 		if ($id) {
-            if (!isset(self::$_users[$id]))
-                self::$_users[$id] = User::model()->findbyPk($id);
+            if (!isset(self::$_users[$id])||$clearCache)
+                self::$_users[$id] = User::model()->with(array('profile'))->findbyPk($id);
 			return self::$_users[$id];
-        } else {
-			if(Yii::app()->user->isGuest) {
-				return false;
-			} else {
-				if (!self::$_user)
-					self::$_user = User::model()->with(array('profile'))->findbyPk(Yii::app()->user->id);
-				return self::$_user;
-			}
-		}
+        } else return false;
 	}
 	
 	/**

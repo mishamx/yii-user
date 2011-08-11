@@ -42,12 +42,12 @@ $this->menu=array(
     	<td><?php echo CHtml::encode($model->email); ?></td>
 	</tr>
 	<tr>
-		<th class="label"><?php echo CHtml::encode($model->getAttributeLabel('createtime')); ?></th>
-    	<td><?php echo date("d.m.Y H:i:s",$model->createtime); ?></td>
+		<th class="label"><?php echo CHtml::encode($model->getAttributeLabel('create_at')); ?></th>
+    	<td><?php echo $model->create_at; ?></td>
 	</tr>
 	<tr>
-		<th class="label"><?php echo CHtml::encode($model->getAttributeLabel('lastvisit')); ?></th>
-    	<td><?php echo date("d.m.Y H:i:s",$model->lastvisit); ?></td>
+		<th class="label"><?php echo CHtml::encode($model->getAttributeLabel('lastvisit_at')); ?></th>
+    	<td><?php echo $model->lastvisit_at; ?></td>
 	</tr>
 	<tr>
 		<th class="label"><?php echo CHtml::encode($model->getAttributeLabel('status')); ?></th>
