@@ -5,7 +5,7 @@
  * @author Mikhail Mangushev <mishamx@gmail.com> 
  * @link http://yii-user.2mx.org/
  * @license http://www.opensource.org/licenses/bsd-license.php
- * @version $Id: UserModule.php 123 2011-06-02 15:04:33Z mishamx $
+ * @version $Id: UserModule.php 127 2011-08-11 09:21:42Z mishamx $
  */
 
 class UserModule extends CWebModule
