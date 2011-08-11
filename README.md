@@ -9,7 +9,7 @@ Download or checkout (SVN/Git) from http://yii-user.2mx.org and unpack files in 
 Configure
 ---------
 
-Change your config:
+Change your config main:
 
     return array(
         #...
@@ -22,6 +22,7 @@ Change your config:
         ),
         #...
         'modules'=>array(
+            #...
             'user'=>array(
                 'hash' => 'md5',                                     # encrypting method (php hash function)
                 'sendActivationMail' => true,                        # send activation email
@@ -33,6 +34,7 @@ Change your config:
                 'returnUrl' => array('/user/profile'),               # page after login
                 'returnLogoutUrl' => array('/user/login'),           # page after logout
             ),
+            #...
         ),
         #...
         // application components
@@ -51,6 +53,28 @@ Change your config:
                 'loginUrl' => array('/user/login'),
             ),
         #...
+        ),
+        #...
+    );
+
+Change your config console:
+
+    return array(
+        #...
+        'modules'=>array(
+            #...
+            'user'=>array(
+                'hash' => 'md5',                                     # encrypting method (php hash function)
+                'sendActivationMail' => true,                        # send activation email
+                'loginNotActiv' => false,                            # allow access for non-activated users
+                'autoLogin' => true,                                 # automatically login from registration
+                'registrationUrl' => array('/user/registration'),    # registration path
+                'recoveryUrl' => array('/user/recovery'),            # recovery password path
+                'loginUrl' => array('/user/login'),                  # login form path
+                'returnUrl' => array('/user/profile'),               # page after login
+                'returnLogoutUrl' => array('/user/login'),           # page after logout
+            ),
+            #...
         ),
         #...
     );

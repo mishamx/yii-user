@@ -6,9 +6,21 @@ class m110805_153437_installYiiUser extends CDbMigration
     
 	public function safeUp()
 	{
+        if (!Yii::app()->getModule('user')) {
+            echo "\n\nAdd to console.php :\n"
+                 ."'modules'=>array(\n"
+                 ."...\n"
+                 ."    'user'=>array(\n"
+                 ."        ... # copy settings from main config\n"
+                 ."    ),\n"
+                 ."...\n"
+                 ."),\n"
+                 ."\n";
+            return false;
+        }
         switch ($this->dbType()) {
             case "mysql":
-                    $this->createTable('{{users}}', array(
+                    $this->createTable(Yii::app()->getModule('user')->tableUsers, array(
                         "id" => "pk",
                         "username" => "varchar(20) NOT NULL",
                         "password" => "varchar(128) NOT NULL",
@@ -19,15 +31,15 @@ class m110805_153437_installYiiUser extends CDbMigration
                         "superuser" => "int(1) NOT NULL",
                         "status" => "int(1) NOT NULL",
                     ), $this->MySqlOptions);
-                    $this->createIndex('user_username', '{{users}}', 'username', true);
-                    $this->createIndex('user_email', '{{users}}', 'email', true);
-                    $this->createTable("{{profiles}}", array(
+                    $this->createIndex('user_username', Yii::app()->getModule('user')->tableUsers, 'username', true);
+                    $this->createIndex('user_email', Yii::app()->getModule('user')->tableUsers, 'email', true);
+                    $this->createTable(Yii::app()->getModule('user')->tableProfiles, array(
                         'user_id' => 'pk',
                         'first_name' => 'string',
                         'last_name' => 'string',
                     ), $this->MySqlOptions);
-                    $this->addForeignKey('user_profile_id', '{{profiles}}', 'user_id', '{{users}}', 'id', 'CASCADE', 'RESTRICT');
-                    $this->createTable("{{profiles_fields}}", array(
+                    $this->addForeignKey('user_profile_id', Yii::app()->getModule('user')->tableProfiles, 'user_id', Yii::app()->getModule('user')->tableUsers, 'id', 'CASCADE', 'RESTRICT');
+                    $this->createTable(Yii::app()->getModule('user')->tableProfileFields, array(
                         "id" => "pk",
                         "varname" => "varchar(50) NOT NULL",
                         "title" => "varchar(255) NOT NULL",
@@ -49,7 +61,7 @@ class m110805_153437_installYiiUser extends CDbMigration
             
             case "sqlite":
             default:
-                    $this->createTable('{{users}}', array(
+                    $this->createTable(Yii::app()->getModule('user')->tableUsers, array(
                         "id" => "pk",
                         "username" => "varchar(20) NOT NULL",
                         "password" => "varchar(128) NOT NULL",
@@ -60,14 +72,14 @@ class m110805_153437_installYiiUser extends CDbMigration
                         "superuser" => "int(1) NOT NULL",
                         "status" => "int(1) NOT NULL",
                     ));
-                    $this->createIndex('user_username', '{{users}}', 'username', true);
-                    $this->createIndex('user_email', '{{users}}', 'email', true);
-                    $this->createTable("{{profiles}}", array(
+                    $this->createIndex('user_username', Yii::app()->getModule('user')->tableUsers, 'username', true);
+                    $this->createIndex('user_email', Yii::app()->getModule('user')->tableUsers, 'email', true);
+                    $this->createTable(Yii::app()->getModule('user')->tableProfiles, array(
                         'user_id' => 'pk',
                         'first_name' => 'string',
                         'last_name' => 'string',
                     ));
-                    $this->createTable("{{profiles_fields}}", array(
+                    $this->createTable(Yii::app()->getModule('user')->tableProfileFields, array(
                         "id" => "pk",
                         "varname" => "varchar(50) NOT NULL",
                         "title" => "varchar(255) NOT NULL",
@@ -90,7 +102,7 @@ class m110805_153437_installYiiUser extends CDbMigration
         }
 
 
-        $this->insert("{{users}}", array(
+        $this->insert(Yii::app()->getModule('user')->tableUsers, array(
             "id" => "1",
             "username" => "admin",
             "password" => "21232f297a57a5a743894a0e4a801fc3",
@@ -102,7 +114,7 @@ class m110805_153437_installYiiUser extends CDbMigration
             "status" => "1",
         ));
 
-        $this->insert("{{users}}", array(
+        $this->insert(Yii::app()->getModule('user')->tableUsers, array(
             "id" => "2",
             "username" => "demo",
             "password" => "fe01ce2a7fbac8fafaed7c982a04e229",
@@ -114,18 +126,18 @@ class m110805_153437_installYiiUser extends CDbMigration
             "status" => "1",
         ));
 
-        $this->insert("{{profiles}}", array(
+        $this->insert(Yii::app()->getModule('user')->tableProfiles, array(
             "user_id" => "1",
             "first_name" => "Administrator",
             "last_name" => "Admin",
         ));
-        $this->insert("{{profiles}}", array(
+        $this->insert(Yii::app()->getModule('user')->tableProfiles, array(
             "user_id" => "2",
             "first_name" => "Demo",
             "last_name" => "Demo",
         ));
 
-		$this->insert("{{profiles_fields}}", array(
+		$this->insert(Yii::app()->getModule('user')->tableProfileFields, array(
             "id" => "1",
             "varname" => "first_name",
             "title" => "First Name",
@@ -143,7 +155,7 @@ class m110805_153437_installYiiUser extends CDbMigration
             "position" => "1",
             "visible" => "3",
         ));
-		$this->insert("{{profiles_fields}}", array(
+		$this->insert(Yii::app()->getModule('user')->tableProfileFields, array(
             "id" => "2",
             "varname" => "last_name",
             "title" => "Last Name",
@@ -165,9 +177,9 @@ class m110805_153437_installYiiUser extends CDbMigration
 
 	public function safeDown()
 	{
-        $this->dropTable('{{profiles_fields}}');
-        $this->dropTable('{{profiles}}');
-        $this->dropTable('{{users}}');
+        $this->dropTable(Yii::app()->getModule('user')->tableProfileFields);
+        $this->dropTable(Yii::app()->getModule('user')->tableProfiles);
+        $this->dropTable(Yii::app()->getModule('user')->tableUsers);
 	}
 
     public function dbType()
