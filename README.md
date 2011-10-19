@@ -4,7 +4,7 @@ Yii-User Installation
 Download
 --------
 
-Download or checkout (SVN/Git) from http://yii-user.2mx.org and unpack files in your project/protected
+Download or checkout (SVN/Git) from http://yii-user.2mx.org and unpack files in your project/protected/modules/user
 
 Configure
 ---------
