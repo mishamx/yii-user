@@ -27,6 +27,7 @@ Change your config main:
                 'hash' => 'md5',                                     # encrypting method (php hash function)
                 'sendActivationMail' => true,                        # send activation email
                 'loginNotActiv' => false,                            # allow access for non-activated users
+                'activeAfterRegister' => false,                      # activate user on registration (only sendActivationMail = false)
                 'autoLogin' => true,                                 # automatically login from registration
                 'registrationUrl' => array('/user/registration'),    # registration path
                 'recoveryUrl' => array('/user/recovery'),            # recovery password path
@@ -67,6 +68,7 @@ Change your config console:
                 'hash' => 'md5',                                     # encrypting method (php hash function)
                 'sendActivationMail' => true,                        # send activation email
                 'loginNotActiv' => false,                            # allow access for non-activated users
+                'activeAfterRegister' => false,                      # activate user on registration (only sendActivationMail = false)
                 'autoLogin' => true,                                 # automatically login from registration
                 'registrationUrl' => array('/user/registration'),    # registration path
                 'recoveryUrl' => array('/user/recovery'),            # recovery password path

@@ -5,7 +5,7 @@
  * @author Mikhail Mangushev <mishamx@gmail.com> 
  * @link http://yii-user.2mx.org/
  * @license http://www.opensource.org/licenses/bsd-license.php
- * @version $Id: UserModule.php 127 2011-08-11 09:21:42Z mishamx $
+ * @version $Id: UserModule.php 132 2011-10-30 10:45:01Z mishamx $
  */
 
 class UserModule extends CWebModule
@@ -151,7 +151,10 @@ class UserModule extends CWebModule
 	 * @return string
 	 */
 	public static function t($str='',$params=array(),$dic='user') {
-		return Yii::t("UserModule.".$dic, $str, $params);
+		if (Yii::t("UserModule", $str)==$str)
+		    return Yii::t("UserModule.".$dic, $str, $params);
+        else
+            return Yii::t("UserModule", $str, $params);
 	}
 	
 	/**
