@@ -61,7 +61,7 @@ class UWjuidate {
 		$options['dateFormat'] = 'yy-mm-dd';
 		$options=CJavaScript::encode($options);
 		
-		$basePath=Yii::getPathOfAlias('application.modules.user.views.asset');
+		$basePath=Yii::getPathOfAlias('user.views.asset');
 		$baseUrl=Yii::app()->getAssetManager()->publish($basePath);
 		$cs = Yii::app()->getClientScript();
 		$cs->registerCssFile($baseUrl.'/css/'.$this->params['ui-theme'].'/jquery-ui.css');
