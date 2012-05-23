@@ -84,7 +84,7 @@ Change your config console:
 Install
 -------
 
-Run command: yiic migrate --migrationPath=application.modules.user.migrations
+Run command: yiic migrate --migrationPath=user.migrations
 
 Login
 -----

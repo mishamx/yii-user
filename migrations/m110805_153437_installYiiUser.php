@@ -3,6 +3,7 @@
 class m110805_153437_installYiiUser extends CDbMigration
 {
 	protected $MySqlOptions = 'ENGINE=InnoDB CHARSET=utf8';
+    private $_model;
     
 	public function safeUp()
 	{
@@ -18,6 +19,8 @@ class m110805_153437_installYiiUser extends CDbMigration
                  ."\n";
             return false;
         }
+        Yii::import('user.models.User');
+        //*
         switch ($this->dbType()) {
             case "mysql":
                     $this->createTable(Yii::app()->getModule('user')->tableUsers, array(
@@ -99,30 +102,27 @@ class m110805_153437_installYiiUser extends CDbMigration
                     ));
 
                 break;
-        }
+        }//*/
 
+        if (in_array('--interactive=0',$_SERVER['argv'])) {
+            $this->_model->username = 'admin';
+            $this->_model->email = 'webmaster@example.com';
+            $this->_model->password = 'admin';
+        } else {
+            $this->readStdinUser('Admin login', 'username', 'admin');
+            $this->readStdinUser('Admin email', 'email', 'webmaster@example.com');
+            $this->readStdinUser('Admin password', 'password', 'admin');
+        }
 
         $this->insert(Yii::app()->getModule('user')->tableUsers, array(
             "id" => "1",
-            "username" => "admin",
-            "password" => "21232f297a57a5a743894a0e4a801fc3",
+            "username" => $this->_model->username,
+            "password" => Yii::app()->getModule('user')->encrypting($this->_model->password),
             "email" => "webmaster@example.com",
-            "activkey" => "dcfd1bb010216eb03e19abe78b858d5a",
+            "activkey" => Yii::app()->getModule('user')->encrypting(microtime()),
             "createtime" => time(),
             "lastvisit" => "0",
             "superuser" => "1",
-            "status" => "1",
-        ));
-
-        $this->insert(Yii::app()->getModule('user')->tableUsers, array(
-            "id" => "2",
-            "username" => "demo",
-            "password" => "fe01ce2a7fbac8fafaed7c982a04e229",
-            "email" => "demo@example.com",
-            "activkey" => "214b7ca06cbd07a461b5218cb63e25fe",
-            "createtime" => time(),
-            "lastvisit" => "0",
-            "superuser" => "0",
             "status" => "1",
         ));
 
@@ -130,11 +130,6 @@ class m110805_153437_installYiiUser extends CDbMigration
             "user_id" => "1",
             "first_name" => "Administrator",
             "last_name" => "Admin",
-        ));
-        $this->insert(Yii::app()->getModule('user')->tableProfiles, array(
-            "user_id" => "2",
-            "first_name" => "Demo",
-            "last_name" => "Demo",
         ));
 
 		$this->insert(Yii::app()->getModule('user')->tableProfileFields, array(
@@ -187,5 +182,31 @@ class m110805_153437_installYiiUser extends CDbMigration
         list($type) = explode(':',Yii::app()->db->connectionString);
         echo "type db: ".$type."\n";
         return $type;
+    }
+
+    private function readStdin($prompt, $valid_inputs, $default = '') {
+        while(!isset($input) || (is_array($valid_inputs) && !in_array($input, $valid_inputs)) || ($valid_inputs == 'is_file' && !is_file($input))) {
+            echo $prompt;
+            $input = strtolower(trim(fgets(STDIN)));
+            if(empty($input) && !empty($default)) {
+                $input = $default;
+            }
+        }
+        return $input;
+    }
+
+    private function readStdinUser($prompt, $field, $default = '') {
+        if (!$this->_model)
+            $this->_model = new User;
+
+        while(!isset($input) || !$this->_model->validate(array($field))) {
+            echo $prompt.(($default)?" [$default]":'').': ';
+            $input = (trim(fgets(STDIN)));
+            if(empty($input) && !empty($default)) {
+                $input = $default;
+            }
+            $this->_model->setAttribute($field,$input);
+        }
+        return $input;
     }
 }
