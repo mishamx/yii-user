@@ -25,14 +25,14 @@ class m110805_153437_installYiiUser extends CDbMigration
             case "mysql":
                     $this->createTable(Yii::app()->getModule('user')->tableUsers, array(
                         "id" => "pk",
-                        "username" => "varchar(20) NOT NULL",
-                        "password" => "varchar(128) NOT NULL",
-                        "email" => "varchar(128) NOT NULL",
-                        "activkey" => "varchar(128) NOT NULL",
-                        "createtime" => "int(10) NOT NULL",
-                        "lastvisit" => "int(10) NOT NULL",
-                        "superuser" => "int(1) NOT NULL",
-                        "status" => "int(1) NOT NULL",
+                        "username" => "varchar(20) NOT NULL DEFAULT ''",
+                        "password" => "varchar(128) NOT NULL DEFAULT ''",
+                        "email" => "varchar(128) NOT NULL DEFAULT ''",
+                        "activkey" => "varchar(128) NOT NULL DEFAULT ''",
+                        "createtime" => "int(10) NOT NULL DEFAULT 0",
+                        "lastvisit" => "int(10) NOT NULL DEFAULT 0",
+                        "superuser" => "int(1) NOT NULL DEFAULT 0",
+                        "status" => "int(1) NOT NULL DEFAULT 0",
                     ), $this->MySqlOptions);
                     $this->createIndex('user_username', Yii::app()->getModule('user')->tableUsers, 'username', true);
                     $this->createIndex('user_email', Yii::app()->getModule('user')->tableUsers, 'email', true);
@@ -44,21 +44,21 @@ class m110805_153437_installYiiUser extends CDbMigration
                     $this->addForeignKey('user_profile_id', Yii::app()->getModule('user')->tableProfiles, 'user_id', Yii::app()->getModule('user')->tableUsers, 'id', 'CASCADE', 'RESTRICT');
                     $this->createTable(Yii::app()->getModule('user')->tableProfileFields, array(
                         "id" => "pk",
-                        "varname" => "varchar(50) NOT NULL",
-                        "title" => "varchar(255) NOT NULL",
-                        "field_type" => "varchar(50) NOT NULL",
-                        "field_size" => "int(3) NOT NULL",
-                        "field_size_min" => "int(3) NOT NULL",
-                        "required" => "int(1) NOT NULL",
-                        "match" => "varchar(255) NOT NULL",
-                        "range" => "varchar(255) NOT NULL",
-                        "error_message" => "varchar(255) NOT NULL",
-                        "other_validator" => "text NOT NULL",
-                        "default" => "varchar(255) NOT NULL",
-                        "widget" => "varchar(255) NOT NULL",
-                        "widgetparams" => "text NOT NULL",
-                        "position" => "int(3) NOT NULL",
-                        "visible" => "int(1) NOT NULL",
+                        "varname" => "varchar(50) NOT NULL DEFAULT ''",
+                        "title" => "varchar(255) NOT NULL DEFAULT ''",
+                        "field_type" => "varchar(50) NOT NULL DEFAULT ''",
+                        "field_size" => "int(3) NOT NULL DEFAULT 0",
+                        "field_size_min" => "int(3) NOT NULL DEFAULT 0",
+                        "required" => "int(1) NOT NULL DEFAULT 0",
+                        "match" => "varchar(255) NOT NULL DEFAULT ''",
+                        "range" => "varchar(255) NOT NULL DEFAULT ''",
+                        "error_message" => "varchar(255) NOT NULL DEFAULT ''",
+                        "other_validator" => "text NOT NULL DEFAULT ''",
+                        "default" => "varchar(255) NOT NULL DEFAULT ''",
+                        "widget" => "varchar(255) NOT NULL DEFAULT ''",
+                        "widgetparams" => "text NOT NULL DEFAULT ''",
+                        "position" => "int(3) NOT NULL DEFAULT 0",
+                        "visible" => "int(1) NOT NULL DEFAULT 0",
                     ), $this->MySqlOptions);
                 break;
             
