@@ -30,7 +30,7 @@ CREATE TABLE `tbl_profiles_fields` (
   `varname` varchar(50) NOT NULL,
   `title` varchar(255) NOT NULL,
   `field_type` varchar(50) NOT NULL,
-  `field_size` int(3) NOT NULL DEFAULT '0',
+  `field_size` float(10.2) NOT NULL DEFAULT '0',
   `field_size_min` int(3) NOT NULL DEFAULT '0',
   `required` int(1) NOT NULL DEFAULT '0',
   `match` varchar(255) NOT NULL DEFAULT '',

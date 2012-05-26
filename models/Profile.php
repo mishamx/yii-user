@@ -37,7 +37,8 @@ class Profile extends UActiveRecord
 	{
 		if (!$this->_rules) {
 			$required = array();
-			$numerical = array();		
+			$numerical = array();
+			$float = array();		
 			$rules = array();
 			
 			$model=$this->getFields();
@@ -46,7 +47,9 @@ class Profile extends UActiveRecord
 				$field_rule = array();
 				if ($field->required==ProfileField::REQUIRED_YES_NOT_SHOW_REG||$field->required==ProfileField::REQUIRED_YES_SHOW_REG)
 					array_push($required,$field->varname);
-				if ($field->field_type=='FLOAT'||$field->field_type=='INTEGER')
+				if ($field->field_type=='FLOAT')
+					array_push($float,$field->varname);
+				if ($field->field_type=='INTEGER')
 					array_push($numerical,$field->varname);
 				if ($field->field_type=='VARCHAR'||$field->field_type=='TEXT') {
 					$field_rule = array($field->varname, 'length', 'max'=>$field->field_size, 'min' => $field->field_size_min);
@@ -86,6 +89,7 @@ class Profile extends UActiveRecord
 			
 			array_push($rules,array(implode(',',$required), 'required'));
 			array_push($rules,array(implode(',',$numerical), 'numerical', 'integerOnly'=>true));
+			array_push($rules,array(implode(',',$float), 'type', 'type'=>'float'));
 			$this->_rules = $rules;
 		}
 		return $this->_rules;
