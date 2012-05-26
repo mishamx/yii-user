@@ -133,8 +133,17 @@ class ProfileFieldController extends Controller
 			'FLOAT':{
 				'hide':['match','other_validator','widgetparams'],
 				'val':{
-					'field_size':'10,2',
+					'field_size':'10.2',
 					'default':'0.00',
+					'range':'',
+					'widgetparams':''
+				}
+			},
+			'DECIMAL':{
+				'hide':['match','other_validator','widgetparams'],
+				'val':{
+					'field_size':'10,2',
+					'default':'0',
 					'range':'',
 					'widgetparams':''
 				}
