@@ -139,6 +139,15 @@ class ProfileFieldController extends Controller
 					'widgetparams':''
 				}
 			},
+			'DECIMAL':{
+				'hide':['match','other_validator','widgetparams'],
+				'val':{
+					'field_size':'10,2',
+					'default':'0',
+					'range':'',
+					'widgetparams':''
+				}
+			},
 			'BOOL':{
 				'hide':['field_size','field_size_min','match','widgetparams'],
 				'val':{

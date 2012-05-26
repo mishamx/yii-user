@@ -39,6 +39,7 @@ class Profile extends UActiveRecord
 			$required = array();
 			$numerical = array();
 			$float = array();		
+			$decimal = array();
 			$rules = array();
 			
 			$model=$this->getFields();
@@ -49,6 +50,8 @@ class Profile extends UActiveRecord
 					array_push($required,$field->varname);
 				if ($field->field_type=='FLOAT')
 					array_push($float,$field->varname);
+				if ($field->field_type=='DECIMAL')
+					array_push($decimal,$field->varname);
 				if ($field->field_type=='INTEGER')
 					array_push($numerical,$field->varname);
 				if ($field->field_type=='VARCHAR'||$field->field_type=='TEXT') {
@@ -90,6 +93,7 @@ class Profile extends UActiveRecord
 			array_push($rules,array(implode(',',$required), 'required'));
 			array_push($rules,array(implode(',',$numerical), 'numerical', 'integerOnly'=>true));
 			array_push($rules,array(implode(',',$float), 'type', 'type'=>'float'));
+			array_push($rules,array(implode(',',$decimal), 'match', 'pattern' => '/^\s*[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?\s*$/'));
 			$this->_rules = $rules;
 		}
 		return $this->_rules;
