@@ -16,8 +16,6 @@ class User extends CActiveRecord
 	 * @var string $password
 	 * @var string $email
 	 * @var string $activkey
-	 * @var integer $createtime
-	 * @var integer $lastvisit
 	 * @var integer $superuser
 	 * @var integer $status
      * @var timestamp $create_at
@@ -96,9 +94,7 @@ class User extends CActiveRecord
 			'email'=>UserModule::t("E-mail"),
 			'verifyCode'=>UserModule::t("Verification Code"),
 			'activkey' => UserModule::t("activation key"),
-			'createtime' => UserModule::t("Registration date"),
 			'create_at' => UserModule::t("Registration date"),
-			
 			'lastvisit_at' => UserModule::t("Last visit"),
 			'superuser' => UserModule::t("Superuser"),
 			'status' => UserModule::t("Status"),
