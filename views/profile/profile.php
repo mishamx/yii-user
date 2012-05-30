@@ -6,7 +6,9 @@ $this->menu=array(
 	((UserModule::isAdmin())
 		?array('label'=>UserModule::t('Manage Users'), 'url'=>array('/user/admin'))
 		:array()),
-    array('label'=>UserModule::t('List User'), 'url'=>array('/user')),
+    ((UserModule::isAdmin())
+		? array('label'=>UserModule::t('List User'), 'url'=>array('/user'))
+		:array()),
     array('label'=>UserModule::t('Edit'), 'url'=>array('edit')),
     array('label'=>UserModule::t('Change password'), 'url'=>array('changepassword')),
     array('label'=>UserModule::t('Logout'), 'url'=>array('/user/logout')),
