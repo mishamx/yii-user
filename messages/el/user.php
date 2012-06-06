@@ -20,6 +20,8 @@ return array(
 	'Password is incorrect.' => 'Λάθος συνθηματικό.',
 	'E-mail' => 'email',
 	'Verification Code' => 'Κώδικας επαλήθευσης.',
+	'Old Password' => '',
+	'Old Password is incorrect.' => '',
 	'Retype Password' => 'Πληκτρολογήστε ξανά το συνθηματικό',
 	'Retype Password is incorrect.' => 'Πληκτρολογήσατε λάθος την επαλήθευση του συνθηματικού.',
 	'Incorrect password (minimal length 4 symbols).' => 'Μη αποδεκτό συνθηματικό (τουλάχιστον 4 χαρακτήρες).',

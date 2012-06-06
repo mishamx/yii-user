@@ -20,6 +20,8 @@ return array(
         'Password is incorrect.' => 'Mot de passe est incorrect.',
         'E-mail' => 'E-mail',
         'Verification Code' => 'Code de vérification',
+				'Old Password' => 'Ancien mot de passe',
+				'Old Password is incorrect.' => 'Ancien mot de passe est incorrect.',
         'Retype Password' => 'Retaper mot de passe',
         'Retype Password is incorrect.' => 'Retaper mot de passe est incorrect.',
         'Incorrect password (minimal length 4 symbols).' => 'Mot de passe incorrect (longueur minimale 4 symboles).',

@@ -20,6 +20,8 @@ return array(
 	'Password is incorrect.' => 'Jelszó helytelen.',
 	'E-mail' => 'e-mail',
 	'Verification Code' => 'Ellenőrző kód',
+	'Old Password' => '',
+	'Old Password is incorrect.' => '',
 	'Retype Password' => 'Jelszó újra',
 	'Retype Password is incorrect.' => 'A két jelszó nem egyezik',
 	'Incorrect password (minimal length 4 symbols).' => 'Helytelen jelszó (legalább 4 karakter).',

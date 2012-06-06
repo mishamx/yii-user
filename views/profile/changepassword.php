@@ -29,6 +29,12 @@ $this->menu=array(
 	<?php echo $form->errorSummary($model); ?>
 	
 	<div class="row">
+	<?php echo $form->labelEx($model,'oldPassword'); ?>
+	<?php echo $form->passwordField($model,'oldPassword'); ?>
+	<?php echo $form->error($model,'oldPassword'); ?>
+	</div>
+	
+	<div class="row">
 	<?php echo $form->labelEx($model,'password'); ?>
 	<?php echo $form->passwordField($model,'password'); ?>
 	<?php echo $form->error($model,'password'); ?>
