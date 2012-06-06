@@ -20,6 +20,8 @@ return array(
 	'Password is incorrect.' => 'パスワードが正しくありません。',
 	'E-mail' => 'E-mail',
 	'Verification Code' => '検証コード',
+	'Old Password' => '',
+	'Old Password is incorrect.' => '',
 	'Retype Password' => 'パスワード(確認)',
 	'Retype Password is incorrect.' => 'パスワード(確認)が正しくありません。',
 	'Incorrect password (minimal length 4 symbols).' => 'パスワードが正しくありません。(4 文字以上)',
