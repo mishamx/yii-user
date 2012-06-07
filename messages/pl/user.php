@@ -25,8 +25,6 @@ return array(
         'Password is incorrect.' => 'Nieprawidłowe hasło.',
         'E-mail' => 'E-mail',
         'Verification Code' => 'Kod weryfikacyjny',
-				'Old Password' => '',
-				'Old Password is incorrect.' => '',
         'Retype Password' => 'Hasło ponownie',
         'Retype Password is incorrect.' => 'Przepisane hasło jest inne.',
         'Incorrect password (minimal length 4 symbols).' => 'Niepoprawne hasło (minimalna długość to 4 znaki).',

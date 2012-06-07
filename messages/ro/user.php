@@ -20,8 +20,6 @@ return array(
 	'Password is incorrect.' => 'Parola este gresita.',
 	'E-mail' => 'E-mail',
 	'Verification Code' => 'Cod de verificare',
-	'Old Password' => '',
-	'Old Password is incorrect.' => '',
 	'Retype Password' => 'Reintroduceti parola',
 	'Retype Password is incorrect.' => 'Parola reintrodusa este gresita.',
 	'Incorrect password (minimal length 4 symbols).' => 'Parola incorecta (minim 4 caractere).',

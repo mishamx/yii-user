@@ -23,8 +23,6 @@ return array(
 	'Password is incorrect.' => 'Невірний пароль',
 	'E-mail' => 'Електронна пошта',
 	'Verification Code' => 'Перевірочний код',
-	'Old Password' => '',
-	'Old Password is incorrect.' => '',
 	'Retype Password' => 'Повторіть пароль',
 	'Retype Password is incorrect.' => 'Паролі не співпадають',
 	'Incorrect password (minimal length 4 symbols).' => 'Мінімальна довжина паролю 4 символи',

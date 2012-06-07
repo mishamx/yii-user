@@ -20,8 +20,6 @@ return array(
 	'Password is incorrect.' => 'Wachtwoord is niet correct.',
 	'E-mail' => 'E-mail',
 	'Verification Code' => 'Verificatiecode',
-	'Old Password' => '',
-	'Old Password is incorrect.' => '',
 	'Retype Password' => 'Wachtwoord opnieuw invoeren',
 	'Retype Password is incorrect.' => 'Opnieuw wachtwoord invoeren is niet correct.',
 	'Incorrect password (minimal length 4 symbols).' => 'Ongeldig wachtwoord (minimaal 4 karakters).',
