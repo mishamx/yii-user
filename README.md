@@ -85,11 +85,4 @@ Install
 -------
 
 Run command: yiic migrate --migrationPath=user.migrations
-
-Login
------
-
-Default users:
-
-* admin/admin
-* demo/demo
+Input admin login, email and password
