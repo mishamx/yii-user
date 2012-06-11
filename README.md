@@ -25,7 +25,7 @@ Change your config main:
             'application.modules.user.models.*',
             'application.modules.user.components.*',
         ),
-        
+
         #...
         'modules'=>array(
             #...
@@ -129,5 +129,7 @@ Change your config console:
 Install
 -------
 
-Run command: yiic migrate --migrationPath=user.migrations
+Run command:
+    yiic migrate --migrationPath=user.migrations
+
 Input admin login, email and password
