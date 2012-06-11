@@ -210,7 +210,7 @@ class UserModule extends CWebModule
 			$return_name = array();
 			foreach ($admins as $admin)
 				array_push($return_name,$admin->username);
-			self::$_admins = $return_name;
+			self::$_admins = ($return_name)?$return_name:array('');
 		}
 		return self::$_admins;
 	}
