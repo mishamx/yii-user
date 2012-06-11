@@ -4,7 +4,12 @@ Yii-User Installation
 Download
 --------
 
-Download or checkout (SVN/Git) from http://yii-user.2mx.org and unpack files in your project/protected/modules/user
+Download or checkout (SVN/Git) from http://yii-user.2mx.org and unpack files in your protected/modules/user
+
+Git clone
+---------
+
+    clone git git@github.com:mishamx/yii-user.git
 
 Configure
 ---------
@@ -20,23 +25,44 @@ Change your config main:
             'application.modules.user.models.*',
             'application.modules.user.components.*',
         ),
+        
         #...
         'modules'=>array(
             #...
             'user'=>array(
-                'hash' => 'md5',                                     # encrypting method (php hash function)
-                'sendActivationMail' => true,                        # send activation email
-                'loginNotActiv' => false,                            # allow access for non-activated users
-                'activeAfterRegister' => false,                      # activate user on registration (only sendActivationMail = false)
-                'autoLogin' => true,                                 # automatically login from registration
-                'registrationUrl' => array('/user/registration'),    # registration path
-                'recoveryUrl' => array('/user/recovery'),            # recovery password path
-                'loginUrl' => array('/user/login'),                  # login form path
-                'returnUrl' => array('/user/profile'),               # page after login
-                'returnLogoutUrl' => array('/user/login'),           # page after logout
+                # encrypting method (php hash function)
+                'hash' => 'md5',
+
+                # send activation email
+                'sendActivationMail' => true,
+
+                # allow access for non-activated users
+                'loginNotActiv' => false,
+
+                # activate user on registration (only sendActivationMail = false)
+                'activeAfterRegister' => false,
+
+                # automatically login from registration
+                'autoLogin' => true,
+
+                # registration path
+                'registrationUrl' => array('/user/registration'),
+
+                # recovery password path
+                'recoveryUrl' => array('/user/recovery'),
+
+                # login form path
+                'loginUrl' => array('/user/login'),
+
+                # page after login
+                'returnUrl' => array('/user/profile'),
+
+                # page after logout
+                'returnLogoutUrl' => array('/user/login'),
             ),
             #...
         ),
+
         #...
         // application components
         'components'=>array(
@@ -65,16 +91,35 @@ Change your config console:
         'modules'=>array(
             #...
             'user'=>array(
-                'hash' => 'md5',                                     # encrypting method (php hash function)
-                'sendActivationMail' => true,                        # send activation email
-                'loginNotActiv' => false,                            # allow access for non-activated users
-                'activeAfterRegister' => false,                      # activate user on registration (only sendActivationMail = false)
-                'autoLogin' => true,                                 # automatically login from registration
-                'registrationUrl' => array('/user/registration'),    # registration path
-                'recoveryUrl' => array('/user/recovery'),            # recovery password path
-                'loginUrl' => array('/user/login'),                  # login form path
-                'returnUrl' => array('/user/profile'),               # page after login
-                'returnLogoutUrl' => array('/user/login'),           # page after logout
+                # encrypting method (php hash function)
+                'hash' => 'md5',
+
+                # send activation email
+                'sendActivationMail' => true,
+
+                # allow access for non-activated users
+                'loginNotActiv' => false,
+
+                # activate user on registration (only sendActivationMail = false)
+                'activeAfterRegister' => false,
+
+                # automatically login from registration
+                'autoLogin' => true,
+
+                # registration path
+                'registrationUrl' => array('/user/registration'),
+
+                # recovery password path
+                'recoveryUrl' => array('/user/recovery'),
+
+                # login form path
+                'loginUrl' => array('/user/login'),
+
+                # page after login
+                'returnUrl' => array('/user/profile'),
+
+                # page after logout
+                'returnLogoutUrl' => array('/user/login'),
             ),
             #...
         ),
