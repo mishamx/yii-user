@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Yii-User : Yii PHP Framework extension for registration and management users accounts." />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Yii-User</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/mishamx/yii-user">View on GitHub</a>
+
+          <h1 id="project_title">Yii-User</h1>
+          <h2 id="project_tagline">Yii PHP Framework extension for registration and management users accounts.</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/mishamx/yii-user/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/mishamx/yii-user/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>Yii-User Installation</h1>
+
+<h2>Download</h2>
+
+<p>Download or checkout (SVN/Git) from <a href="http://yii-user.2mx.org">http://yii-user.2mx.org</a> and unpack files in your protected/modules/user</p>
+
+<h2>Git clone</h2>
+
+<pre><code>clone git git@github.com:mishamx/yii-user.git
+</code></pre>
+
+<h2>Configure</h2>
+
+<p>Change your config main:</p>
+
+<pre><code>return array(
+    #...
+    // autoloading model and component classes
+    'import'=&gt;array(
+        'application.models.*',
+        'application.components.*',
+        'application.modules.user.models.*',
+        'application.modules.user.components.*',
+    ),
+
+    #...
+    'modules'=&gt;array(
+        #...
+        'user'=&gt;array(
+            # encrypting method (php hash function)
+            'hash' =&gt; 'md5',
+
+            # send activation email
+            'sendActivationMail' =&gt; true,
+
+            # allow access for non-activated users
+            'loginNotActiv' =&gt; false,
+
+            # activate user on registration (only sendActivationMail = false)
+            'activeAfterRegister' =&gt; false,
+
+            # automatically login from registration
+            'autoLogin' =&gt; true,
+
+            # registration path
+            'registrationUrl' =&gt; array('/user/registration'),
+
+            # recovery password path
+            'recoveryUrl' =&gt; array('/user/recovery'),
+
+            # login form path
+            'loginUrl' =&gt; array('/user/login'),
+
+            # page after login
+            'returnUrl' =&gt; array('/user/profile'),
+
+            # page after logout
+            'returnLogoutUrl' =&gt; array('/user/login'),
+        ),
+        #...
+    ),
+
+    #...
+    // application components
+    'components'=&gt;array(
+    #...
+        'db'=&gt;array(
+        #...
+            'tablePrefix' =&gt; 'tbl_',
+        #...
+        ),
+        #...
+        'user'=&gt;array(
+            // enable cookie-based authentication
+            'class' =&gt; 'WebUser',
+            'allowAutoLogin'=&gt;true,
+            'loginUrl' =&gt; array('/user/login'),
+        ),
+    #...
+    ),
+    #...
+);
+</code></pre>
+
+<p>Change your config console:</p>
+
+<pre><code>return array(
+    #...
+    'modules'=&gt;array(
+        #...
+        'user'=&gt;array(
+            # encrypting method (php hash function)
+            'hash' =&gt; 'md5',
+
+            # send activation email
+            'sendActivationMail' =&gt; true,
+
+            # allow access for non-activated users
+            'loginNotActiv' =&gt; false,
+
+            # activate user on registration (only sendActivationMail = false)
+            'activeAfterRegister' =&gt; false,
+
+            # automatically login from registration
+            'autoLogin' =&gt; true,
+
+            # registration path
+            'registrationUrl' =&gt; array('/user/registration'),
+
+            # recovery password path
+            'recoveryUrl' =&gt; array('/user/recovery'),
+
+            # login form path
+            'loginUrl' =&gt; array('/user/login'),
+
+            # page after login
+            'returnUrl' =&gt; array('/user/profile'),
+
+            # page after logout
+            'returnLogoutUrl' =&gt; array('/user/login'),
+        ),
+        #...
+    ),
+    #...
+);
+</code></pre>
+
+<h2>Install</h2>
+
+<p>Run command:
+    yiic migrate --migrationPath=user.migrations</p>
+
+<p>Input admin login, email and password</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Yii-User maintained by <a href="https://github.com/mishamx">mishamx</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-5154909-15");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+
+  </body>
+</html>
