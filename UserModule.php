@@ -160,15 +160,27 @@ class UserModule extends CWebModule
 	/**
 	 * @return hash string.
 	 */
-	public static function encrypting($string="") {
+	public static function encrypting($string="",$salt=null) {
 		$hash = Yii::app()->getModule('user')->hash;
-		if ($hash=="md5")
-			return md5($string);
-		if ($hash=="sha1")
-			return sha1($string);
-		else
-			return hash($hash,$string);
+		
+		switch($hash)
+		{
+			case "md5":
+				return md5($string);
+			case "sha1":
+				return sha1($string);
+			case "blowfish":
+				if(!$salt) {
+					Yii::import('user.extensions.Randomness.Randomness');
+					$salt = Randomness::blowfishSalt();
+				}
+				return crypt($string,$salt);
+			default:
+				return hash($hash,$string);
+				
+		}
 	}
+	
 	
 	/**
 	 * @param $place
