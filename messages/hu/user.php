@@ -93,7 +93,6 @@ return array(
 	'Range' => 'Tartomány',
 	'Error Message' => 'Hibaüzenet',
 	'Other Validator' => 'Más ellenőrzés',
-	'JSON string (example: {example}).' => '',
 	'Default' => 'Alapértelmezett',
 	'Position' => 'Pozicíó',
 	'Visible' => 'Látható',

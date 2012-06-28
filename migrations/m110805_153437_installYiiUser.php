@@ -53,10 +53,10 @@ class m110805_153437_installYiiUser extends CDbMigration
                         "match" => "varchar(255) NOT NULL DEFAULT ''",
                         "range" => "varchar(255) NOT NULL DEFAULT ''",
                         "error_message" => "varchar(255) NOT NULL DEFAULT ''",
-                        "other_validator" => "text NOT NULL DEFAULT ''",
+                        "other_validator" => "text",
                         "default" => "varchar(255) NOT NULL DEFAULT ''",
                         "widget" => "varchar(255) NOT NULL DEFAULT ''",
-                        "widgetparams" => "text NOT NULL DEFAULT ''",
+                        "widgetparams" => "text",
                         "position" => "int(3) NOT NULL DEFAULT 0",
                         "visible" => "int(1) NOT NULL DEFAULT 0",
                     ), $this->MySqlOptions);

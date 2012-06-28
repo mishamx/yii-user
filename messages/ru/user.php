@@ -20,6 +20,8 @@ return array(
 	'Password is incorrect.' => 'Неверный пароль.',
 	'E-mail' => 'Электронная почта',
 	'Verification Code' => 'Проверочный код',
+	'Old Password' => 'Старый пароль',
+	'Old Password is incorrect.' => 'Неправильный старый пароль',
 	'Retype Password' => 'Подтверждение пароля',
 	'Retype Password is incorrect.' => 'Пароли не совпадают.',
 	'Incorrect password (minimal length 4 symbols).' => 'Минимальная длина пароля 4 символа.',
