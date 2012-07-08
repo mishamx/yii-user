@@ -39,10 +39,12 @@ class RegistrationController extends Controller
 					$profile->attributes=((isset($_POST['Profile'])?$_POST['Profile']:array()));
 					if($model->validate()&&$profile->validate())
 					{
+						$salt = User::getNewSalt();
+						
 						$soucePassword = $model->password;
 						$model->activkey=UserModule::encrypting(microtime().$model->password);
-						$model->password=UserModule::encrypting($model->password);
-						$model->verifyPassword=UserModule::encrypting($model->verifyPassword);
+						$model->password=UserModule::encrypting($model->password, $salt) . ":" . $salt;
+						$model->verifyPassword=UserModule::encrypting($model->verifyPassword, $salt) . ":" . $salt;
 						$model->superuser=0;
 						$model->status=((Yii::app()->controller->module->activeAfterRegister)?User::STATUS_ACTIVE:User::STATUS_NOACTIVE);
 						
@@ -74,6 +76,8 @@ class RegistrationController extends Controller
 						}
 					} else $profile->validate();
 				}
+				$model->password = '';
+				$model->verifyPassword = '';
 			    $this->render('/user/registration',array('model'=>$model,'profile'=>$profile));
 		    }
 	}

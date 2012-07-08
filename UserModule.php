@@ -160,14 +160,14 @@ class UserModule extends CWebModule
 	/**
 	 * @return hash string.
 	 */
-	public static function encrypting($string="") {
+	public static function encrypting($string="", $salt="") {
 		$hash = Yii::app()->getModule('user')->hash;
 		if ($hash=="md5")
-			return md5($string);
+			return md5($string.$salt);
 		if ($hash=="sha1")
-			return sha1($string);
+			return sha1($string.$salt);
 		else
-			return hash($hash,$string);
+			return hash($hash,$string.$salt);
 	}
 	
 	/**

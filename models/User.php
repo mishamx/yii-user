@@ -196,4 +196,15 @@ class User extends CActiveRecord
     public function setLastvisit($value) {
         $this->lastvisit_at=date('Y-m-d H:i:s',$value);
     }
+	
+	/**
+	 * simply returns the value of PHP's uniqid(). 
+	 * That should be sufficient to make most rainbowtables useless. 
+	 * 
+	 * Modify this function to change the way a salt is generated if you disagree.
+	 */
+	public static function getNewSalt()
+	{
+		return uniqid();
+	}
 }

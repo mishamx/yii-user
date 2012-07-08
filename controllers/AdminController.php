@@ -85,7 +85,8 @@ class AdminController extends Controller
 			$profile->attributes=$_POST['Profile'];
 			$profile->user_id=0;
 			if($model->validate()&&$profile->validate()) {
-				$model->password=Yii::app()->controller->module->encrypting($model->password);
+				$salt = User::getNewSalt();
+				$model->password=Yii::app()->controller->module->encrypting($model->password.$salt).":".$salt;
 				if($model->save()) {
 					$profile->user_id=$model->id;
 					$profile->save();
@@ -116,8 +117,10 @@ class AdminController extends Controller
 			
 			if($model->validate()&&$profile->validate()) {
 				$old_password = User::model()->notsafe()->findByPk($model->id);
-				if ($old_password->password!=$model->password) {
-					$model->password=Yii::app()->controller->module->encrypting($model->password);
+				list($old_password, $old_salt) = explode($old_password->password);
+				if ($old_password != Yii::app()->controller->module->encrypting($model->password.$old_salt)) {
+					$new_salt = User::getNewSalt();
+					$model->password=Yii::app()->controller->module->encrypting($model->password.$new_salt) . ":" . $new_salt;
 					$model->activkey=Yii::app()->controller->module->encrypting(microtime().$model->password);
 				}
 				$model->save();
