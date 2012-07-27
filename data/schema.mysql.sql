@@ -1,6 +1,6 @@
 CREATE TABLE `tbl_users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(20) NOT NULL,
+  `username` varchar(128) NOT NULL,
   `password` varchar(128) NOT NULL,
   `email` varchar(128) NOT NULL,
   `activkey` varchar(128) NOT NULL DEFAULT '',
