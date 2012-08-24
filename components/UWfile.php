@@ -25,14 +25,15 @@ class UWfile {
 				'file'=>array(
 					'allowEmpty'=>array('','false','true'),
 					'maxFiles'=>'',
-					'maxSize'=>'',
-					'minSize'=>'',
-					'tooLarge'=>'',
-					'tooMany'=>'',
-					'tooSmall'=>'',
-					'types'=>'',
-					'wrongType'=>'',
-				),
+                    'maxSize'=>'',
+                    'minSize'=>'',
+                    'tooLarge'=>'',
+                    'tooMany'=>'',
+                    'tooSmall'=>'',
+                    'types'=>'',
+                    'wrongType'=>'',
+                    'safe'=>array('true','false'),
+                ),
 			),
 		);
 	}
