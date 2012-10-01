@@ -35,14 +35,7 @@ class UserIdentity extends CUserIdentity
 			return false;
 		}
 		
-		//salted password
-		$salt = "";
-		$password = $user->password;
-		$passwordParts = explode(":",$user->password);
-		if(count($passwordParts) == 2)
-			list($password, $salt) = $passwordParts;
-		
-		if(Yii::app()->getModule('user')->encrypting($this->password, $salt)!==$password)
+		if(Yii::app()->getModule('user')->encrypting($this->password, $user->salt)!==$user->password)
 			$this->errorCode=self::ERROR_PASSWORD_INVALID;
 		else if($user->status==0&&Yii::app()->getModule('user')->loginNotActiv==false)
 			$this->errorCode=self::ERROR_STATUS_NOTACTIV;
@@ -52,6 +45,13 @@ class UserIdentity extends CUserIdentity
 			$this->_id=$user->id;
 			$this->username=$user->username;
 			$this->errorCode=self::ERROR_NONE;
+			
+			//when user has no salt, let's be generous and give him some.
+			if(empty($user->salt)) {
+				$user->salt = User::getNewSalt();
+				$user->password = Yii::app()->getModule('user')->encrypting($this->password, $user->salt);
+				$user->save();
+			}
 		}
 		return !$this->errorCode;
 	}

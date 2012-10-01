@@ -64,6 +64,7 @@ class AdminController extends Controller
 	public function actionView()
 	{
 		$model = $this->loadModel();
+		$model->password = '';
 		$this->render('view',array(
 			'model'=>$model,
 		));
@@ -85,8 +86,8 @@ class AdminController extends Controller
 			$profile->attributes=$_POST['Profile'];
 			$profile->user_id=0;
 			if($model->validate()&&$profile->validate()) {
-				$salt = User::getNewSalt();
-				$model->password=Yii::app()->controller->module->encrypting($model->password.$salt).":".$salt;
+				$model->salt = User::getNewSalt();
+				$model->password=Yii::app()->controller->module->encrypting($model->password,$model->salt);
 				if($model->save()) {
 					$profile->user_id=$model->id;
 					$profile->save();
@@ -117,18 +118,21 @@ class AdminController extends Controller
 			
 			if($model->validate()&&$profile->validate()) {
 				$old_password = User::model()->notsafe()->findByPk($model->id);
-				list($old_password, $old_salt) = explode($old_password->password);
-				if ($old_password != Yii::app()->controller->module->encrypting($model->password.$old_salt)) {
-					$new_salt = User::getNewSalt();
-					$model->password=Yii::app()->controller->module->encrypting($model->password.$new_salt) . ":" . $new_salt;
+				$old_salt = $old_password->salt;
+				$old_password = $old_password->password;
+				if (isset($_POST['User']['password']) && $old_password != Yii::app()->controller->module->encrypting($model->password,$old_salt)) {
+					$model->salt = User::getNewSalt();
+					$model->password=Yii::app()->controller->module->encrypting($model->password,$model->salt);
 					$model->activkey=Yii::app()->controller->module->encrypting(microtime().$model->password);
+				} else {
+					unset($model->password); 
 				}
 				$model->save();
 				$profile->save();
 				$this->redirect(array('view','id'=>$model->id));
 			} else $profile->validate();
 		}
-
+		$model->password = '';
 		$this->render('update',array(
 			'model'=>$model,
 			'profile'=>$profile,

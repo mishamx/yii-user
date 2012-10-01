@@ -39,12 +39,12 @@ class RegistrationController extends Controller
 					$profile->attributes=((isset($_POST['Profile'])?$_POST['Profile']:array()));
 					if($model->validate()&&$profile->validate())
 					{
-						$salt = User::getNewSalt();
+						$model->salt = User::getNewSalt();
 						
-						$soucePassword = $model->password;
+						$sourcePassword = $model->password;
 						$model->activkey=UserModule::encrypting(microtime().$model->password);
-						$model->password=UserModule::encrypting($model->password, $salt) . ":" . $salt;
-						$model->verifyPassword=UserModule::encrypting($model->verifyPassword, $salt) . ":" . $salt;
+						$model->password=UserModule::encrypting($model->password, $model->salt);
+						$model->verifyPassword=UserModule::encrypting($model->verifyPassword, $model->salt);
 						$model->superuser=0;
 						$model->status=((Yii::app()->controller->module->activeAfterRegister)?User::STATUS_ACTIVE:User::STATUS_NOACTIVE);
 						
@@ -57,7 +57,7 @@ class RegistrationController extends Controller
 							}
 							
 							if ((Yii::app()->controller->module->loginNotActiv||(Yii::app()->controller->module->activeAfterRegister&&Yii::app()->controller->module->sendActivationMail==false))&&Yii::app()->controller->module->autoLogin) {
-									$identity=new UserIdentity($model->username,$soucePassword);
+									$identity=new UserIdentity($model->username,$sourcePassword);
 									$identity->authenticate();
 									Yii::app()->user->login($identity,0);
 									$this->redirect(Yii::app()->controller->module->returnUrl);
