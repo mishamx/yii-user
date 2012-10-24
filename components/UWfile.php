@@ -53,7 +53,7 @@ class UWfile {
         
         if ($this->_file_instance = CUploadedFile::getInstance($model,$field_varname)){
             
-            $model->onAfterSave = array($this, 'processFile');
+            $model->getEventHandlers('onAfterSave')->insertAt(0,array($this, 'processFile'));
             $file_name = str_replace(' ', '-', $this->_file_instance->name);
             $this->_new_file_path = $this->params['path'].'/';
             
