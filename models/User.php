@@ -196,4 +196,9 @@ class User extends CActiveRecord
     public function setLastvisit($value) {
         $this->lastvisit_at=date('Y-m-d H:i:s',$value);
     }
+
+    public function afterSave() {
+        Yii::app()->user->updateSession();
+        return parent::afterSave();
+    }
 }
