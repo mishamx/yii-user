@@ -27,17 +27,6 @@ class UWjuidate {
 	}
 	
 	/**
-	 * @param $value
-	 * @param $model
-	 * @param $field_varname
-	 * @return string
-	 */
-	public function setAttributes($value,$model,$field_varname) {
-		if ($value=='0000-00-00') $value = '';
-		return $value;
-	}
-	
-	/**
 	 * @param $model - profile model
 	 * @param $field - profile fields model item
 	 * @return string
