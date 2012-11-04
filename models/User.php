@@ -198,8 +198,9 @@ class User extends CActiveRecord
     }
 
     public function afterSave() {
-        if (get_class(Yii::app())=='CWebApplication')
+        if (get_class(Yii::app())=='CWebApplication'&&Profile::$regMode==false) {
             Yii::app()->user->updateSession();
+        }
         return parent::afterSave();
     }
 }
