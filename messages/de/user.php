@@ -81,7 +81,7 @@ return array(
 	'Delete file' => 'Datei löschen',
 	'View User' => 'Benutzer anzeigen',
 	'Are you sure to delete this item?' => 'Sind Sie sicher, dass Sie dieses Element wirklich löschen wollen? ',
-	'Changes are saved.' => 'Änderungen wurde gespeichert.',
+	'Changes is saved.' => 'Änderungen wurde gespeichert.',
 	'Manage Profile Field' => 'Mange Profil Field',
 	'Variable name' => 'Variablen name',
 	'Title' => 'Titel',

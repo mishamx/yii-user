@@ -81,7 +81,7 @@ return array(
 	'Delete file' => 'Stergere fisier',
 	'View User' => 'Afisare utilizator',
 	'Are you sure to delete this item?' => 'Sunteti sigur/a ca doriti sa inlaturati acest element? ',
-	'Changes are saved.' => 'Modificarile au fost salvate.',
+	'Changes is saved.' => 'Modificarile au fost salvate.',
 	'Manage Profile Field' => 'Administrare campuri profil',
 	'Variable name' => 'Denumire variabila',
 	'Title' => 'Titlu',

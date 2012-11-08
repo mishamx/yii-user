@@ -1,11 +1,11 @@
-<?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Change Password");
+<?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Change password");
 $this->breadcrumbs=array(
 	UserModule::t("Login") => array('/user/login'),
-	UserModule::t("Change Password"),
+	UserModule::t("Change password"),
 );
 ?>
 
-<h1><?php echo UserModule::t("Change Password"); ?></h1>
+<h1><?php echo UserModule::t("Change password"); ?></h1>
 
 
 <div class="form">
