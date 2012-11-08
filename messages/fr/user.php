@@ -83,7 +83,7 @@ return array(
         'Delete file' => 'Supprimer le fichier',
         'View User' => 'Voir utilisateur',
         'Are you sure to delete this item?' => 'Etes-vous sûr de vouloir supprimer cet élément?',
-        'Changes are saved.' => 'Changes est sauvé.',
+        'Changes is saved.' => 'Changes est sauvé.',
         'Mange Profile Field' => 'Gerer les champs de profil',
         'Variable name' => 'Nom de la variable',
         'Title' => 'Titre',

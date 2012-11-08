@@ -83,7 +83,7 @@ return array(
 	'Delete file' => 'Eliminar arquivo',
     'View User' => 'Ver Usuário',
     'Are you sure to delete this item?' => 'Confirma que deseja apagar este item?',
-    'Changes are saved.' => 'Atualizações realizadas com sucesso.',
+    'Changes is saved.' => 'Atualizações realizadas com sucesso.',
     'Manage Profile Field' => 'Administrar Campos de Perfil',
     'Variable name' => 'Nome da variável',
 	'Title' => 'Título',

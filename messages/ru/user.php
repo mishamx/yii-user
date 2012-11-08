@@ -83,7 +83,7 @@ return array(
 	'Delete file' => 'Удалить файл',
 	'View User' => 'Просмотр профиля',
 	'Are you sure to delete this item?' => 'Вы действительно хотите удалить пользователя?',
-	'Changes are saved.' => 'Изменения сохранены.',
+	'Changes is saved.' => 'Изменения сохранены.',
 	'Manage Profile Field' => 'Настройка полей',
 	'Variable name' => 'Имя переменной',
 	'Title' => 'Название',
