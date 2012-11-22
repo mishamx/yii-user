@@ -55,7 +55,7 @@ $this->breadcrumbs=array(
 	</div>
 	
 <?php 
-		$profileFields=$profile->getFields();
+		$profileFields=Profile::getFields();
 		if ($profileFields) {
 			foreach($profileFields as $field) {
 			?>

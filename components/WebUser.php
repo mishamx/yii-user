@@ -3,6 +3,19 @@
 class WebUser extends CWebUser
 {
 
+    /**
+     * @var boolean whether to enable cookie-based login. Defaults to false.
+     */
+    public $allowAutoLogin=true;
+    /**
+     * @var string|array the URL for login. If using array, the first element should be
+     * the route to the login action, and the rest name-value pairs are GET parameters
+     * to construct the login URL (e.g. array('/site/login')). If this property is null,
+     * a 403 HTTP exception will be raised instead.
+     * @see CController::createUrl
+     */
+    public $loginUrl=array('/user/login');
+
     public function getRole()
     {
         return $this->getState('__role');
@@ -35,6 +48,7 @@ class WebUser extends CWebUser
 
     public function updateSession() {
         $user = Yii::app()->getModule('user')->user($this->id);
+        $this->name = $user->username;
         $userAttributes = CMap::mergeArray(array(
                                                 'email'=>$user->email,
                                                 'username'=>$user->username,
