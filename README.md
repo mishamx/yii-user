@@ -30,9 +30,6 @@ Change your config main:
         'modules'=>array(
             #...
             'user'=>array(
-                # encrypting method (php hash function)
-                'hash' => 'md5',
-
                 # send activation email
                 'sendActivationMail' => true,
 
@@ -89,9 +86,6 @@ Change your config console:
         'modules'=>array(
             #...
             'user'=>array(
-                # encrypting method (php hash function)
-                'hash' => 'md5',
-
                 # send activation email
                 'sendActivationMail' => true,
 

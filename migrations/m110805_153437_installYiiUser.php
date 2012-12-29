@@ -119,7 +119,7 @@ class m110805_153437_installYiiUser extends CDbMigration
             "username" => $this->_model->username,
             "password" => Yii::app()->getModule('user')->encrypting($this->_model->password),
             "email" => "webmaster@example.com",
-            "activkey" => Yii::app()->getModule('user')->encrypting(microtime()),
+            "activkey" => md5(microtime()),
             "createtime" => time(),
             "lastvisit" => "0",
             "superuser" => "1",
