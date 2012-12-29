@@ -76,7 +76,7 @@ class ProfileController extends Controller
 					if($model->validate()) {
 						$new_password = User::model()->notsafe()->findbyPk(Yii::app()->user->id);
 						$new_password->password = UserModule::encrypting($model->password);
-						$new_password->activkey=UserModule::encrypting(microtime().$model->password);
+						$new_password->activkey=md5(microtime().$model->password);
 						$new_password->save();
 						Yii::app()->user->setFlash('profileMessage',UserModule::t("New password is saved."));
 						$this->redirect(array("profile"));

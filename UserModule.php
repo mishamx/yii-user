@@ -158,18 +158,23 @@ class UserModule extends CWebModule
 	}
 	
 	/**
+	 * Encrypt a password.
 	 * @return hash string.
 	 */
 	public static function encrypting($string="") {
-		$hash = Yii::app()->getModule('user')->hash;
-		if ($hash=="md5")
-			return md5($string);
-		if ($hash=="sha1")
-			return sha1($string);
-		else
-			return hash($hash,$string);
+		$bcrypt = new Bcrypt();
+		return $bcrypt->hash($string);
 	}
-	
+
+	/**
+	 * Verify if unencrypted password is same as encrypted hash.
+	 * @return boolean
+	 */
+	public static function verifyPassword($password, $hash) {
+		$bcrypt = new Bcrypt();
+		return $bcrypt->verify($password, $hash);
+	}
+
 	/**
 	 * @param $place
 	 * @return boolean 
