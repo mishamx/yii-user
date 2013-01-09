@@ -86,7 +86,7 @@ return array(
         'Delete file' => 'Usuń plik',
         'View User' => 'Pokaż użytkownika',
         'Are you sure to delete this item?' => 'Czy na pewno usunąć wybrany element?',
-        'Changes are saved.' => 'Zapisano zmiany.',
+        'Changes is saved.' => 'Zapisano zmiany.',
         'Mange Profile Field' => 'Zarządzaj polami profilowymi',
         'Variable name' => 'Nazwa zmiennej',
         'Title' => 'Tytuł',
