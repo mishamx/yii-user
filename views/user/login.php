@@ -47,6 +47,13 @@ $this->breadcrumbs=array(
 
 	<div class="row submit">
 		<?php echo CHtml::submitButton(UserModule::t("Login")); ?>
+
+		<?php if(UserModule::module()->withHybridAuth) { ?>
+		<div>
+			Alternatively, you may login with the following: <br  />
+		<?php $this->widget('application.modules.hybridauth.widgets.renderProviders'); ?>
+		</div>
+		<?php } ?>
 	</div>
 	
 <?php echo CHtml::endForm(); ?>

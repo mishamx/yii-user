@@ -54,3 +54,10 @@ $this->menu=array(
     	<td><?php echo CHtml::encode(User::itemAlias("UserStatus",$model->status)); ?></td>
 	</tr>
 </table>
+
+<?php if(UserModule::module()->withHybridAuth) { ?>
+<div>
+	Link your account:
+	<?php $this->widget(UserModule::module()->hybridAuthModulePath . '.widgets.renderProviders'); ?>
+</div>
+<?php } ?>

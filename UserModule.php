@@ -11,8 +11,20 @@
 class UserModule extends CWebModule
 {
 	/**
+	 * @var boolean
+	 * @desc whether to include hybridauth widget in profile and login view
+	 */
+	public $withHybridAuth = false;
+
+	/**
+	 * @var string
+	 * @desc path to hybridauth module
+	 */
+	public $hybridAuthModulePath = "application.modules.hybridauth";
+
+	/**
 	 * @var CDbConnection
-	 * @desc Database connection to use
+	 * @desc database connection to use
 	 */
 	public $db = null;
 
@@ -276,5 +288,30 @@ class UserModule extends CWebModule
 	 */
 	public function users() {
 		return User;
+	}
+
+	public static function getModuleId()
+	{
+		$stateKey = "usermodule.moduleid";
+
+		// Get module Id
+		if(!Yii::app()->user->hasState($stateKey))
+		{
+			$tmp = Yii::app()->getModules();
+			foreach($tmp as $key=>$value)
+			{
+				if(stripos($value['class'], "usermodule") !== false)
+				{
+					Yii::app()->user->setState($stateKey, $key);
+				}
+			}
+		}
+
+		return Yii::app()->user->getState($stateKey, "yii-user");
+	}
+
+	public static function module()
+	{
+		return Yii::app()->getModule(UserModule::getModuleId());
 	}
 }
