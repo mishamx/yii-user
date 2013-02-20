@@ -1,6 +1,6 @@
 <?php
 
-class User extends CActiveRecord
+class User extends UActiveRecord
 {
 	const STATUS_NOACTIVE=0;
 	const STATUS_ACTIVE=1;

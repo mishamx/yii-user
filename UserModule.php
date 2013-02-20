@@ -11,6 +11,12 @@
 class UserModule extends CWebModule
 {
 	/**
+	 * @var CDbConnection
+	 * @desc Database connection to use
+	 */
+	public $db = null;
+
+	/**
 	 * @var int
 	 * @desc items on page
 	 */
