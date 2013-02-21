@@ -13,7 +13,7 @@ $this->menu=array(
 ?>
 <h1><?php echo UserModule::t('View Profile Field #').$model->varname; ?></h1>
 
-<?php $this->widget('zii.widgets.CDetailView', array(
+<?php $this->widget(UserModule::module()->withBootstrap ? "bootstrap.widgets.TbDetailView" : 'zii.widgets.CDetailView', array(
 	'data'=>$model,
 	'attributes'=>array(
 		'id',

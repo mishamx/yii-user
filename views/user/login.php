@@ -46,12 +46,20 @@ $this->breadcrumbs=array(
 	</div>
 
 	<div class="row submit">
+		<?php if(UserModule::module()->withBootstrap) { ?>
+		<?php $this->widget('bootstrap.widgets.TbButton',array(
+            'buttonType'=>'submit',
+            'type'=>'primary',
+            'label'=>UserModule::t("Login"),
+        )); ?>
+		<?php } else { ?>
 		<?php echo CHtml::submitButton(UserModule::t("Login")); ?>
+		<?php } ?>
 
 		<?php if(UserModule::module()->withHybridAuth) { ?>
 		<div>
 			Alternatively, you may login with the following: <br  />
-		<?php $this->widget('application.modules.hybridauth.widgets.renderProviders'); ?>
+		<?php $this->widget(UserModule::module()->hybridAuthModulePath . '.widgets.renderProviders'); ?>
 		</div>
 		<?php } ?>
 	</div>

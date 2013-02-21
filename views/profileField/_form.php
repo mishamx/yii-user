@@ -113,8 +113,16 @@
 		<?php echo CHtml::error($model,'visible'); ?>
 	</div>
 
-	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? UserModule::t('Create') : UserModule::t('Save')); ?>
+	<div class="form-actions row buttons">
+	<?php if(UserModule::module()->withBootstrap) { ?>
+	<?php $this->widget('bootstrap.widgets.TbButton',array(
+            'buttonType'=>'submit',
+            'type'=>'primary',
+            'label'=>$model->isNewRecord ? UserModule::t('Create') : UserModule::t('Save'),
+        )); ?>
+	<?php } else { ?>
+	<?php echo CHtml::submitButton($model->isNewRecord ? UserModule::t('Create') : UserModule::t('Save')); ?>
+	<?php } ?>
 	</div>
 
 <?php echo CHtml::endForm(); ?>

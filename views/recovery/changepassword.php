@@ -27,9 +27,16 @@ $this->breadcrumbs=array(
 	<?php echo CHtml::activePasswordField($form,'verifyPassword'); ?>
 	</div>
 	
-	
-	<div class="row submit">
-	<?php echo CHtml::submitButton(UserModule::t("Save")); ?>
+	<div class="form-actions row submit">
+	<?php if(UserModule::module()->withBootstrap) { ?>
+	<?php $this->widget('bootstrap.widgets.TbButton',array(
+            'buttonType'=>'submit',
+            'type'=>'primary',
+            'label'=>UserModule::t('Save'),
+        )); ?>
+	<?php } else { ?>
+	<?php echo CHtml::submitButton(UserModule::t('Save')); ?>
+	<?php } ?>
 	</div>
 
 <?php echo CHtml::endForm(); ?>

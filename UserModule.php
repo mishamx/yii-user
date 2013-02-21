@@ -10,6 +10,7 @@
 
 class UserModule extends CWebModule
 {
+	public $withBootstrap = false;
 	/**
 	 * @var boolean
 	 * @desc whether to include hybridauth widget in profile and login view
