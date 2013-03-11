@@ -541,6 +541,19 @@ class ProfileFieldController extends Controller
 		return array($list,$widgets);		
 	}
 	
+    /**
+	 * Get Values for Dependent DropDownList.
+	 * @author juan.gaviria@dsotogroup.com
+	 */
+	public function actionGetDroDownDepValues(){
+		$post = $_POST;
+		$model = new $post['model'];
+		$data = CHtml::listData($model->findAll($post['varname'].'=:'.$post['varname'], array(':'.$post['varname']=>$post[$post['varname']])), 'id', $post['optionDestName']);
+		echo CHtml::tag('option', array('value'=>''), CHtml::encode('Seleccione...'), true);
+		foreach($data AS $value=>$name){
+			echo CHtml::tag('option', array('value'=>$value), CHtml::encode($name), true);
+		}
+	}
 
     /**
      * Performs the AJAX validation.
