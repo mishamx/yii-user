@@ -10,6 +10,25 @@
 
 class UserModule extends CWebModule
 {
+	/**
+	 * @var boolean
+	 * @desc whether to hsow forget password link on login page
+	 */
+	public $showForgetPasswordLink = true;
+	/**
+	 * @var boolean
+	 * @desc whether to show register link on login page
+	 */
+	public $showRegisterLink = true;
+	/**
+	 * @var string
+	 * @desc layout for the login form
+	 */
+	public $userLayoutPath = "/user/login";
+	/**
+	 * @var boolean 
+	 * @desc whether to use bootstrap widgets
+	 */
 	public $withBootstrap = false;
 	/**
 	 * @var boolean
