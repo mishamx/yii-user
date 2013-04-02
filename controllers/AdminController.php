@@ -144,7 +144,11 @@ class AdminController extends Controller
 			// we only allow deletion via POST request
 			$model = $this->loadModel();
 			$profile = Profile::model()->findByPk($model->id);
-			$profile->delete();
+			
+			// Make sure profile exists
+			if ($profile)
+				$profile->delete();
+
 			$model->delete();
 			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 			if(!isset($_POST['ajax']))
