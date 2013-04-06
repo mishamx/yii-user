@@ -21,7 +21,7 @@ class m110810_162301_userTimestampFix extends CDbMigration
             case "mysql":
                     $this->addColumn(Yii::app()->getModule('user')->tableUsers,'create_at',"TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP");
                     $this->addColumn(Yii::app()->getModule('user')->tableUsers,'lastvisit_at',"TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00'");
-                    $this->execute("UPDATE ".Yii::app()->getModule('user')->tableUsers." SET create_at = FROM_UNIXTIME(createtime), lastvisit_at = IF(lastvisit,FROM_UNIXTIME(lastvisit),'0000-00-00 00:00:00')");
+                    $this->execute("UPDATE `".Yii::app()->getModule('user')->tableUsers."` SET create_at = FROM_UNIXTIME(createtime), lastvisit_at = IF(lastvisit,FROM_UNIXTIME(lastvisit),'0000-00-00 00:00:00')");
                     $this->dropColumn(Yii::app()->getModule('user')->tableUsers,'createtime');
                     $this->dropColumn(Yii::app()->getModule('user')->tableUsers,'lastvisit');
                 break;
@@ -29,7 +29,7 @@ class m110810_162301_userTimestampFix extends CDbMigration
             default:
                     $this->addColumn(Yii::app()->getModule('user')->tableUsers,'create_at',"TIMESTAMP");
                     $this->addColumn(Yii::app()->getModule('user')->tableUsers,'lastvisit_at',"TIMESTAMP");
-                    $this->execute("UPDATE ".Yii::app()->getModule('user')->tableUsers." SET create_at = datetime(createtime, 'unixepoch'), lastvisit_at = datetime(lastvisit, 'unixepoch')");
+                    $this->execute("UPDATE `".Yii::app()->getModule('user')->tableUsers."` SET create_at = datetime(createtime, 'unixepoch'), lastvisit_at = datetime(lastvisit, 'unixepoch')");
                     $this->execute('ALTER TABLE "'.Yii::app()->getModule('user')->tableUsers.'" RENAME TO "'.__CLASS__.'_'.Yii::app()->getModule('user')->tableUsers.'"');
                     $this->createTable(Yii::app()->getModule('user')->tableUsers, array(
                         "id" => "pk",
