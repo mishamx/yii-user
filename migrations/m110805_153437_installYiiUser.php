@@ -20,6 +20,11 @@ class m110805_153437_installYiiUser extends CDbMigration
             return false;
         }
         Yii::import('user.models.User');
+        
+        // initialize user object and set current dbConnection
+        $this->_model = new User;
+        $this->_model->db = $this->dbConnection;
+
         //*
         switch ($this->dbType()) {
             case "mysql":
@@ -179,7 +184,7 @@ class m110805_153437_installYiiUser extends CDbMigration
 
     public function dbType()
     {
-        list($type) = explode(':',Yii::app()->db->connectionString);
+        list($type) = explode(':',$this->dbConnection->connectionString);
         echo "type db: ".$type."\n";
         return $type;
     }
@@ -196,9 +201,6 @@ class m110805_153437_installYiiUser extends CDbMigration
     }
 
     private function readStdinUser($prompt, $field, $default = '') {
-        if (!$this->_model)
-            $this->_model = new User;
-
         while(!isset($input) || !$this->_model->validate(array($field))) {
             echo $prompt.(($default)?" [$default]":'').': ';
             $input = (trim(fgets(STDIN)));
