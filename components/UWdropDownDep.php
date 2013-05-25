@@ -66,7 +66,7 @@ class UWdropDownDep {
 		}
 		
 		if ($m)
-			return (($this->params['optionName'])?$m->getAttribute($this->params['optionName']):$m->id);
+			return (($this->params['optionName'])?$m->getAttribute($this->params['optionName']):$m->getAttribute($m->tableSchema->primaryKey));
 		else
 			return $this->params['emptyField'];
 		
@@ -84,7 +84,8 @@ class UWdropDownDep {
 		
 		$models = CActiveRecord::model($this->params['modelName'])->findAll();
 		foreach ($models as $m)
-			$list[$m->id] = (($this->params['optionName'])?$m->getAttribute($this->params['optionName']):$m->id);
+			$list[$m->getAttribute($m->tableSchema->primaryKey)] = 
+                                (($this->params['optionName'])?$m->getAttribute($this->params['optionName']):$m->getAttribute($m->tableSchema->primaryKey));
 		return CHtml::activeDropDownList($model,$field->varname,$list,$htmlOptions=array(
 				'ajax'=>array(
 						'type'=>'POST',
