@@ -348,6 +348,11 @@ class UserModule extends CWebModule
         public static function registerUser($registrationFormModel, $profileData = array())
         {
             Profile::$regMode = true;
+            $model = RegistrationForm::model()->find("username='$registrationFormModel->username'");
+            if($model !== null)
+            {
+                return $model;
+            }
             $model = new RegistrationForm;
             $profile=new Profile;
 
