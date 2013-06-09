@@ -334,4 +334,43 @@ class UserModule extends CWebModule
 	{
 		return Yii::app()->getModule(UserModule::getModuleId());
 	}
+        
+        public static function newUser()
+        {
+            
+        }
+        
+        public static function newRegistrationFormModel()
+        {
+            return new RegistrationForm;
+        }
+        
+        public static function registerUser($registrationFormModel, $profileData = array())
+        {
+            Profile::$regMode = true;
+            $model = new RegistrationForm;
+            $profile=new Profile;
+
+            $model->attributes=$registrationFormModel->attributes;
+            $model->verifyPassword = $model->password;
+            $profile->attributes=$profileData;
+            if($model->validate()&&$profile->validate())
+            {
+                $model->activkey=UserModule::encrypting(microtime().$model->password);
+                $model->password=UserModule::encrypting($model->password);
+                $model->verifyPassword=UserModule::encrypting($model->verifyPassword);
+                $model->superuser=0;
+                $model->status=User::STATUS_ACTIVE;
+
+                if ($model->save()) {
+                    $profile->user_id=$model->id;
+                    $profile->save();
+                    return $model;
+                } else {
+                    return null;
+                }
+            }
+           
+            return null;
+        }
 }
