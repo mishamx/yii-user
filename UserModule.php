@@ -367,8 +367,10 @@ class UserModule extends CWebModule
                     $profile->save();
                     return $model;
                 } else {
-                    return null;
+                    return $model->getErrors();
                 }
+            }else{
+                return array_merge($model->getErrors(), $profile->getErrors());
             }
            
             return null;
