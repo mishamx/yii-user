@@ -10,6 +10,7 @@ Git clone
 ---------
 original clone:
     clone git git@github.com:mishamx/yii-user.git
+    
 modified clone(command):
     git clone https://github.com/prawee/yii-user.git
 
