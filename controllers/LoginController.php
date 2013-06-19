@@ -32,7 +32,7 @@ class LoginController extends Controller
 	
 	private function lastViset() {
 		$lastVisit = User::model()->notsafe()->findByPk(Yii::app()->user->id);
-		$lastVisit->lastvisit_at = new CDbExpression('NOW()');
+		$lastVisit->lastvisit = new CDbExpression('NOW()');
 		$lastVisit->save();
 	}
 
