@@ -31,8 +31,8 @@
     </div>
 
     <div class="row">
-        <?php echo $form->label($model,'lastvisit_at'); ?>
-        <?php echo $form->textField($model,'lastvisit_at'); ?>
+        <?php echo $form->label($model,'lastvisit'); ?>
+        <?php echo $form->textField($model,'lastvisit'); ?>
     </div>
 
     <div class="row">
