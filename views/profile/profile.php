@@ -46,8 +46,8 @@ $this->menu=array(
     	<td><?php echo $model->create_at; ?></td>
 	</tr>
 	<tr>
-		<th class="label"><?php echo CHtml::encode($model->getAttributeLabel('lastvisit_at')); ?></th>
-    	<td><?php echo $model->lastvisit_at; ?></td>
+		<th class="label"><?php echo CHtml::encode($model->getAttributeLabel('lastvisit')); ?></th>
+    	<td><?php echo $model->lastvisit; ?></td>
 	</tr>
 	<tr>
 		<th class="label"><?php echo CHtml::encode($model->getAttributeLabel('status')); ?></th>
