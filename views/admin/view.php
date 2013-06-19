@@ -40,7 +40,7 @@ $this->menu=array(
 		'email',
 		'activkey',
 		'create_at',
-		'lastvisit_at',
+		'lastvisit',
 		array(
 			'name' => 'superuser',
 			'value' => User::itemAlias("AdminStatus",$model->superuser),
