@@ -40,7 +40,7 @@ Change your config main:
                 'sendActivationMail' => true,
 
                 # allow access for non-activated users
-                'loginNotActiv' => false,
+                'loginNotActive' => false,
 
                 # activate user on registration (only sendActivationMail = false)
                 'activeAfterRegister' => false,
