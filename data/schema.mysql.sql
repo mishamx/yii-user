@@ -22,8 +22,8 @@ CREATE TABLE `profiles` (
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
-ALTER TABLE `tbl_profiles`
-  ADD CONSTRAINT `user_profile_id` FOREIGN KEY (`user_id`) REFERENCES `tbl_users` (`id`) ON DELETE CASCADE;
+ALTER TABLE `profiles`
+  ADD CONSTRAINT `user_profile_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 CREATE TABLE `profiles_fields` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
