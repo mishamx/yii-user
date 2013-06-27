@@ -194,7 +194,7 @@ class User extends CActiveRecord
     }
 
     public function setLastvisit($value) {
-        $this->lastvisit_at=date('Y-m-d H:i:s',$value);
+        $this->lastvisit=date('Y-m-d H:i:s',$value);
     }
 
     public function afterSave() {
