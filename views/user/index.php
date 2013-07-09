@@ -22,6 +22,6 @@ if(UserModule::isAdmin()) {
 			'value' => 'CHtml::link(CHtml::encode($data->username),array("user/view","id"=>$data->id))',
 		),
 		'create_at',
-		'lastvisit_at',
+		'lastvisit',
 	),
 )); ?>

@@ -57,7 +57,7 @@ $('.search-form form').submit(function(){
 			'value'=>'CHtml::link(UHtml::markSearch($data,"email"), "mailto:".$data->email)',
 		),
 		'create_at',
-		'lastvisit_at',
+		'lastvisit',
 		array(
 			'name'=>'superuser',
 			'value'=>'User::itemAlias("AdminStatus",$data->superuser)',

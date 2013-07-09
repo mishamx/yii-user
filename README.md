@@ -8,8 +8,11 @@ Download or checkout (SVN/Git) from http://yii-user.2mx.org and unpack files in 
 
 Git clone
 ---------
-
+original clone:
     clone git git@github.com:mishamx/yii-user.git
+    
+modified clone(command):
+    git clone https://github.com/prawee/yii-user.git
 
 Configure
 ---------
@@ -37,7 +40,7 @@ Change your config main:
                 'sendActivationMail' => true,
 
                 # allow access for non-activated users
-                'loginNotActiv' => false,
+                'loginNotActive' => false,
 
                 # activate user on registration (only sendActivationMail = false)
                 'activeAfterRegister' => false,

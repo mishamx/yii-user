@@ -30,8 +30,8 @@ $this->menu=array(
 	array_push($attributes,
 		'create_at',
 		array(
-			'name' => 'lastvisit_at',
-			'value' => (($model->lastvisit_at!='0000-00-00 00:00:00')?$model->lastvisit_at:UserModule::t('Not visited')),
+			'name' => 'lastvisit',
+			'value' => (($model->lastvisit!='0000-00-00 00:00:00')?$model->lastvisit:UserModule::t('Not visited')),
 		)
 	);
 			
