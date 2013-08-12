@@ -1,6 +1,6 @@
 <?php
 
-class Profile extends UActiveRecord
+class Profile extends CActiveRecord
 {
 	/**
 	 * The followings are the available columns in table 'profiles':
