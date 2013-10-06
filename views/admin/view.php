@@ -51,7 +51,7 @@ $this->menu=array(
 		)
 	);
 	
-	$this->widget('zii.widgets.CDetailView', array(
+	$this->widget(UserModule::module()->withBootstrap ? "bootstrap.widgets.TbDetailView" : 'zii.widgets.CDetailView', array(
 		'data'=>$model,
 		'attributes'=>$attributes,
 	));

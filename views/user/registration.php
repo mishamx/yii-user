@@ -90,9 +90,17 @@ $this->breadcrumbs=array(
 		<br/><?php echo UserModule::t("Letters are not case-sensitive."); ?></p>
 	</div>
 	<?php endif; ?>
-	
-	<div class="row submit">
-		<?php echo CHtml::submitButton(UserModule::t("Register")); ?>
+
+	<div class="form-actions row submit">
+	<?php if(UserModule::module()->withBootstrap) { ?>
+	<?php $this->widget('bootstrap.widgets.TbButton',array(
+            'buttonType'=>'submit',
+            'type'=>'primary',
+            'label'=>UserModule::t('Register'),
+        )); ?>
+	<?php } else { ?>
+	<?php echo CHtml::submitButton(UserModule::t('Register')); ?>
+	<?php } ?>
 	</div>
 
 <?php $this->endWidget(); ?>

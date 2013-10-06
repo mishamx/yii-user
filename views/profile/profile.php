@@ -18,7 +18,7 @@ $this->menu=array(
 	<?php echo Yii::app()->user->getFlash('profileMessage'); ?>
 </div>
 <?php endif; ?>
-<table class="dataGrid">
+<table class="dataGrid detail-view table table-striped table-condensed">
 	<tr>
 		<th class="label"><?php echo CHtml::encode($model->getAttributeLabel('username')); ?></th>
 	    <td><?php echo CHtml::encode($model->username); ?></td>
@@ -54,3 +54,10 @@ $this->menu=array(
     	<td><?php echo CHtml::encode(User::itemAlias("UserStatus",$model->status)); ?></td>
 	</tr>
 </table>
+
+<?php if(UserModule::module()->withHybridAuth) { ?>
+<div>
+	Link your account:
+	<?php $this->widget(UserModule::module()->hybridAuthModulePath . '.widgets.renderProviders'); ?>
+</div>
+<?php } ?>

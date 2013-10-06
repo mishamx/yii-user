@@ -33,20 +33,35 @@ $this->breadcrumbs=array(
 		<?php echo CHtml::activeLabelEx($model,'password'); ?>
 		<?php echo CHtml::activePasswordField($model,'password') ?>
 	</div>
-	
+	<?php if(UserModule::module()->showRegisterLink || UserModule::module()->showForgetPasswordLink) { ?>
 	<div class="row">
 		<p class="hint">
-		<?php echo CHtml::link(UserModule::t("Register"),Yii::app()->getModule('user')->registrationUrl); ?> | <?php echo CHtml::link(UserModule::t("Lost Password?"),Yii::app()->getModule('user')->recoveryUrl); ?>
+		<?php if(UserModule::module()->showRegisterLink) echo CHtml::link(UserModule::t("Register"),Yii::app()->getModule('user')->registrationUrl); ?> <?php if(UserModule::module()->showRegisterLink && UserModule::module()->showForgetPasswordLink) echo "|"; ?> <?php if(UserModule::module()->showForgetPasswordLink) echo CHtml::link(UserModule::t("Lost Password?"),Yii::app()->getModule('user')->recoveryUrl); ?>
 		</p>
 	</div>
-	
+	<?php } ?>
 	<div class="row rememberMe">
 		<?php echo CHtml::activeCheckBox($model,'rememberMe'); ?>
 		<?php echo CHtml::activeLabelEx($model,'rememberMe'); ?>
 	</div>
 
 	<div class="row submit">
+		<?php if(UserModule::module()->withBootstrap) { ?>
+		<?php $this->widget('bootstrap.widgets.TbButton',array(
+            'buttonType'=>'submit',
+            'type'=>'primary',
+            'label'=>UserModule::t("Login"),
+        )); ?>
+		<?php } else { ?>
 		<?php echo CHtml::submitButton(UserModule::t("Login")); ?>
+		<?php } ?>
+
+		<?php if(UserModule::module()->withHybridAuth) { ?>
+		<div>
+			Alternatively, you may login with the following: <br  />
+		<?php $this->widget(UserModule::module()->hybridAuthModulePath . '.widgets.renderProviders'); ?>
+		</div>
+		<?php } ?>
 	</div>
 	
 <?php echo CHtml::endForm(); ?>

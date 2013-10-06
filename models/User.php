@@ -1,6 +1,6 @@
 <?php
 
-class User extends CActiveRecord
+class User extends UActiveRecord
 {
 	const STATUS_NOACTIVE=0;
 	const STATUS_ACTIVE=1;
@@ -199,7 +199,7 @@ class User extends CActiveRecord
 
     public function afterSave() {
         if (get_class(Yii::app())=='CWebApplication'&&Profile::$regMode==false) {
-            Yii::app()->user->updateSession();
+            //Yii::app()->user->updateSession();
         }
         return parent::afterSave();
     }

@@ -23,9 +23,17 @@ $this->breadcrumbs=array(
 		<?php echo CHtml::activeTextField($form,'login_or_email') ?>
 		<p class="hint"><?php echo UserModule::t("Please enter your login or email addres."); ?></p>
 	</div>
-	
-	<div class="row submit">
-		<?php echo CHtml::submitButton(UserModule::t("Restore")); ?>
+
+	<div class="form-actions row submit">
+	<?php if(UserModule::module()->withBootstrap) { ?>
+	<?php $this->widget('bootstrap.widgets.TbButton',array(
+            'buttonType'=>'submit',
+            'type'=>'primary',
+            'label'=>UserModule::t('Restore'),
+        )); ?>
+	<?php } else { ?>
+	<?php echo CHtml::submitButton(UserModule::t('Restore')); ?>
+	<?php } ?>
 	</div>
 
 <?php echo CHtml::endForm(); ?>

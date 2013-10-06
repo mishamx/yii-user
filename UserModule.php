@@ -11,6 +11,44 @@
 class UserModule extends CWebModule
 {
 	/**
+	 * @var boolean
+	 * @desc whether to hsow forget password link on login page
+	 */
+	public $showForgetPasswordLink = true;
+	/**
+	 * @var boolean
+	 * @desc whether to show register link on login page
+	 */
+	public $showRegisterLink = true;
+	/**
+	 * @var string
+	 * @desc layout for the login form
+	 */
+	public $userLayoutPath = "/user/login";
+	/**
+	 * @var boolean 
+	 * @desc whether to use bootstrap widgets
+	 */
+	public $withBootstrap = false;
+	/**
+	 * @var boolean
+	 * @desc whether to include hybridauth widget in profile and login view
+	 */
+	public $withHybridAuth = false;
+
+	/**
+	 * @var string
+	 * @desc path to hybridauth module
+	 */
+	public $hybridAuthModulePath = "application.modules.hybridauth";
+
+	/**
+	 * @var CDbConnection
+	 * @desc database connection to use
+	 */
+	public $db = null;
+
+	/**
 	 * @var int
 	 * @desc items on page
 	 */
@@ -271,4 +309,75 @@ class UserModule extends CWebModule
 	public function users() {
 		return User;
 	}
+
+	public static function getModuleId()
+	{
+		$stateKey = "usermodule.moduleid";
+
+		// Get module Id
+		if(!Yii::app()->user->hasState($stateKey))
+		{
+			$tmp = Yii::app()->getModules();
+			foreach($tmp as $key=>$value)
+			{
+				if(stripos($value['class'], "usermodule") !== false)
+				{
+					Yii::app()->user->setState($stateKey, $key);
+				}
+			}
+		}
+
+		return Yii::app()->user->getState($stateKey, "yii-user");
+	}
+
+	public static function module()
+	{
+		return Yii::app()->getModule(UserModule::getModuleId());
+	}
+        
+        public static function newUser()
+        {
+            
+        }
+        
+        public static function newRegistrationFormModel()
+        {
+            return new RegistrationForm;
+        }
+        
+        public static function registerUser($registrationFormModel, $profileData = array())
+        {
+            Profile::$regMode = true;
+            $model = RegistrationForm::model()->find("username='$registrationFormModel->username'");
+            if($model !== null)
+            {
+                return $model;
+            }
+            $model = new RegistrationForm;
+            $profile=new Profile;
+
+            $model->attributes=$registrationFormModel->attributes;
+            $model->verifyPassword = $model->password;
+            $profile->attributes=$profileData;
+            if($model->validate()&&$profile->validate())
+            {
+                $model->activkey=UserModule::encrypting(microtime().$model->password);
+                $model->password=UserModule::encrypting($model->password);
+                $model->verifyPassword=UserModule::encrypting($model->verifyPassword);
+                $model->superuser=0;
+                $model->status=User::STATUS_ACTIVE;
+
+                if ($model->save()) {
+                    $profile->user_id=$model->id;
+                    $profile->save();
+                    return $model;
+                } else {
+                    return $model->getErrors();
+                }
+            }else{
+                return array_merge($model->getErrors(), $profile->getErrors());
+            }
+           
+            return null;
+        }
 }

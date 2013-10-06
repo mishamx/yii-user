@@ -45,9 +45,17 @@
         <?php echo $form->dropDownList($model,'status',$model->itemAlias('UserStatus')); ?>
     </div>
 
-    <div class="row buttons">
-        <?php echo CHtml::submitButton(UserModule::t('Search')); ?>
-    </div>
+    <div class="form-actions row buttons">
+	<?php if(UserModule::module()->withBootstrap) { ?>
+	<?php $this->widget('bootstrap.widgets.TbButton',array(
+            'buttonType'=>'submit',
+            'type'=>'primary',
+            'label'=>UserModule::t('Search'),
+        )); ?>
+	<?php } else { ?>
+	<?php echo CHtml::submitButton(UserModule::t('Search')); ?>
+	<?php } ?>
+	</div>
 
 <?php $this->endWidget(); ?>
 
