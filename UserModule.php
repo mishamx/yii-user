@@ -99,6 +99,23 @@ class UserModule extends CWebModule
     public $defaultScope = array(
             'with'=>array('profile'),
     );
+
+    /**
+     * @property what grid view to use as default.
+     */
+    public $defaultGridView = array(
+        'path'=>'zii.widgets.grid.CGridView',
+        'options'=>array(),
+        'buttonColumn' => 'CButtonColumn',
+    );
+
+    /**
+     * @property what grid view to use as default.
+     */
+    public $defaultDetailView = array(
+        'path'=>'zii.widgets.CDetailView',
+        'options'=>array(),
+    );
 	
 	static private $_user;
 	static private $_users=array();

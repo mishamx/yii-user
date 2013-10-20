@@ -35,8 +35,8 @@ $('.search-form form').submit(function(){
     'model'=>$model,
 )); ?>
 </div><!-- search-form -->
-
-<?php $this->widget('zii.widgets.grid.CGridView', array(
+<?php $defaultGridView = Yii::app()->getModule('user')->defaultGridView; ?>
+<?php $this->widget($defaultGridView['path'], $defaultGridView['options'] + array(
 	'id'=>'user-grid',
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
@@ -69,7 +69,7 @@ $('.search-form form').submit(function(){
 			'filter' => User::itemAlias("UserStatus"),
 		),
 		array(
-			'class'=>'CButtonColumn',
+			'class'=>$defaultGridView['buttonColumn'],
 		),
 	),
 )); ?>
