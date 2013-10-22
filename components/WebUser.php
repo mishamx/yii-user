@@ -79,7 +79,7 @@ class WebUser extends CWebUser
     }
 
     /**
-     * Returns user model by user name..
+     * Returns user model by user name.
      * @param string username
      * @return User
      */
