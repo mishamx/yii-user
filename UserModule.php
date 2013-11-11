@@ -42,6 +42,12 @@ class UserModule extends CWebModule
 	
 	/**
 	 * @var boolean
+	 * @desc allow guests register
+	 */
+	public $allowRegister=true;
+
+    /**
+	 * @var boolean
 	 * @desc activate user on registration (only $sendActivationMail = false)
 	 */
 	public $activeAfterRegister=false;
