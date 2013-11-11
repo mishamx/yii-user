@@ -44,7 +44,7 @@ class UserModule extends CWebModule
 	 * @var boolean
 	 * @desc allow guests register
 	 */
-	public $allowRegister=true;
+	public $allowGuestRegister=true;
 
     /**
 	 * @var boolean

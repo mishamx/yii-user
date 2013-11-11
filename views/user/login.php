@@ -35,7 +35,7 @@ $this->breadcrumbs=array(
 	</div>
 	<?php
 
-    if(Yii::app()->getModule('user')->allowRegister){
+    if(Yii::app()->getModule('user')->allowGuestRegister){
     ?>
 	<div class="row">
 		<p class="hint">

@@ -24,7 +24,7 @@ class RegistrationController extends Controller
 		return array(
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array('registration'),
-				'expression'=>'Yii::app()->getModule(\'user\')->allowRegister',
+				'expression'=>'Yii::app()->getModule(\'user\')->allowGuestRegister',
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),
