@@ -62,6 +62,48 @@ class m110805_153437_installYiiUser extends CDbMigration
                     ), $this->MySqlOptions);
                 break;
             
+            case "pgsql":
+                    $this->createTable(Yii::app()->getModule('user')->tableUsers, array(
+                        "id" => "pk",
+                        "username" => "varchar(20) NOT NULL DEFAULT ''",
+                        "password" => "varchar(128) NOT NULL DEFAULT ''",
+                        "email" => "varchar(128) NOT NULL DEFAULT ''",
+                        "activkey" => "varchar(128) NOT NULL DEFAULT ''",
+                        "createtime" => "int NOT NULL DEFAULT 0",
+                        "lastvisit" => "int NOT NULL DEFAULT 0",
+                        "superuser" => "int NOT NULL DEFAULT 0",
+                        "status" => "int NOT NULL DEFAULT 0",
+                    ));
+                    // Since the admin user will be added with id = 1 we need to fix the sequence counter
+                    $this->execute("select setval('tbl_users_id_seq',1);"); 
+                    $this->createIndex('user_username', Yii::app()->getModule('user')->tableUsers, 'username', true);
+                    $this->createIndex('user_email', Yii::app()->getModule('user')->tableUsers, 'email', true);
+                    $this->createTable(Yii::app()->getModule('user')->tableProfiles, array(
+                        'user_id' => 'pk',
+                        'first_name' => 'string',
+                        'last_name' => 'string',
+                    ));
+                    $this->addForeignKey('user_profile_id', Yii::app()->getModule('user')->tableProfiles, 'user_id', Yii::app()->getModule('user')->tableUsers, 'id', 'CASCADE', 'RESTRICT');
+                    $this->createTable(Yii::app()->getModule('user')->tableProfileFields, array(
+                        "id" => "pk",
+                        "varname" => "varchar(50) NOT NULL DEFAULT ''",
+                        "title" => "varchar(255) NOT NULL DEFAULT ''",
+                        "field_type" => "varchar(50) NOT NULL DEFAULT ''",
+                        "field_size" => "int NOT NULL DEFAULT 0",
+                        "field_size_min" => "int NOT NULL DEFAULT 0",
+                        "required" => "int NOT NULL DEFAULT 0",
+                        "match" => "varchar(255) NOT NULL DEFAULT ''",
+                        "range" => "varchar(255) NOT NULL DEFAULT ''",
+                        "error_message" => "varchar(255) NOT NULL DEFAULT ''",
+                        "other_validator" => "text",
+                        "default" => "varchar(255) NOT NULL DEFAULT ''",
+                        "widget" => "varchar(255) NOT NULL DEFAULT ''",
+                        "widgetparams" => "text",
+                        "position" => "int NOT NULL DEFAULT 0",
+                        "visible" => "int NOT NULL DEFAULT 0",
+                    ));
+                break;
+            
             case "sqlite":
             default:
                     $this->createTable(Yii::app()->getModule('user')->tableUsers, array(
