@@ -9,7 +9,7 @@ class ProfileFieldController extends Controller
 	private $_model;
 	private static $_widgets = array();
 	public $defaultAction = 'admin';
-	public $layout='//layouts/column2';
+	public $layout='column2';
 
 	/**
 	 * @return array action filters
@@ -57,7 +57,7 @@ class ProfileFieldController extends Controller
 	 * Register Script
 	 */
 	public function registerScript() {
-		$basePath=Yii::getPathOfAlias('application.modules.user.views.asset');
+		$basePath=Yii::getPathOfAlias('user.views.asset');
 		$baseUrl=Yii::app()->getAssetManager()->publish($basePath);
 		$cs = Yii::app()->getClientScript();
 		$cs->registerCoreScript('jquery');
@@ -513,7 +513,7 @@ class ProfileFieldController extends Controller
 	}
 	
 	public static function getWidgets($fieldType='') {
-		$basePath=Yii::getPathOfAlias('application.modules.user.components');
+		$basePath=Yii::getPathOfAlias('user.components');
 		$widgets = array();
 		$list = array(''=>UserModule::t('No'));
 		if (self::$_widgets) {
