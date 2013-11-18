@@ -75,7 +75,7 @@ class m110805_153437_installYiiUser extends CDbMigration
                         "status" => "int NOT NULL DEFAULT 0",
                     ));
                     // Since the admin user will be added with id = 1 we need to fix the sequence counter
-                    $this->execute("select setval('tbl_users_id_seq',1);"); 
+                    $this->execute("select setval('".Yii::app()->getModule('user')->tableUsers."_id_seq',1);"); 
                     $this->createIndex('user_username', Yii::app()->getModule('user')->tableUsers, 'username', true);
                     $this->createIndex('user_email', Yii::app()->getModule('user')->tableUsers, 'email', true);
                     $this->createTable(Yii::app()->getModule('user')->tableProfiles, array(
