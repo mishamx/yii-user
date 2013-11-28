@@ -55,6 +55,9 @@ class Profile extends UActiveRecord
 				if ($field->field_type=='INTEGER')
 					array_push($numerical,$field->varname);
 				if ($field->field_type=='VARCHAR'||$field->field_type=='TEXT') {
+					if ($field->field_size == 0) {
+						$field->field_size = null;
+					}
 					$field_rule = array($field->varname, 'length', 'max'=>$field->field_size, 'min' => $field->field_size_min);
 					if ($field->error_message) $field_rule['message'] = UserModule::t($field->error_message);
 					array_push($rules,$field_rule);
