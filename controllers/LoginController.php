@@ -4,6 +4,47 @@ class LoginController extends Controller
 {
 	public $defaultAction = 'login';
 
+    public function actions()
+    {
+        return array(
+            'oauth' => array(
+                'class'=>'ext.hoauth.HOAuthAction',
+            ),
+            'oauthadmin' => array(
+                'class'=>'ext.hoauth.HOAuthAdminAction',
+            ),
+        );
+    }
+ //@todo After everything has been tested uncomment these two functions!
+    /**
+     * @return array action filters
+     */
+//    public function filters()
+//    {
+//        return array(
+//            'accessControl',
+//        );
+//    }
+
+    /**
+     * Specifies the access control rules.
+     * This method is used by the 'accessControl' filter.
+     * @return array access control rules
+     */
+//    public function accessRules()
+//    {
+//        return array(
+//            array('allow', // allow admin user to perform 'admin' and 'delete' actions
+//                'actions'=>array('oauthadmin'),
+//                'users'=>UserModule::getAdmins(),
+//            ),
+//            array('deny',  // deny all users
+//                'actions'=>array('oauthadmin'),
+//                'users'=>array('*'),
+//            ),
+//        );
+//    }
+
 	/**
 	 * Displays the login page
 	 */

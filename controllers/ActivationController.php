@@ -14,18 +14,38 @@ class ActivationController extends Controller
 		if ($email&&$activkey) {
 			$find = User::model()->notsafe()->findByAttributes(array('email'=>$email));
 			if (isset($find)&&$find->status) {
-			    $this->render('/user/message',array('title'=>UserModule::t("User activation"),'content'=>UserModule::t("You account is active.")));
+                Yii::app()->user->setFlash('success', UserModule::t("You account is active."));
+                $this->redirect(Yii::app()->user->returnUrl);
 			} elseif(isset($find->activkey) && ($find->activkey==$activkey)) {
 				$find->activkey = UserModule::encrypting(microtime());
 				$find->status = 1;
-				$find->save();
-			    $this->render('/user/message',array('title'=>UserModule::t("User activation"),'content'=>UserModule::t("You account is activated.")));
+                if($find->save()){
+                    /*
+                     * After user account has been verified, add default user Personal store info
+                     */
+                    $personalStore = new PersonalStore;
+                    $personalStore->user_id = $find->id;
+                    if (!$personalStore->save())
+                        print_r($personalStore->errors);
+                    else
+                    {
+                        $workingHours = new WorkingHours;
+                        $workingHours->store_id = $personalStore->id;
+                        if (!$workingHours->save())
+                            print_r($workingHours->errors);
+                    }
+                    Yii::app()->user->setFlash('success', UserModule::t("You account is active."));
+                    $this->redirect(Yii::app()->user->returnUrl);
+                }
 			} else {
-			    $this->render('/user/message',array('title'=>UserModule::t("User activation"),'content'=>UserModule::t("Incorrect activation URL.")));
+                Yii::app()->user->setFlash('error', UserModule::t("Incorrect activation URL."));
+                $this->redirect(Yii::app()->user->returnUrl);
 			}
 		} else {
-			$this->render('/user/message',array('title'=>UserModule::t("User activation"),'content'=>UserModule::t("Incorrect activation URL.")));
+            Yii::app()->user->setFlash('error', UserModule::t("Incorrect activation URL."));
+            $this->redirect(Yii::app()->user->returnUrl);
 		}
+
 	}
 
 }

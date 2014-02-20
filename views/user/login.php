@@ -77,3 +77,4 @@ $form = new CForm(array(
     ),
 ), $model);
 ?>
+<?php $this->widget('ext.hoauth.widgets.HOAuth'); ?>
