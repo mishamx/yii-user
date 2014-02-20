@@ -8,7 +8,15 @@ class User extends CActiveRecord
 	
 	//TODO: Delete for next version (backward compatibility)
 	const STATUS_BANED=-1;
-	
+
+    public $latestFeedback;
+    public $transactionStatus = array(
+        'new' => 0,
+        'complete' => 1,
+        'open' => 0,
+        'feedback' => 1,
+    );
+
 	/**
 	 * The followings are the available columns in table 'users':
 	 * @var integer $id
@@ -77,10 +85,89 @@ class User extends CActiveRecord
 	 */
 	public function relations()
 	{
-        $relations = Yii::app()->getModule('user')->relations;
-        if (!isset($relations['profile']))
-            $relations['profile'] = array(self::HAS_ONE, 'Profile', 'user_id');
-        return $relations;
+        return array(
+            'profile' => array(self::HAS_ONE, 'Profile', 'user_id'),
+            'personalStore' => array(self::HAS_ONE, 'PersonalStore', 'user_id'),
+            'feedbackReceived' => array(self::HAS_MANY, 'UserFeedback', 'user_to_id'),
+            'feedbackGiven' => array(self::HAS_MANY, 'UserFeedback', 'user_from_id'),
+
+            'avgRatingAsSeller' => array(self::STAT, 'UserFeedback', 'user_to_id', 'select'=>'AVG(rating)', 'condition'=>'t.user_to_id = store.user_id',
+                'join'=>'
+                    INNER JOIN transaction ON transaction.id = t.transaction_id
+                    INNER JOIN offer ON offer.id = transaction.offer_id
+                    INNER JOIN personal_store AS store ON store.id = offer.store_id'
+            ),
+
+            'feedbackPositiveTotal' => array(self::STAT, 'UserFeedback', 'user_to_id', 'condition'=>'rating>3'),
+            'feedbackPositiveAsBuyer' => array(self::STAT, 'UserFeedback', 'user_to_id', 'condition'=>'rating>3 AND t.user_to_id = transaction.buyer_id',
+                'join'=>'INNER JOIN transaction ON transaction.id = t.transaction_id'
+            ),
+            'feedbackNeutralAsBuyer' => array(self::STAT, 'UserFeedback', 'user_to_id', 'condition'=>'rating=3 AND t.user_to_id = transaction.buyer_id',
+                'join'=>'INNER JOIN transaction ON transaction.id = t.transaction_id'
+            ),
+            'feedbackNegativeAsBuyer' => array(self::STAT, 'UserFeedback', 'user_to_id', 'condition'=>'rating<3 AND t.user_to_id = transaction.buyer_id',
+                'join'=>'INNER JOIN transaction ON transaction.id = t.transaction_id'
+            ),
+
+            'feedbackPositiveAsSeller' => array(self::STAT, 'UserFeedback', 'user_to_id', 'condition'=>'rating>3 AND t.user_to_id = store.user_id',
+                'join'=>'
+                    INNER JOIN transaction ON transaction.id = t.transaction_id
+                    INNER JOIN offer ON offer.id = transaction.offer_id
+                    INNER JOIN personal_store AS store ON store.id = offer.store_id'
+            ),
+            'feedbackNeutralAsSeller' => array(self::STAT, 'UserFeedback', 'user_to_id', 'condition'=>'rating=3 AND t.user_to_id = store.user_id',
+                'join'=>'
+                    INNER JOIN transaction ON transaction.id = t.transaction_id
+                    INNER JOIN offer ON offer.id = transaction.offer_id
+                    INNER JOIN personal_store AS store ON store.id = offer.store_id'
+            ),
+            'feedbackNegativeAsSeller' => array(self::STAT, 'UserFeedback', 'user_to_id', 'condition'=>'rating<3 AND t.user_to_id = store.user_id',
+                'join'=>'
+                    INNER JOIN transaction ON transaction.id = t.transaction_id
+                    INNER JOIN offer ON offer.id = transaction.offer_id
+                    INNER JOIN personal_store AS store ON store.id = offer.store_id'
+            ),
+
+            'feedbackTotalAsBuyer' => array(self::STAT, 'UserFeedback', 'user_to_id', 'condition'=>'t.user_to_id = transaction.buyer_id',
+                'join'=>'INNER JOIN transaction ON transaction.id = t.transaction_id'
+            ),
+            'feedbackTotalAsSeller' => array(self::STAT, 'UserFeedback', 'user_to_id', 'condition'=>'t.user_to_id = store.user_id',
+                'join'=>'
+                    INNER JOIN transaction ON transaction.id = t.transaction_id
+                    INNER JOIN offer ON offer.id = transaction.offer_id
+                    INNER JOIN personal_store AS store ON store.id = offer.store_id'
+            ),
+            'feedbackTotal' => array(self::STAT, 'UserFeedback', 'user_to_id'),
+
+            'new_transactions' => array(self::STAT, 'PersonalStore', 'user_id',
+                'select'=>'COUNT(transaction.id)',
+                'condition'=>"transaction.status = {$this->transactionStatus['new']}",
+                'join'=>'
+                    INNER JOIN offer ON offer.store_id = t.id
+                    INNER JOIN transaction ON transaction.offer_id = offer.id'
+            ),
+            'open_transactions' => array(self::STAT, 'PersonalStore', 'user_id',
+                'select'=>'COUNT(transaction.id)',
+                'condition'=>"transaction.status = {$this->transactionStatus['open']}",
+                'join'=>'
+                    INNER JOIN offer ON offer.store_id = t.id
+                    INNER JOIN transaction ON transaction.offer_id = offer.id'
+            ),
+            'complete_transactions' => array(self::STAT, 'PersonalStore', 'user_id',
+                'select'=>'COUNT(transaction.id)',
+                'condition'=>"transaction.status = {$this->transactionStatus['complete']}",
+                'join'=>'
+                    INNER JOIN offer ON offer.store_id = t.id
+                    INNER JOIN transaction ON transaction.offer_id = offer.id'
+            ),
+            'seller_feedback_transactions' => array(self::STAT, 'PersonalStore', 'user_id',
+                'select'=>'COUNT(transaction.id)',
+                'condition'=>"transaction.status = {$this->transactionStatus['feedback']}",
+                'join'=>'
+                    INNER JOIN offer ON offer.store_id = t.id
+                    INNER JOIN transaction ON transaction.offer_id = offer.id'
+            ),
+        );
 	}
 
 	/**
@@ -199,8 +286,107 @@ class User extends CActiveRecord
 
     public function afterSave() {
         if (get_class(Yii::app())=='CWebApplication'&&Profile::$regMode==false) {
-            Yii::app()->user->updateSession();
+            Yii::app()->user->updateSession($this->id);
         }
         return parent::afterSave();
+    }
+
+    public function getWorkingDays($model)
+    {
+        $workingDays = array();
+        $week = array('mon'=>'Monday','tue'=>'Tuesday','wed'=>'Wednesday','thu'=>'Thursday','fri'=>'Friday','sat'=>'Saturday','sun'=>'Sunday');
+        foreach($model->personalStore->workingHours as $day=>$hours)
+        {
+            if(isset($week[$day]))
+            {
+                $workingDays[$day]=array($week[$day],$hours);
+            }
+        }
+        return $workingDays;
+    }
+    public function getLatestFeedback($limit)
+    {
+        $criteria = new CDbCriteria;
+        $criteria->limit = $limit;
+        $criteria->offset = 0;
+        $criteria->condition = 'text != ""';
+        $criteria->order = 'add_date ASC';
+        return UserFeedback::model()->findAll($criteria);
+    }
+
+    public function getPercent($count, $total)
+    {
+        return ($count && $count > 0) ? round(($count / $total) *100, 1) : 0.00;
+    }
+
+    public function getFeedbackInIntervalCount($interval, $type = '> 0', $feedback = 'all')
+    {
+        $startDate =  date('Y-m-d');
+        $endDate = date('Y-m-d', strtotime("2009-01-31"));
+        if(array_key_exists('month',$interval))
+        {
+            $interval = ($interval['month']-1)*-1;
+
+            $endDate = date('Y-m-d', strtotime("first day of {$interval} month"));
+
+        }
+        $typeCondition = '';
+        if($feedback == 'seller')
+        {
+            $typeCondition=' AND f.user_to_id = s.user_id';
+        }
+        elseif($feedback == 'buyer')
+        {
+            $typeCondition=' AND f.user_to_id = t.buyer_id';
+        }
+
+        $id = Yii::app()->user->id;
+
+        $sql = "SELECT COUNT(*) AS feedback
+                FROM user_feedback AS f
+                INNER JOIN transaction AS t ON t.id = f.transaction_id
+                INNER JOIN offer AS o ON o.id = t.offer_id
+                INNER JOIN personal_store AS s ON s.id = o.store_id
+                WHERE f.add_date < STR_TO_DATE('{$startDate}', '%Y-%m-%d') + INTERVAL 1 DAY AND f.add_date >= STR_TO_DATE('{$endDate}', '%Y-%m-%d')
+                      AND s.user_id = {$id}
+                      AND f.rating {$type}
+                      {$typeCondition}
+                GROUP BY f.user_to_id
+                LIMIT 1";
+        $command = Yii::app()->db->createCommand($sql);
+        $feedbackCount = $command->queryRow()['feedback'];
+
+        return ($feedbackCount && $feedbackCount > 0) ? $feedbackCount : 0;
+    }
+
+    public function getFeedbackColumn($data, $column)
+    {
+        if($column == 1)
+        {
+            if($data->rating > 3)
+                $smily = 'fa-smile-o';
+            elseif($data->rating == 3)
+                $smily = 'fa-meh-o';
+            elseif($data->rating < 3)
+                $smily = 'fa-frown-o';
+
+            return "<i class='fa {$smily}'></i>{$data->text}<div>{$data->transaction->offer->name}</div>";
+        }
+        elseif($column == 3)
+        {
+            return date('d.m.Y', strtotime($data->add_date))."<div>".date('H:i', strtotime($data->add_date))."</div>";
+        }
+    }
+
+    /**
+     * Returns User model by its email
+     *
+     * @param string $email
+     * @access public
+     * @return User
+     */
+    public function findByEmail($email)
+    {
+        return self::model()->findByAttributes(array('email' => $email));
     }
 }

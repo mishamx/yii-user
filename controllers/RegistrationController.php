@@ -74,6 +74,8 @@ class RegistrationController extends Controller
                     }
                 } else $profile->validate();
             }
+            Yii::app()->theme = 'buy2game_v1';
+            $this->layout = '//layouts/column2';
             $this->render('/user/registration',array('model'=>$model,'profile'=>$profile));
         }
 	}

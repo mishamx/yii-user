@@ -57,8 +57,8 @@ class UserModule extends CWebModule
 	public $loginUrl = array("/user/login");
 	public $logoutUrl = array("/user/logout");
 	public $profileUrl = array("/user/profile");
-	public $returnUrl = array("/user/profile");
-	public $returnLogoutUrl = array("/user/login");
+    public $returnUrl = array("/site/index");
+	public $returnLogoutUrl = array("/site/index");
 	
 	
 	/**
@@ -92,9 +92,9 @@ class UserModule extends CWebModule
 	 */
 	//public $cacheEnable = false;
 	
-	public $tableUsers = '{{users}}';
-	public $tableProfiles = '{{profiles}}';
-	public $tableProfileFields = '{{profiles_fields}}';
+	public $tableUsers = 'user';
+	public $tableProfiles = 'user_profiles';
+	public $tableProfileFields = 'user_profiles_fields';
 
     public $defaultScope = array(
             'with'=>array('profile'),
