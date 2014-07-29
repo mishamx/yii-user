@@ -26,7 +26,7 @@ class UserModule extends CWebModule
 	 * @var string
 	 * @desc hash method (md5,sha1 or algo hash function http://www.php.net/manual/en/function.hash.php)
 	 */
-	public $hash='md5';
+	public $hash='crypt';
 	
 	/**
 	 * @var boolean
@@ -166,8 +166,23 @@ class UserModule extends CWebModule
 			return md5($string);
 		if ($hash=="sha1")
 			return sha1($string);
+		if ($hash=="crypt")
+		    return crypt($string);
 		else
 			return hash($hash,$string);
+	}
+	
+	/**
+	 * Compares the user input string with hashed password
+	 * @return true if hashes match
+	 */
+	public static function checkPassword($user_input, $hashed_password){
+	    $hash = Yii::app()->getModule('user')->hash;
+	     
+	    if ($hash == "crypt")
+	        return (crypt($user_input,$hashed_password) == $hashed_password);
+	    else
+	        return (Yii::app()->getModule('user')->encrypting($user_input)===$hashed_password);
 	}
 	
 	/**
