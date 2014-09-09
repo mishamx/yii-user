@@ -1,0 +1,6 @@
+{
+  "name": "sleepwalker/yii-user",
+  "require": {
+    "yiisoft/yii": "~1.1.15"
+  }
+}
