@@ -1,5 +1,22 @@
 <?php
 
+/**
+ * This is the model class for table "users".
+ *
+ * The followings are the available columns in table 'users':
+ * @property integer $id
+ * @property string $username
+ * @property string $password
+ * @property string $email
+ * @property string $activkey
+ * @property integer $superuser
+ * @property integer $status
+ * @property string $create_at
+ * @property string $lastvisit_at
+ *
+ * The followings are the available model relations:
+ * @property Profile $profiles
+ */
 class User extends CActiveRecord
 {
 	const STATUS_NOACTIVE=0;
@@ -20,8 +37,8 @@ class User extends CActiveRecord
 	 * @var integer $lastvisit
 	 * @var integer $superuser
 	 * @var integer $status
-     * @var timestamp $create_at
-     * @var timestamp $lastvisit_at
+	 * @var timestamp $create_at
+	 * @var timestamp $lastvisit_at
 	 */
 
 	/**
@@ -57,8 +74,8 @@ class User extends CActiveRecord
 			array('username', 'match', 'pattern' => '/^[A-Za-z0-9_]+$/u','message' => UserModule::t("Incorrect symbols (A-z0-9).")),
 			array('status', 'in', 'range'=>array(self::STATUS_NOACTIVE,self::STATUS_ACTIVE,self::STATUS_BANNED)),
 			array('superuser', 'in', 'range'=>array(0,1)),
-            array('create_at', 'default', 'value' => date('Y-m-d H:i:s'), 'setOnEmpty' => true, 'on' => 'insert'),
-            array('lastvisit_at', 'default', 'value' => '0000-00-00 00:00:00', 'setOnEmpty' => true, 'on' => 'insert'),
+			array('create_at', 'default', 'value' => date('Y-m-d H:i:s'), 'setOnEmpty' => true, 'on' => 'insert'),
+			array('lastvisit_at', 'default', 'value' => '0000-00-00 00:00:00', 'setOnEmpty' => true, 'on' => 'insert'),
 			array('username, email, superuser, status', 'required'),
 			array('superuser, status', 'numerical', 'integerOnly'=>true),
 			array('id, username, password, email, activkey, create_at, lastvisit_at, superuser, status', 'safe', 'on'=>'search'),
