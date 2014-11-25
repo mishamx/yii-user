@@ -202,7 +202,7 @@ class UserModule extends CWebModule
 
 	/**
 	 * Return admins.
-	 * @return array syperusers names
+	 * @return array superusers names
 	 */	
 	public static function getAdmins() {
 		if (!self::$_admins) {
