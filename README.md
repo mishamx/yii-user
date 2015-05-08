@@ -45,6 +45,9 @@ Change your config main:
                 # automatically login from registration
                 'autoLogin' => true,
 
+                # guests allow register
+                'allowGuestRegister' => true,
+
                 # registration path
                 'registrationUrl' => array('/user/registration'),
 
