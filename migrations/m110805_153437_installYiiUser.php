@@ -147,6 +147,8 @@ class m110805_153437_installYiiUser extends CDbMigration
         }//*/
 
         if (in_array('--interactive=0',$_SERVER['argv'])) {
+            if (!$this->_model)
+                $this->_model = new User;
             $this->_model->username = 'admin';
             $this->_model->email = 'webmaster@example.com';
             $this->_model->password = 'admin';
