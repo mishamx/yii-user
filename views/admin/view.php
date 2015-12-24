@@ -36,9 +36,7 @@ $this->menu=array(
 	}
 	
 	array_push($attributes,
-		'password',
 		'email',
-		'activkey',
 		'create_at',
 		'lastvisit_at',
 		array(

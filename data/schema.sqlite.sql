@@ -7,7 +7,8 @@ CREATE TABLE tbl_users (
   create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   lastvisit_at TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
   superuser int(1) NOT NULL DEFAULT '0',
-  status int(1) NOT NULL DEFAULT '0'
+  status int(1) NOT NULL DEFAULT '0',
+  salt varchar(40) DEFAULT NULL
 );
 
 CREATE TABLE tbl_profiles (
