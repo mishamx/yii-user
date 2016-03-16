@@ -64,7 +64,6 @@ class ProfileFieldController extends Controller
 		$cs->registerCssFile($baseUrl.'/css/redmond/jquery-ui.css');
 		$cs->registerCssFile($baseUrl.'/css/style.css');
 		$cs->registerScriptFile($baseUrl.'/js/jquery-ui.min.js');
-		$cs->registerScriptFile($baseUrl.'/js/form.js');
 		$cs->registerScriptFile($baseUrl.'/js/jquery.json.js');
 		
 		$widgets = self::getWidgets();
