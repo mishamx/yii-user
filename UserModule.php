@@ -59,6 +59,12 @@ class UserModule extends CWebModule
 	public $profileUrl = array("/user/profile");
 	public $returnUrl = array("/user/profile");
 	public $returnLogoutUrl = array("/user/login");
+
+    public $captchaParams = array(
+        'class'=>'CCaptchaAction',
+        'backColor'=>0xFFFFFF,
+        'foreColor'=>0x2040A0,
+    );
 	
 	
 	/**
@@ -202,7 +208,7 @@ class UserModule extends CWebModule
 
 	/**
 	 * Return admins.
-	 * @return array syperusers names
+	 * @return array superusers names
 	 */	
 	public static function getAdmins() {
 		if (!self::$_admins) {

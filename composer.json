@@ -1,0 +1,20 @@
+{
+    "name": "mishamx/yii-user",
+    "description": "Yii PHP Framework extension for registration and management users accounts.",
+    "keywords": ["yii", "user", "account"],
+    "homepage": "http://yii-user.2mx.org/",
+    "authors": [
+        {
+            "name": "Mikhail Mangushev",
+            "email": "development@2mx.org",
+            "homepage": "http://www.2mx.org"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/mishamx/yii-user/issues"
+    },
+
+    "require": {
+        "yiisoft/yii"           : ">=1.1.9"
+    }
+}
