@@ -129,5 +129,6 @@ return array(
 	'Search' => 'Искать',
 	'Advanced Search' => 'Расширенный поиск',
 	'You may optionally enter a comparison operator (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b> or <b>=</b>) at the beginning of each of your search values to specify how the comparison should be done.'=>'Вы можете использовать операторы сравнения (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b> or <b>=</b>) установив их перед значением.',
+	'You have requested the password recovery site {site_name}' => 'Запрос на восстановление пароля на сайте {site_name}',
 );
 

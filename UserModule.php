@@ -224,9 +224,13 @@ class UserModule extends CWebModule
 	/**
 	 * Send to user mail
 	 */
-	public static function sendMail($email,$subject,$message) {
-    	$adminEmail = Yii::app()->params['adminEmail'];
-	    $headers = "MIME-Version: 1.0\r\nFrom: $adminEmail\r\nReply-To: $adminEmail\r\nContent-Type: text/html; charset=utf-8";
+	public static function sendMail($email,$subject,$message,$from='',$cc='') {
+    	if (!$from)
+            $from = Yii::app()->params['adminEmail'];
+	    $headers = "MIME-Version: 1.0\r\nFrom: $from\r\nReply-To: $from\r\nContent-Type: text/html; charset=utf-8\r\n";
+        if ($cc) {
+            $headers .= "Cc: ".$cc."\r\n";
+        }
 	    $message = wordwrap($message, 70);
 	    $message = str_replace("\n.", "\n..", $message);
 	    return mail($email,'=?UTF-8?B?'.base64_encode($subject).'?=',$message,$headers);
