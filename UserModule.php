@@ -58,6 +58,7 @@ class UserModule extends CWebModule
 	public $logoutUrl = array("/user/logout");
 	public $profileUrl = array("/user/profile");
 	public $returnUrl = array("/user/profile");
+	public $firstLoginReturnUrl = array("/user/profile");
 	public $returnLogoutUrl = array("/user/login");
 
     public $captchaParams = array(
@@ -280,5 +281,18 @@ class UserModule extends CWebModule
 	 */
 	public function users() {
 		return User;
+	}
+
+	/**
+	 * Return redirect url for user
+	 *
+	 * @param bool $firstLogin
+	 * @return mixed
+	 */
+	public static function getReturnUrl($firstLogin = true)
+	{
+		return ($firstLogin && isset(Yii::app()->controller->module->firstLoginReturnUrl) && !empty(Yii::app()->controller->module->firstLoginReturnUrl)) ?
+			Yii::app()->controller->module->firstLoginReturnUrl :
+			Yii::app()->controller->module->returnUrl;
 	}
 }

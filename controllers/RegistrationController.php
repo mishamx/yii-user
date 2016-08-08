@@ -55,7 +55,9 @@ class RegistrationController extends Controller
                                 $identity=new UserIdentity($model->username,$soucePassword);
                                 $identity->authenticate();
                                 Yii::app()->user->login($identity,0);
-                                $this->redirect(Yii::app()->controller->module->returnUrl);
+                                $model->lastvisit_at = date('Y-m-d H:i:s');
+                                $model->save();
+                                $this->redirect(UserModule::getReturnUrl());
                         } else {
                             if (!Yii::app()->controller->module->activeAfterRegister&&!Yii::app()->controller->module->sendActivationMail) {
                                 Yii::app()->user->setFlash('registration',UserModule::t("Thank you for your registration. Contact Admin to activate your account."));
