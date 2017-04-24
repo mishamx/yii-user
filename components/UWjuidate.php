@@ -53,6 +53,7 @@ class UWjuidate {
 		$basePath=Yii::getPathOfAlias('user.views.asset');
 		$baseUrl=Yii::app()->getAssetManager()->publish($basePath);
 		$cs = Yii::app()->getClientScript();
+                $cs->registerScriptFile($baseUrl.'/js/jquery-migrate-1.2.1.min.js');
 		$cs->registerCssFile($baseUrl.'/css/'.$this->params['ui-theme'].'/jquery-ui.css');
 		$cs->registerScriptFile($baseUrl.'/js/jquery-ui.min.js');
 		

@@ -61,6 +61,7 @@ class ProfileFieldController extends Controller
 		$baseUrl=Yii::app()->getAssetManager()->publish($basePath);
 		$cs = Yii::app()->getClientScript();
 		$cs->registerCoreScript('jquery');
+                $cs->registerScriptFile($baseUrl.'/js/jquery-migrate-1.2.1.min.js');
 		$cs->registerCssFile($baseUrl.'/css/redmond/jquery-ui.css');
 		$cs->registerCssFile($baseUrl.'/css/style.css');
 		$cs->registerScriptFile($baseUrl.'/js/jquery-ui.min.js');
