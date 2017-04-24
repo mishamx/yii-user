@@ -98,7 +98,7 @@ class m110810_162301_userTimestampFix extends CDbMigration
 
     public function dbType()
     {
-        list($type) = explode(':',Yii::app()->db->connectionString);
+        list($type) = explode(':', $this->dbConnection->connectionString);
         echo "type db: ".$type."\n";
         return $type;
     }
