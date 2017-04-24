@@ -33,6 +33,8 @@ class m110805_153437_installYiiUser extends CDbMigration
                         "lastvisit" => "int(10) NOT NULL DEFAULT 0",
                         "superuser" => "int(1) NOT NULL DEFAULT 0",
                         "status" => "int(1) NOT NULL DEFAULT 0",
+                        "create_at" => "timestamp NULL DEFAULT NULL",
+  			"lastvisit_at" => "timestamp NULL DEFAULT NULL",
                     ), $this->MySqlOptions);
                     $this->createIndex('user_username', Yii::app()->getModule('user')->tableUsers, 'username', true);
                     $this->createIndex('user_email', Yii::app()->getModule('user')->tableUsers, 'email', true);
@@ -116,6 +118,8 @@ class m110805_153437_installYiiUser extends CDbMigration
                         "lastvisit" => "int(10) NOT NULL",
                         "superuser" => "int(1) NOT NULL",
                         "status" => "int(1) NOT NULL",
+                        "create_at" => "timestamp NULL",
+  			"lastvisit_at" => "timestamp NULL",
                     ));
                     $this->createIndex('user_username', Yii::app()->getModule('user')->tableUsers, 'username', true);
                     $this->createIndex('user_email', Yii::app()->getModule('user')->tableUsers, 'email', true);
