@@ -22,6 +22,8 @@ Change your config main:
         'import'=>array(
             'application.models.*',
             'application.components.*',
+
+            # Add the  module 'yii-user' here; you can also choose another location (like e.g. a common path)
             'application.modules.user.models.*',
             'application.modules.user.components.*',
         ),
@@ -30,6 +32,12 @@ Change your config main:
         'modules'=>array(
             #...
             'user'=>array(
+                # This path needs to be the path where you located the module 'yii-user'
+                'class' => 'application.modules.user.UserModule',
+
+                # Enter your application-wide layout path explictly here
+                'layoutPath' => Yii::getPathOfAlias('application.views.layouts'),
+
                 # encrypting method (php hash function)
                 'hash' => 'md5',
 
@@ -89,6 +97,9 @@ Change your config console:
         'modules'=>array(
             #...
             'user'=>array(
+                # This path needs to be the path where you located the module 'yii-user'
+                'class' => 'application.modules.user.UserModule',
+
                 # encrypting method (php hash function)
                 'hash' => 'md5',
 
