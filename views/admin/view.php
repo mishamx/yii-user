@@ -50,11 +50,9 @@ $this->menu=array(
 			'value' => User::itemAlias("UserStatus",$model->status),
 		)
 	);
-	
-	$this->widget('zii.widgets.CDetailView', array(
+    $defaultDetailView = Yii::app()->getModule('user')->defaultDetailView;
+    $this->widget($defaultDetailView['path'], $defaultDetailView['options'] + array(
 		'data'=>$model,
 		'attributes'=>$attributes,
 	));
-	
-
 ?>

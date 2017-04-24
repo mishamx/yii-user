@@ -13,7 +13,8 @@ if(UserModule::isAdmin()) {
 
 <h1><?php echo UserModule::t("List User"); ?></h1>
 
-<?php $this->widget('zii.widgets.grid.CGridView', array(
+<?php $defaultGridView = Yii::app()->getModule('user')->defaultGridView; ?>
+<?php $this->widget($defaultGridView['path'], $defaultGridView['options'] + array(
 	'dataProvider'=>$dataProvider,
 	'columns'=>array(
 		array(

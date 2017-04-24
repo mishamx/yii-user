@@ -13,7 +13,8 @@ $this->menu=array(
 ?>
 <h1><?php echo UserModule::t('View Profile Field #').$model->varname; ?></h1>
 
-<?php $this->widget('zii.widgets.CDetailView', array(
+<?php $defaultDetailView = Yii::app()->getModule('user')->defaultDetailView; ?>
+<?php $this->widget($defaultDetailView['path'], $defaultDetailView['options'] + array(
 	'data'=>$model,
 	'attributes'=>array(
 		'id',
