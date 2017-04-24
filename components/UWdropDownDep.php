@@ -89,7 +89,7 @@ class UWdropDownDep {
 		return CHtml::activeDropDownList($model,$field->varname,$list,$htmlOptions=array(
 				'ajax'=>array(
 						'type'=>'POST',
-						'url'=>CController::createUrl('/user/profileField/getDroDownDepValues'),
+						'url'=>Yii::app()->controller->createUrl('/user/profileField/getDroDownDepValues'),
 						'data'=>array('model'=>$this->params['modelDestName'], 'field_dest'=>$this->params['destField'], 'varname'=>$field->varname, $field->varname=>'js:this.value', 'optionDestName'=>$this->params['optionDestName']),
 						'success'=>'function(data){
         						$("#ajax_loader").hide();
